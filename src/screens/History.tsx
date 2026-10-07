@@ -17,6 +17,7 @@ const KIND_LABEL: Record<string, string> = {
 
 export function History() {
   const [version, setVersion] = useState(0);
+  const [confirmWipe, setConfirmWipe] = useState(false);
   const hist = useMemo(getHistory, [version]);
 
   return (
@@ -72,17 +73,27 @@ export function History() {
       <details className="danger-zone">
         <summary>Apagar dados locais</summary>
         <p className="muted">Remove histórico, tentativas e domínio deste navegador. Não pode ser desfeito.</p>
-        <button
-          className="btn btn-danger small"
-          onClick={() => {
-            if (confirm('Apagar todo o histórico e o domínio por tema?')) {
-              [KEYS.history, KEYS.attempts, KEYS.seen, KEYS.activeExam].forEach(removeKey);
-              setVersion((v) => v + 1);
-            }
-          }}
-        >
-          Apagar tudo
-        </button>
+        {confirmWipe ? (
+          <span className="row">
+            <button
+              className="btn btn-danger small"
+              onClick={() => {
+                [KEYS.history, KEYS.attempts, KEYS.seen, KEYS.activeExam].forEach(removeKey);
+                setConfirmWipe(false);
+                setVersion((v) => v + 1);
+              }}
+            >
+              Confirmar: apagar tudo
+            </button>
+            <button className="btn btn-ghost small" onClick={() => setConfirmWipe(false)}>
+              Cancelar
+            </button>
+          </span>
+        ) : (
+          <button className="btn btn-danger small" onClick={() => setConfirmWipe(true)}>
+            Apagar tudo
+          </button>
+        )}
       </details>
     </div>
   );

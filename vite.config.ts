@@ -1,5 +1,9 @@
+import path from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+
+// STANDALONE=1 gera uma página autônoma (correção dentro do navegador, sem API) para publicação.
+const standalone = process.env.STANDALONE === '1';
 
 // Monta a API de correção dentro do servidor de desenvolvimento do Vite,
 // para que `npm run dev` suba frontend + backend num único processo.
@@ -18,7 +22,11 @@ function apiPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), apiPlugin()],
+  plugins: [react(), ...(standalone ? [] : [apiPlugin()])],
+  base: standalone ? './' : '/',
+  define: { __STANDALONE__: JSON.stringify(standalone) },
+  resolve: standalone ? { alias: { './llm': path.resolve(process.cwd(), 'server/llm.stub.ts') } } : undefined,
+  build: standalone ? { outDir: 'dist-standalone' } : undefined,
   server: { port: 5173, host: true },
   test: {
     environment: 'node',

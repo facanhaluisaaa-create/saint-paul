@@ -49,6 +49,7 @@ export function ExamSetup({ preset }: { preset: string }) {
   const [error, setError] = useState<string | null>(null);
   const [cases, setCases] = useState<(CaseInfo & { questions: number })[]>([]);
   const [caseId, setCaseId] = useState<string>('surpresa');
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
 
   useEffect(() => {
     setCount(p.count);
@@ -122,17 +123,22 @@ export function ExamSetup({ preset }: { preset: string }) {
             <button className="btn btn-primary" onClick={() => navigate('/prova/executar')}>
               Retomar
             </button>
-            <button
-              className="btn btn-ghost"
-              onClick={() => {
-                if (confirm('Descartar a prova em andamento?')) {
+            {confirmDiscard ? (
+              <button
+                className="btn btn-danger"
+                onClick={() => {
                   clearSession();
+                  setConfirmDiscard(false);
                   navigate(`/prova?preset=${key}&r=${Date.now()}`);
-                }
-              }}
-            >
-              Descartar
-            </button>
+                }}
+              >
+                Confirmar descarte
+              </button>
+            ) : (
+              <button className="btn btn-ghost" onClick={() => setConfirmDiscard(true)}>
+                Descartar
+              </button>
+            )}
           </span>
         </div>
       )}

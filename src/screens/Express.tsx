@@ -1,3 +1,5 @@
+declare const __STANDALONE__: boolean;
+const STANDALONE = typeof __STANDALONE__ !== 'undefined' && __STANDALONE__;
 const CARDS: { title: string; lines: string[]; note?: string }[] = [
   {
     title: 'As três demonstrações',
@@ -111,11 +113,13 @@ export function Express() {
       <p className="eyebrow">Revisão expressa</p>
       <h1>Tudo da P1 em uma página</h1>
       <p className="lead">Fórmulas, regras e frases do professor, nas palavras dos slides das Aulas 1 a 5.</p>
-      <div className="row no-print">
-        <button className="btn btn-ghost small" onClick={() => window.print()}>
-          Imprimir
-        </button>
-      </div>
+      {!STANDALONE && (
+        <div className="row no-print">
+          <button className="btn btn-ghost small" onClick={() => window.print()}>
+            Imprimir
+          </button>
+        </div>
+      )}
       <div className="express-grid">
         {CARDS.map((c) => (
           <section key={c.title} className="xcard">

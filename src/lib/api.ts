@@ -3,7 +3,17 @@ import type { CaseInfo } from '../../shared/cases';
 import type { TopicId } from '../../shared/topics';
 import { studentSignals } from './progress';
 
+declare const __STANDALONE__: boolean;
+const STANDALONE = typeof __STANDALONE__ !== 'undefined' && __STANDALONE__;
+
 async function call<T>(method: 'GET' | 'POST', path: string, body?: unknown): Promise<T> {
+  if (STANDALONE) {
+    // Versão publicada: a API roda dentro do navegador (sem servidor).
+    const { handleApi } = await import('../../server/api');
+    const r = await handleApi(method, path, body, { dev: false });
+    if (r.status >= 400) throw new Error((r.json as any)?.error ?? `Erro ${r.status}`);
+    return r.json as T;
+  }
   const res = await fetch(path, {
     method,
     headers: body ? { 'Content-Type': 'application/json' } : undefined,

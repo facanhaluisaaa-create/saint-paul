@@ -1,3 +1,5 @@
+declare const __STANDALONE__: boolean;
+const STANDALONE = typeof __STANDALONE__ !== 'undefined' && __STANDALONE__;
 import { useMemo, useState } from 'react';
 import { GROUPS, type GroupId } from '../../shared/topics';
 import { ROTEIRO_PARTS } from '../../shared/cases';
@@ -119,16 +121,18 @@ export function Report({ id }: { id: string }) {
             <button className="btn btn-primary" onClick={startReview} disabled={!rec.results.some((r) => r.status !== 'correct')}>
               Iniciar revisão personalizada
             </button>
-            <button
-              className="btn btn-ghost"
-              onClick={() => {
-                setExpandAll(true);
-                setFilter('all');
-                setTimeout(() => window.print(), 50);
-              }}
-            >
-              Exportar relatório (PDF)
-            </button>
+            {!STANDALONE && (
+              <button
+                className="btn btn-ghost"
+                onClick={() => {
+                  setExpandAll(true);
+                  setFilter('all');
+                  setTimeout(() => window.print(), 50);
+                }}
+              >
+                Exportar relatório (PDF)
+              </button>
+            )}
           </div>
         </section>
       </div>
