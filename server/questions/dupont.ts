@@ -6,11 +6,11 @@ import type { Question } from '../../shared/types';
 const ficticio = (nome: string, perfil: string) => `CASO FICTÍCIO PARA ESTUDO — ${nome} (${perfil})`;
 
 const SRC = {
-  roe: 'Aula 5 — ROE (resumo da P1)',
-  giro: 'Aula 5 — Giro do Ativo (resumo da P1)',
-  alav: 'Aula 5 — Alavancagem (resumo da P1)',
-  dupont: 'Aula 5 — DuPont: ROE = Margem Líquida × Giro × Alavancagem (resumo da P1)',
-  estrategia: 'Aula 5 — Análise conjunta BP + DRE, DuPont e decisão (resumo da P1)',
+  roe: 'Aula 4 — "Qual o objetivo principal das empresas? Rentabilidade!": ROE = Lucro Líquido ÷ PL (Caso Renner); retomado na Aula 5 como a ponte entre BP e DRE (slides)',
+  giro: 'Aula 5 — DuPont, fator 2: Giro do Ativo = Receita ÷ Ativo Total ("o varejo gira mais que a cervejaria") (slides)',
+  alav: 'Aula 5 — DuPont, fator 3: Alavancagem = Ativo Total ÷ PL ("faca de dois gumes") (slides)',
+  dupont: 'Aula 5 — DuPont: ROE = Margem Líquida × Giro × Alavancagem (a barraca de praia) (slides)',
+  estrategia: 'Aula 5 — BP e DRE lidos em conjunto; roteiro de análise em 3 partes (formato da prova) (slides)',
 };
 
 const F = {
@@ -23,8 +23,8 @@ const F = {
 const CONCEPT = {
   roe: 'O ROE mede quanto de Lucro Líquido a empresa gerou para cada R$ 100 de capital próprio (Patrimônio Líquido). Só ganha sentido quando comparado: com o período anterior, com concorrentes, com o setor e com o custo de capital dos sócios.',
   giro: 'O Giro do Ativo mostra quantos reais de venda cada R$ 1 investido em Ativo consegue gerar. Varejo costuma ter giro alto; negócios intensivos em capital (indústria pesada, infraestrutura) têm giro naturalmente baixo.',
-  alav: 'A Alavancagem (Ativo / PL) mostra quanto de Ativo cada R$ 1 de capital dos sócios sustenta; o restante é financiado por terceiros. Ela amplia o ROE nos anos bons, mas também amplia o prejuízo e o risco nos anos ruins.',
-  dupont: 'A DuPont decompõe o ROE em três alavancas: Margem Líquida (quanto da receita vira lucro), Giro do Ativo (quanto o Ativo gera de receita) e Alavancagem (quanto do Ativo é sustentado por capital de terceiros). Serve para responder "De onde veio o ROE?".',
+  alav: 'A Alavancagem (Ativo / PL) mostra quanto de Ativo cada R$ 1 de capital dos sócios sustenta; igual a 1,0 = 100% capital próprio, e sobe conforme fornecedores e dívida financiam parte do ativo. É uma "faca de dois gumes": amplia o ROE quando a operação rende mais do que custa o dinheiro de terceiros — e amplia o prejuízo quando rende menos.',
+  dupont: 'A DuPont decompõe o ROE em três alavancas: Margem Líquida (quanto da receita vira lucro), Giro do Ativo (quanto o Ativo gera de receita) e Alavancagem (quanto do Ativo é sustentado por capital de terceiros). Margem × giro = retorno sobre o ATIVO; a alavancagem responde "de quem é esse ativo?". Serve para responder "De onde veio o ROE?".',
 };
 
 export const questions: Question[] = [
@@ -674,7 +674,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'interpretation',
     stem: 'Julgue: "Como a alavancagem multiplica o ROE, aumentar a alavancagem é sempre positivo para os sócios."',
     correct: false,
-    explanation: 'A alavancagem multiplica o resultado nos dois sentidos. Em anos de lucro, amplia o ROE; em anos de prejuízo, amplia a perda sobre o capital dos sócios. Além disso, mais dívida significa mais despesas financeiras e mais risco de não conseguir pagar as obrigações.',
+    explanation: 'A alavancagem é uma "faca de dois gumes": amplia o ROE quando a operação rende mais do que custa o dinheiro de terceiros — e amplia o prejuízo quando rende menos (na barraca de praia da aula, "se chover o verão inteiro, o mesmo multiplicador triplica o prejuízo"). Além disso, mais dívida significa mais despesas financeiras e mais risco de não conseguir pagar as obrigações; nunca se deve alavancar uma operação que não remunera o custo do capital.',
     reasoningSteps: [
       'Lembre que ROE = ML × Giro × Alavancagem: a alavancagem é um multiplicador.',
       'Um multiplicador aplicado a uma margem negativa amplia o prejuízo.',
@@ -1092,7 +1092,7 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: ficticio('Bebidas Serra do Mar S.A.', 'indústria de bebidas') + ' Os indicadores reproduzem, arredondados, os da Ambev 2024 × 2025 (modelo de análise do resumo da P1).',
+    context: ficticio('Bebidas Serra do Mar S.A.', 'indústria de bebidas') + ' Os indicadores reproduzem, arredondados, os da Ambev 2024 × 2025 (planilha da disciplina, Aula 5).',
     stem: 'A decomposição DuPont da Bebidas Serra do Mar é apresentada abaixo. O ROE passou de cerca de 14,9% para cerca de 18,0%. O que explica a melhora do ROE?',
     table: {
       caption: 'Bebidas Serra do Mar — DuPont',
