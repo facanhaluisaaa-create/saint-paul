@@ -1622,12 +1622,12 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: 'CASO FICTÍCIO PARA ESTUDO — Comercial Ipê Ltda. (loja de moda) × Distribuidora Aroeira Ltda. (distribuição de alimentos)',
-    stem: 'As duas empresas têm a mesma Liquidez Corrente (1,80). Na Comercial Ipê, a gerência informa que boa parte dos estoques é de coleções antigas, com venda lenta. Qual conclusão é a mais adequada?',
+    context: 'CASO FICTÍCIO PARA ESTUDO — Moda Ametista Ltda. (loja de moda) × Distribuidora Aroeira Ltda. (distribuição de alimentos)',
+    stem: 'As duas empresas têm a mesma Liquidez Corrente (1,80). Na Moda Ametista, a gerência informa que boa parte dos estoques é de coleções antigas, com venda lenta. Qual conclusão é a mais adequada?',
     table: {
       caption: 'Composição do circulante (31/12/X2)',
       note: NOTE,
-      headers: ['Conta', 'Comercial Ipê', 'Distribuidora Aroeira'],
+      headers: ['Conta', 'Moda Ametista', 'Distribuidora Aroeira'],
       rows: [
         ['Caixa e equivalentes', '100', '900'],
         ['Contas a receber de clientes', '200', '700'],
@@ -1639,11 +1639,11 @@ export const questions: Question[] = [
       totalRows: [3, 4, 5],
     },
     options: [
-      { id: 'A', text: 'As duas têm a mesma capacidade de pagamento, pois a LC é igual.', whyWrong: 'O índice é igual, mas a qualidade do AC não: a Ipê depende de vender estoques de giro lento para pagar o PC.' },
-      { id: 'B', text: 'A Ipê está em melhor situação, pois tem mais estoques para vender.', whyWrong: 'Estoque encalhado demora a virar caixa e pode exigir descontos; mais estoque não significa mais liquidez.' },
-      { id: 'C', text: 'Apesar da LC igual, a Aroeira tem liquidez de melhor qualidade: seu AC é formado sobretudo por caixa e recebíveis, enquanto a LC da Ipê é inflada por estoque de venda lenta, que pode demorar a virar dinheiro.' },
+      { id: 'A', text: 'As duas têm a mesma capacidade de pagamento, pois a LC é igual.', whyWrong: 'O índice é igual, mas a qualidade do AC não: a Ametista depende de vender estoques de giro lento para pagar o PC.' },
+      { id: 'B', text: 'A Ametista está em melhor situação, pois tem mais estoques para vender.', whyWrong: 'Estoque encalhado demora a virar caixa e pode exigir descontos; mais estoque não significa mais liquidez.' },
+      { id: 'C', text: 'Apesar da LC igual, a Aroeira tem liquidez de melhor qualidade: seu AC é formado sobretudo por caixa e recebíveis, enquanto a LC da Ametista é inflada por estoque de venda lenta, que pode demorar a virar dinheiro.' },
       { id: 'D', text: 'Ambas estão em situação de atenção, pois a LC está abaixo de 2.', whyWrong: 'A regra didática usa 1 como referência: acima de 1 indica folga. Não existe o corte "abaixo de 2 = atenção".' },
-      { id: 'E', text: 'A Ipê deveria ser analisada com o Passivo Total para ter um índice mais preciso.', whyWrong: 'Trocar o PC pelo Passivo Total não resolve o problema e mistura prazos; a questão é a composição do AC.' },
+      { id: 'E', text: 'A Ametista deveria ser analisada com o Passivo Total para ter um índice mais preciso.', whyWrong: 'Trocar o PC pelo Passivo Total não resolve o problema e mistura prazos; a questão é a composição do AC.' },
     ],
     correct: 'C',
     explanation:

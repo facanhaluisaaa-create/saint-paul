@@ -1342,11 +1342,11 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: ficticio('Comercial Ipê Ltda.', 'varejo: margem baixa, giro alto'),
-    stem: 'Em 2025, a Comercial Ipê fez uma agressiva campanha de descontos. A receita cresceu, mas os sócios estão insatisfeitos. Com base no BP e na DRE abaixo, faça um diagnóstico usando a decomposição DuPont (com números dos dois anos) e proponha ações para recuperar a rentabilidade.',
+    context: ficticio('Comercial Jatobá Ltda.', 'varejo: margem baixa, giro alto'),
+    stem: 'Em 2025, a Comercial Jatobá fez uma agressiva campanha de descontos. A receita cresceu, mas os sócios estão insatisfeitos. Com base no BP e na DRE abaixo, faça um diagnóstico usando a decomposição DuPont (com números dos dois anos) e proponha ações para recuperar a rentabilidade.',
     tables: [
       {
-        caption: 'DRE — Comercial Ipê',
+        caption: 'DRE — Comercial Jatobá',
         note: 'Valores em R$ mil',
         headers: ['Linha', '2024', '2025'],
         rows: [
@@ -1363,7 +1363,7 @@ export const questions: Question[] = [
         totalRows: [2, 4, 6, 8],
       },
       {
-        caption: 'Balanço Patrimonial resumido — Comercial Ipê',
+        caption: 'Balanço Patrimonial resumido — Comercial Jatobá',
         note: 'Valores em R$ mil',
         headers: ['Conta', '2024', '2025'],
         rows: [

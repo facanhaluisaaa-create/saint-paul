@@ -79,8 +79,12 @@ const SRC_EST = 'Aula 5 — Análise integrada e decisão · Caso Ambev 2025 × 
 const ATIVO_LINES: [string, BpKey][] = [
   ['Ativo Circulante', 'ativoCirculante'],
   ['  Caixa e equivalentes de caixa', 'caixa'],
+  ['  Aplicações financeiras', 'aplicacoesFinanceiras'],
   ['  Contas a receber', 'contasReceber'],
   ['  Estoques', 'estoques'],
+  ['  Tributos a recuperar', 'tributosRecuperar'],
+  ['  Despesas antecipadas', 'despesasAntecipadas'],
+  ['  Outros ativos circulantes', 'outrosAC'],
   ['Ativo Não Circulante', 'ativoNaoCirculante'],
   ['  Realizável a Longo Prazo', 'rlp'],
   ['  Investimentos', 'investimentos'],
@@ -95,12 +99,16 @@ const LC_LINES: [string, BpKey][] = [
   ['  Aplicações financeiras', 'aplicacoesFinanceiras'],
   ['  Contas a receber', 'contasReceber'],
   ['  Estoques', 'estoques'],
-  ['  Demais ativos circulantes (tributos, despesas antecipadas, outros)', 'outrosAC'],
+  ['  Tributos a recuperar', 'tributosRecuperar'],
+  ['  Despesas antecipadas', 'despesasAntecipadas'],
+  ['  Outros ativos circulantes', 'outrosAC'],
   ['PASSIVO CIRCULANTE', 'passivoCirculante'],
+  ['  Obrigações sociais e trabalhistas', 'obrigacoesTrabalhistas'],
   ['  Fornecedores', 'fornecedores'],
   ['  Obrigações fiscais', 'obrigacoesFiscais'],
   ['  Empréstimos e financiamentos', 'emprestimosCP'],
   ['  Outras obrigações', 'outrasObrigacoesCP'],
+  ['  Provisões', 'provisoesCP'],
 ];
 
 export const questions: Question[] = [
@@ -117,7 +125,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'calculation',
     context: CTX,
     stem: 'Calcule a Análise Vertical (A.V.) do Intangível da Ambev em 31/12/2025, tomando o Ativo Total como base. Responda em %, com 2 casas decimais.',
-    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 4, 9])],
+    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 8, 13])],
     correct: 36.24,
     unit: 'percent',
     decimals: 2,
@@ -157,7 +165,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'interpretation',
     context: CTX,
     stem: `Julgue: "Em 31/12/2025, Caixa e equivalentes de caixa (R$ ${fmt(B25.caixa)} mil) é a conta de maior peso no Ativo da Ambev pela Análise Vertical; logo, a estrutura da empresa é dominada por recursos líquidos."`,
-    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 4, 9])],
+    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 8, 13])],
     correct: false,
     explanation: `Pela A.V. de 2025, as maiores contas do Ativo são Intangível (${pct(av(B25.intangivel, B25.ativoTotal))}), Imobilizado (${pct(av(B25.imobilizado, B25.ativoTotal))}) e só então Caixa (${pct(av(B25.caixa, B25.ativoTotal))}). Intangível + Imobilizado somam ${pct(av(B25.intangivel + B25.imobilizado, B25.ativoTotal))} do Ativo: a estrutura é dominada por ativos de longo prazo (marcas, ágio, fábricas), típica de empresa intensiva em capital. Além disso, o peso do Caixa caiu em relação a 2024 (${pct(av(B24.caixa, B24.ativoTotal))}).`,
     reasoningSteps: [
@@ -237,7 +245,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'interpretation',
     context: CTX,
     stem: 'Quanto a conta Fornecedores representa DENTRO do Passivo Circulante da Ambev em 31/12/2025, e qual a leitura correta? (Use 2 casas decimais.)',
-    tables: [bpTable('Ambev — Passivo Circulante (recorte do BP consolidado)', LC_LINES.slice(6), [0])],
+    tables: [bpTable('Ambev — Passivo Circulante (recorte do BP consolidado)', LC_LINES.slice(8), [0])],
     options: [
       {
         id: 'A',
@@ -451,7 +459,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'interpretation',
     context: CTX,
     stem: `Julgue: "O Ativo Total da Ambev caiu ${pct(-ah(B25.ativoTotal, B24.ativoTotal))} de 2024 para 2025, e a conta que mais contribuiu para essa queda, em reais, foi Caixa e equivalentes de caixa."`,
-    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 4, 9])],
+    tables: [bpTable('Ambev — Ativo (recorte do BP consolidado)', ATIVO_LINES, [0, 8, 13])],
     correct: true,
     explanation: `O Ativo Total caiu R$ ${fmt(B24.ativoTotal - B25.ativoTotal)} mil (A.H. ${pct(ah(B25.ativoTotal, B24.ativoTotal))}). Dessa queda, R$ ${fmt(B24.caixa - B25.caixa)} mil vieram do Caixa (A.H. ${pct(ah(B25.caixa, B24.caixa))}), seguido do Intangível (−R$ ${fmt(B24.intangivel - B25.intangivel)} mil; A.H. ${pct(ah(B25.intangivel, B24.intangivel))}) e do Imobilizado (−R$ ${fmt(B24.imobilizado - B25.imobilizado)} mil). Para saber qual conta "puxou" a variação do total, compare as variações em reais, não apenas os percentuais.`,
     reasoningSteps: [
@@ -480,7 +488,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'interpretation',
     context: CTX,
     stem: 'Com base no recorte do Balanço da Ambev, calcule a Liquidez Corrente dos dois anos e interprete a mudança.',
-    tables: [bpTable('Ambev — Ativo e Passivo Circulantes (recorte do BP consolidado)', LC_LINES, [0, 6])],
+    tables: [bpTable('Ambev — Ativo e Passivo Circulantes (recorte do BP consolidado)', LC_LINES, [0, 8])],
     parts: [
       {
         id: 'a',
@@ -574,7 +582,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'analysis',
     context: CTX,
     stem: `A Liquidez Corrente da Ambev passou de ${dec(LC24)} (2024) para ${dec(LC25)} (2025). Um colega afirma: "A empresa precisa urgentemente tomar empréstimos de curto prazo para voltar a ter LC acima de 1". Qual análise é mais consistente com os dados?`,
-    tables: [bpTable('Ambev — Ativo e Passivo Circulantes (recorte do BP consolidado)', LC_LINES, [0, 6])],
+    tables: [bpTable('Ambev — Ativo e Passivo Circulantes (recorte do BP consolidado)', LC_LINES, [0, 8])],
     options: [
       {
         id: 'A',
@@ -927,7 +935,7 @@ export const questions: Question[] = [
     options: [
       {
         id: 'A',
-        text: `Operação +R$ ${fmt(D25.lucroOperacional - D24.lucroOperacional)} mil; financeiro −R$ ${fmt(D24.resultadoFinanceiro - D25.resultadoFinanceiro)} mil (quase anulando o ganho operacional; LAIR ${pct(ah(D25.lair, D24.lair))}); IR/CS menor em R$ ${fmt(D25.irCs - D24.irCs)} mil explica o crescimento do LL.`,
+        text: `Operação +R$ ${fmt(D25.lucroOperacional - D24.lucroOperacional)} mil; financeiro −R$ ${fmt(D24.resultadoFinanceiro - D25.resultadoFinanceiro)} mil (anulando — e até superando um pouco — o ganho operacional; LAIR ${pct(ah(D25.lair, D24.lair))}); IR/CS menor em R$ ${fmt(D25.irCs - D24.irCs)} mil explica o crescimento do LL.`,
       },
       {
         id: 'B',
@@ -974,7 +982,7 @@ export const questions: Question[] = [
     stem: `Julgue: "Embora o Lucro Operacional da Ambev tenha crescido ${pct(ah(D25.lucroOperacional, D24.lucroOperacional))} em 2025, o Lucro antes do IR/CS ficou praticamente estável (${pct(ah(D25.lair, D24.lair))}), porque o Resultado Financeiro piorou de R$ ${fmt(D24.resultadoFinanceiro)} mil para R$ ${fmt(D25.resultadoFinanceiro)} mil."`,
     tables: [ambevIncomeTable()],
     correct: true,
-    explanation: `LAIR = Lucro Operacional ± Resultado Financeiro. O ganho operacional de R$ ${fmt(D25.lucroOperacional - D24.lucroOperacional)} mil foi praticamente anulado pela piora de R$ ${fmt(D24.resultadoFinanceiro - D25.resultadoFinanceiro)} mil do financeiro (despesas financeiras subiram ${pct(ah(-D25.despesasFinanceiras, -D24.despesasFinanceiras))}). Assim, a operação melhorou, mas o financeiro "devolveu" esse ganho antes dos tributos.`,
+    explanation: `LAIR = Lucro Operacional ± Resultado Financeiro. O ganho operacional de R$ ${fmt(D25.lucroOperacional - D24.lucroOperacional)} mil foi integralmente anulado (até um pouco superado) pela piora de R$ ${fmt(D24.resultadoFinanceiro - D25.resultadoFinanceiro)} mil do financeiro (despesas financeiras subiram ${pct(ah(-D25.despesasFinanceiras, -D24.despesasFinanceiras))}). Assim, a operação melhorou, mas o financeiro "devolveu" esse ganho antes dos tributos.`,
     reasoningSteps: [
       'Lembre a ordem da DRE: Lucro Operacional ± Resultado Financeiro = LAIR.',
       'Compare a variação em reais do LO com a do Resultado Financeiro.',
@@ -1409,7 +1417,7 @@ export const questions: Question[] = [
           penalty: 2,
         },
       ],
-      modelAnswer: `1) Liquidez: a Liquidez Corrente caiu de ${dec(LC24)} para ${dec(LC25)}, abaixo de 1 (sinal de atenção). A queda veio principalmente do caixa, que recuou ${pct(-ah(B25.caixa, B24.caixa))} (R$ ${fmt(B24.caixa)} mil → R$ ${fmt(B25.caixa)} mil). Atenuante: ${pct(av(B25.fornecedores, B25.passivoCirculante))} do PC são fornecedores, obrigações operacionais que se renovam, e os empréstimos de curto prazo são só R$ ${fmt(B25.emprestimosCP)} mil. Não é insolvência, mas merece acompanhamento da geração de caixa. 2) Receita: a Receita Líquida caiu ${pct(-ah(D25.receitaLiquida, D24.receitaLiquida))} (R$ ${fmt(D24.receitaLiquida)} mil → R$ ${fmt(D25.receitaLiquida)} mil); o lucro cresceu por corte de despesas e tributos menores, efeitos que têm limite se as vendas não voltarem a crescer. 3) Financeiro: o Resultado Financeiro piorou de R$ ${fmt(D24.resultadoFinanceiro)} mil para R$ ${fmt(D25.resultadoFinanceiro)} mil, com despesas financeiras +${pct(ah(-D25.despesasFinanceiras, -D24.despesasFinanceiras))}, e praticamente anulou o ganho operacional (LAIR ${pct(ah(D25.lair, D24.lair))}). Esses pontos devem ser comparados com pares do setor e acompanhados nos próximos períodos.`,
+      modelAnswer: `1) Liquidez: a Liquidez Corrente caiu de ${dec(LC24)} para ${dec(LC25)}, abaixo de 1 (sinal de atenção). A queda veio principalmente do caixa, que recuou ${pct(-ah(B25.caixa, B24.caixa))} (R$ ${fmt(B24.caixa)} mil → R$ ${fmt(B25.caixa)} mil). Atenuante: ${pct(av(B25.fornecedores, B25.passivoCirculante))} do PC são fornecedores, obrigações operacionais que se renovam, e os empréstimos de curto prazo são só R$ ${fmt(B25.emprestimosCP)} mil. Não é insolvência, mas merece acompanhamento da geração de caixa. 2) Receita: a Receita Líquida caiu ${pct(-ah(D25.receitaLiquida, D24.receitaLiquida))} (R$ ${fmt(D24.receitaLiquida)} mil → R$ ${fmt(D25.receitaLiquida)} mil); o lucro cresceu por corte de despesas e tributos menores, efeitos que têm limite se as vendas não voltarem a crescer. 3) Financeiro: o Resultado Financeiro piorou de R$ ${fmt(D24.resultadoFinanceiro)} mil para R$ ${fmt(D25.resultadoFinanceiro)} mil, com despesas financeiras +${pct(ah(-D25.despesasFinanceiras, -D24.despesasFinanceiras))}, e anulou o ganho operacional (LAIR ${pct(ah(D25.lair, D24.lair))}). Esses pontos devem ser comparados com pares do setor e acompanhados nos próximos períodos.`,
     },
     explanation:
       'Identificar riscos exige olhar BP e DRE juntos e sempre com números e comparação. Os três pontos mais visíveis na Ambev 2025 são: liquidez abaixo de 1 (com caixa em queda), receita em queda e resultado financeiro pior. Cada um deve ser lido com atenuantes e sem conclusões absolutas.',

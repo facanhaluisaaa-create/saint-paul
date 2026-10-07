@@ -5,6 +5,7 @@ import { questions as dre } from './dre';
 import { questions as analysis } from './analysis';
 import { questions as dupont } from './dupont';
 import { questions as ambev } from './ambev';
+import { questions as recognition } from './recognition';
 
 export const QUESTION_BANK: Question[] = [
   ...balanceSheet,
@@ -13,6 +14,7 @@ export const QUESTION_BANK: Question[] = [
   ...analysis,
   ...dupont,
   ...ambev,
+  ...recognition,
 ];
 
 export const QUESTION_BY_ID: Map<string, Question> = new Map(QUESTION_BANK.map((q) => [q.id, q]));
