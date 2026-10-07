@@ -26,7 +26,7 @@ export default defineConfig({
   base: standalone ? './' : '/',
   define: { __STANDALONE__: JSON.stringify(standalone) },
   resolve: standalone ? { alias: { './llm': path.resolve(process.cwd(), 'server/llm.stub.ts') } } : undefined,
-  build: standalone ? { outDir: 'dist-standalone' } : undefined,
+  build: standalone ? { outDir: 'dist-standalone', rollupOptions: { output: { inlineDynamicImports: true } } } : undefined,
   server: { port: 5173, host: true },
   test: {
     environment: 'node',

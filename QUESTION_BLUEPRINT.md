@@ -53,6 +53,16 @@ Construído a partir dos materiais reais da disciplina (ver `CONTENT_MAP.md`). D
 
 Fora da prova mista: questões do roteiro (só no modo roteiro) e os temas MC/PE e equivalência (não localizados nos slides).
 
-## Banco entregue
+## Banco entregue (saída de `npm run validate`)
 
-(preenchido pela saída de `npm run validate` — ver abaixo)
+**362 questões · 0 erros · 125 cálculos recalculados · 134 balanços conferidos · 71 rubricas auditadas (resposta-modelo tira 99% em média).**
+
+| Dimensão | Resultado |
+|---|---|
+| Fácil / Média / Difícil | 25% / 51% / 24% |
+| Reconhecer / Calcular / Interpretar / Analisar | 23% / 24% / 27% / 26% |
+| Origem | conceitual 142 · fictício 123 · real Ambev 38 · real Renner 30 · exercício da disciplina 29 |
+| Tipos | ME 99 · V/F 62 · numérica 60 · discursiva 55 · multipartes 30 · classificação 23 · débito/crédito 16 · curta 12 · ordenação 5 |
+| Roteiro da prova | 48 perguntas (4 casos × 12), com anexo e rubrica que exige números |
+
+Por arquivo: aulas 50 · balance-sheet 38 · debit-credit 28 · dre 41 · analysis 35 · dupont 34 · recognition 20 · aula5 16 · ambev 38 · renner 30 · roteiro-ficticio 32.
