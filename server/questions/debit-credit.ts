@@ -98,7 +98,7 @@ export const questions: Question[] = [
     cognitiveLevel: 'recognition',
     type: 'debit-credit',
     context: CTX_OFICINA,
-    stem: 'Classifique a conta afetada como débito (D) ou crédito (C).',
+    stem: 'Classifique cada conta afetada como débito (D) ou crédito (C).',
     operation: 'Compra de um veículo utilitário para atendimento a clientes, por R$ 45.000, pago à vista em dinheiro.',
     accounts: [
       { id: 'veiculos', label: 'Veículos (Ativo Imobilizado)' },

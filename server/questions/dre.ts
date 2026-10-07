@@ -104,10 +104,10 @@ export const questions: Question[] = [
     difficulty: 'easy',
     cognitiveLevel: 'calculation',
     type: 'numeric',
-    context: 'CASO FICTÍCIO PARA ESTUDO — Comercial Ipê Ltda. (loja de materiais de construção)',
-    stem: 'Com base nos dados do mês da Comercial Ipê, calcule o Lucro Bruto. Responda em R$ mil, sem casas decimais.',
+    context: 'CASO FICTÍCIO PARA ESTUDO — Comercial Cedro Ltda. (loja de materiais de construção)',
+    stem: 'Com base nos dados do mês da Comercial Cedro, calcule o Lucro Bruto. Responda em R$ mil, sem casas decimais.',
     table: {
-      caption: 'Comercial Ipê — dados do mês',
+      caption: 'Comercial Cedro — dados do mês',
       note: NOTE,
       headers: ['Linha', 'Valor'],
       rows: [
@@ -203,10 +203,10 @@ export const questions: Question[] = [
     difficulty: 'hard',
     cognitiveLevel: 'calculation',
     type: 'numeric',
-    context: 'CASO FICTÍCIO PARA ESTUDO — Metalúrgica Serra Azul S.A. (fabricante de peças)',
-    stem: 'Monte mentalmente a DRE da Metalúrgica Serra Azul e calcule o Lucro Líquido do ano. Responda em R$ mil, sem casas decimais.',
+    context: 'CASO FICTÍCIO PARA ESTUDO — Metalúrgica Itaúna S.A. (fabricante de peças)',
+    stem: 'Monte mentalmente a DRE da Metalúrgica Itaúna e calcule o Lucro Líquido do ano. Responda em R$ mil, sem casas decimais.',
     table: {
-      caption: 'Metalúrgica Serra Azul — dados do ano',
+      caption: 'Metalúrgica Itaúna — dados do ano',
       note: NOTE,
       headers: ['Linha', 'Valor'],
       rows: [

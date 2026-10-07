@@ -39,10 +39,10 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'easy',
     cognitiveLevel: 'calculation',
-    context: ficticio('Comercial Ipê Ltda.', 'varejo de materiais de construção'),
-    stem: 'Com base nos dados abaixo, calcule o ROE da Comercial Ipê em 2025. Responda em %, com 1 casa decimal.',
+    context: ficticio('Comercial Guatambu Ltda.', 'varejo de materiais de construção'),
+    stem: 'Com base nos dados abaixo, calcule o ROE da Comercial Guatambu em 2025. Responda em %, com 1 casa decimal.',
     table: {
-      caption: 'Comercial Ipê — 2025',
+      caption: 'Comercial Guatambu — 2025',
       note: 'Valores em R$ mil',
       headers: ['Item', '2025'],
       rows: [
@@ -286,10 +286,10 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'medium',
     cognitiveLevel: 'interpretation',
-    context: ficticio('Clínica Bem Viver Ltda.', 'serviços de saúde'),
-    stem: 'Analise a evolução do ROE da Clínica Bem Viver entre 2024 e 2025. Responda em %, com 1 casa decimal.',
+    context: ficticio('Clínica Vida Plena Ltda.', 'serviços de saúde'),
+    stem: 'Analise a evolução do ROE da Clínica Vida Plena entre 2024 e 2025. Responda em %, com 1 casa decimal.',
     table: {
-      caption: 'Clínica Bem Viver — dados resumidos',
+      caption: 'Clínica Vida Plena — dados resumidos',
       note: 'Valores em R$ mil',
       headers: ['Item', '2024', '2025'],
       rows: [
@@ -827,8 +827,8 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'medium',
     cognitiveLevel: 'interpretation',
-    context: ficticio('Distribuidora Rio Claro Ltda.', 'atacado'),
-    stem: 'A Distribuidora Rio Claro tem Alavancagem de 2,5x. Qual interpretação está correta?',
+    context: ficticio('Distribuidora Paranapanema Ltda.', 'atacado'),
+    stem: 'A Distribuidora Paranapanema tem Alavancagem de 2,5x. Qual interpretação está correta?',
     options: [
       { id: 'A', text: 'A empresa deve 2,5 vezes o valor do seu caixa.', whyWrong: 'A alavancagem relaciona Ativo Total e PL; não compara dívida com caixa.' },
       { id: 'B', text: 'A empresa gera R$ 2,50 de vendas para cada R$ 1 de Ativo.', whyWrong: 'Essa é a leitura do Giro do Ativo (Receita / Ativo).' },
@@ -1092,7 +1092,7 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: ficticio('Bebidas Serra do Mar S.A.', 'indústria de bebidas'),
+    context: ficticio('Bebidas Serra do Mar S.A.', 'indústria de bebidas') + ' Os indicadores reproduzem, arredondados, os da Ambev 2024 × 2025 (modelo de análise do resumo da P1).',
     stem: 'A decomposição DuPont da Bebidas Serra do Mar é apresentada abaixo. O ROE passou de cerca de 14,9% para cerca de 18,0%. O que explica a melhora do ROE?',
     table: {
       caption: 'Bebidas Serra do Mar — DuPont',
@@ -1437,11 +1437,11 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: ficticio('Metalúrgica Serra Azul S.A.', 'indústria intensiva em ativos'),
-    stem: 'Em 2025, a Metalúrgica Serra Azul inaugurou uma nova fábrica financiada com empréstimos de longo prazo, mas as vendas quase não cresceram. Analise os dados e responda.',
+    context: ficticio('Siderúrgica Monte Claro S.A.', 'indústria intensiva em ativos'),
+    stem: 'Em 2025, a Siderúrgica Monte Claro inaugurou uma nova fábrica financiada com empréstimos de longo prazo, mas as vendas quase não cresceram. Analise os dados e responda.',
     tables: [
       {
-        caption: 'DRE — Metalúrgica Serra Azul',
+        caption: 'DRE — Siderúrgica Monte Claro',
         note: 'Valores em R$ mil',
         headers: ['Linha', '2024', '2025'],
         rows: [
@@ -1458,7 +1458,7 @@ export const questions: Question[] = [
         totalRows: [2, 4, 6, 8],
       },
       {
-        caption: 'Balanço Patrimonial resumido — Metalúrgica Serra Azul',
+        caption: 'Balanço Patrimonial resumido — Siderúrgica Monte Claro',
         note: 'Valores em R$ mil',
         headers: ['Conta', '2024', '2025'],
         rows: [
@@ -1677,11 +1677,11 @@ export const questions: Question[] = [
     dataSource: 'ficticio',
     difficulty: 'hard',
     cognitiveLevel: 'analysis',
-    context: ficticio('Transportadora Rota Sul S.A.', 'empresa altamente alavancada'),
-    stem: 'A diretoria da Transportadora Rota Sul quer anunciar aos sócios que "o ROE saltou de 20% para 30% graças à excelente gestão". Escreva um parecer para o conselho, com base no BP e na DRE abaixo, explicando a origem do ROE pela DuPont (com números dos dois anos), os riscos envolvidos e o que você recomendaria.',
+    context: ficticio('Transportadora Rota Norte S.A.', 'empresa altamente alavancada'),
+    stem: 'A diretoria da Transportadora Rota Norte quer anunciar aos sócios que "o ROE saltou de 20% para 30% graças à excelente gestão". Escreva um parecer para o conselho, com base no BP e na DRE abaixo, explicando a origem do ROE pela DuPont (com números dos dois anos), os riscos envolvidos e o que você recomendaria.',
     tables: [
       {
-        caption: 'DRE — Transportadora Rota Sul',
+        caption: 'DRE — Transportadora Rota Norte',
         note: 'Valores em R$ mil',
         headers: ['Linha', '2024', '2025'],
         rows: [
@@ -1698,7 +1698,7 @@ export const questions: Question[] = [
         totalRows: [2, 4, 6, 8],
       },
       {
-        caption: 'Balanço Patrimonial resumido — Transportadora Rota Sul',
+        caption: 'Balanço Patrimonial resumido — Transportadora Rota Norte',
         note: 'Valores em R$ mil',
         headers: ['Conta', '2024', '2025'],
         rows: [

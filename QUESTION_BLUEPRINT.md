@@ -4,7 +4,7 @@
 
 | Dimensão | Meta |
 |---|---|
-| Total | ≥ 160 questões, sem "clones" que só trocam números |
+| Total | ≥ 160 questões, sem "clones" que só trocam números (entregue: 217) |
 | Nível cognitivo | Reconhecer 30% · Calcular 25% · Interpretar 30% · Analisar/Decidir 15% |
 | Dificuldade | Fácil 25% · Média 50% · Difícil 25% |
 | Origem | Conceitual · Fictícia (marcada **CASO FICTÍCIO PARA ESTUDO**) · Real Ambev (DFP 2025 × 2024) |
@@ -63,3 +63,16 @@
 | Estratégia/RF/EP/MC-PE | 2 |
 
 Restrições do sorteio: ≈ 25/50/25 de dificuldade; pelo menos 1 questão de cada nível cognitivo por grupo grande; no máximo 3 discursivas em 25; questões vistas recentemente têm peso menor; temas fracos e habilidades já erradas têm peso maior.
+
+## Banco entregue (saída de `npm run validate`)
+
+217 questões · 0 erros · 74 cálculos recalculados · 53 balanços conferidos.
+
+| Dimensão | Resultado | Meta |
+|---|---|---|
+| Fácil / Média / Difícil | 27% / 50% / 24% | 25 / 50 / 25 |
+| Reconhecer / Calcular / Interpretar / Analisar | 29% / 23% / 29% / 20% | 30 / 25 / 30 / 15 |
+| Origem | conceitual 102 · fictício 91 · real Ambev 24 | — |
+| Tipos | ME 70 · V/F 47 · numérica 36 · multipartes 19 · débito/crédito 12 · classificação 11 · discursiva 10 · curta 8 · ordenação 4 | — |
+
+Por tema: débito/crédito 15 · margens 15 · DuPont 15 · A.V. 14 · A.H. 14 · liquidez 14 · DRE 11 · classificação 9 · competência 10 · ROE 9 · alavancagem 8 · custo × despesa 8 · resultado financeiro 9 · estratégia 8 · circulante 8 · fundamentos 7 · BP 7 · razonetes 7 · giro 7 · PL 6 · balancete 6 · MC/PE 6 · equivalência 4.

@@ -643,12 +643,12 @@ export const questions: Question[] = [
       {
         id: 'C',
         text: 'R$ 1.020 mil',
-        whyWrong: 'Esqueceu o aporte dos sócios, que também aumenta o PL (Capital Social).',
+        whyWrong: 'Esqueceu o lucro retido (900 + 120); o resultado é uma das duas fontes de alteração do PL.',
       },
       {
         id: 'D',
         text: 'R$ 1.080 mil',
-        whyWrong: 'Esqueceu o lucro retido; o resultado é uma das duas fontes de alteração do PL.',
+        whyWrong: 'Esqueceu o aporte dos sócios (900 + 180), que também aumenta o PL (Capital Social).',
       },
       {
         id: 'E',
