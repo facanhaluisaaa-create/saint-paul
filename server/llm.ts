@@ -55,7 +55,10 @@ export async function gradeEssayLLM(stem: string, text: string, rubric: Rubric):
     .map((c) => `- id "${c.id}" (${c.points} pts): ${c.description}`)
     .join('\n');
   const errorsText = (rubric.seriousErrors ?? []).map((e) => `- ${e.description}`).join('\n') || '- (nenhum listado)';
-  const prompt = `QUESTÃO:\n${stem}\n\nRUBRICA:\n${rubricText}\n\nERROS GRAVES A OBSERVAR:\n${errorsText}\n\nRESPOSTA-MODELO (referência do professor; não exija as mesmas palavras):\n${rubric.modelAnswer}\n\n<resposta_do_aluno>\n${text}\n</resposta_do_aluno>\n\nPara cada critério devolva "earned" entre 0 e o máximo do critério.`;
+  const numbersRule = rubric.requireNumbers
+    ? '\nREGRA DA DISCIPLINA: resposta sem números (valores, A.V., A.H.) vale no máximo metade; além disso, cada critério exige o número que o sustenta.'
+    : '';
+  const prompt = `QUESTÃO:\n${stem}\n\nRUBRICA:\n${rubricText}\n\nERROS GRAVES A OBSERVAR:\n${errorsText}\n\nRESPOSTA-MODELO (referência do professor; não exija as mesmas palavras):\n${rubric.modelAnswer}${numbersRule}\n\n<resposta_do_aluno>\n${text}\n</resposta_do_aluno>\n\nPara cada critério devolva "earned" entre 0 e o máximo do critério.`;
 
   const response = await getClient().beta.messages.create({
     model: MODEL,
@@ -80,6 +83,11 @@ export async function gradeEssayLLM(stem: string, text: string, rubric: Rubric):
     const earned = Math.max(0, Math.min(c.points, Number(r?.earned) || 0));
     return { id: c.id, description: c.description, points: c.points, earned, met: earned >= c.points * 0.75, comment: r?.comment };
   });
-  const earned = Math.min(total, criteria.reduce((s, c) => s + c.earned, 0));
-  return { earned, total, criteria, seriousErrors: parsed.conceptualErrors ?? [], method: 'llm' };
+  let earned = Math.min(total, criteria.reduce((s, c) => s + c.earned, 0));
+  const seriousErrors = parsed.conceptualErrors ?? [];
+  if (rubric.requireNumbers && !/\d/.test(text)) {
+    earned = Math.min(earned, total / 2);
+    seriousErrors.push('Resposta sem números: na prova, resposta sem número vale no máximo metade.');
+  }
+  return { earned, total, criteria, seriousErrors, method: 'llm' };
 }

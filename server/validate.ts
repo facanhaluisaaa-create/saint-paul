@@ -78,10 +78,20 @@ export function validateQuestion(q: Question, issues: ValidationIssue[]) {
   req(q.skill, 'skill ausente');
   req(q.topic in TOPICS, `tema inválido: ${q.topic}`);
   if (q.caseTag === 'ambev') req(q.dataSource === 'real-ambev', 'questão Ambev deve ter dataSource real-ambev');
+  if (q.caseTag === 'renner') req(q.dataSource === 'real-renner', 'questão Renner deve ter dataSource real-renner');
+  if (q.dataSource === 'real-ambev') req(q.caseTag === 'ambev', 'dataSource real-ambev exige caseTag ambev');
+  if (q.dataSource === 'real-renner') req(q.caseTag === 'renner', 'dataSource real-renner exige caseTag renner');
+  if (q.roteiro) {
+    req([1, 2, 3].includes(q.roteiro.part), 'roteiro.part deve ser 1, 2 ou 3');
+    req(q.caseTag === q.roteiro.case, 'roteiro.case deve coincidir com caseTag');
+    req(q.type === 'essay' || q.type === 'short-answer' || q.type === 'multi-part', 'questão de roteiro deve ser discursiva ou multipartes');
+    const rub = q.type === 'multi-part' ? q.parts.filter((p) => p.kind === 'text').map((p: any) => p.rubric) : [(q as any).rubric];
+    for (const r of rub) if (r && !r.requireNumbers) issues.push({ id, level: 'warning', message: 'rubrica de roteiro sem requireNumbers (regra: resposta sem número vale metade)' });
+  }
   if (!q.rule) issues.push({ id, level: 'warning', message: 'sem regra transferível (rule)' });
 
   for (const b of q.balanceCheck ?? []) {
-    if (Math.abs(b.ativo - (b.passivo + b.pl)) > 0.5) {
+    if (Math.abs(b.ativo - (b.passivo + b.pl)) > (b.tolerance ?? 0.5)) {
       issues.push({ id, level: 'error', message: `balanço "${b.label}" não fecha: A=${b.ativo} ≠ P+PL=${b.passivo + b.pl}` });
     }
   }

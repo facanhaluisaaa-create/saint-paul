@@ -18,7 +18,9 @@ export type QuestionType =
 export type DataSource =
   | 'conceitual' // sem números de empresa; baseada no conteúdo das aulas
   | 'ficticio' // CASO FICTÍCIO PARA ESTUDO
-  | 'real-ambev'; // DFP Ambev 2025 × 2024 (dados reais)
+  | 'real-ambev' // Ambev 2025 × 2024 (planilha da disciplina)
+  | 'real-renner' // Lojas Renner 2025 × 2024 (slides da Aula 4)
+  | 'aula'; // exercício/caso dos slides (Alfenas, Comercial Bahia, Cia. Simétrica, Remendão, Padaria São Jorge...)
 
 export type NumericUnit = 'percent' | 'ratio' | 'times' | 'currency' | 'units';
 
@@ -57,6 +59,8 @@ export interface RubricCriterion {
 
 export interface Rubric {
   criteria: RubricCriterion[];
+  /** Regra da disciplina: "na prova, resposta sem número vale no máximo metade". */
+  requireNumbers?: boolean;
   /** Erros conceituais graves: se detectados, geram alerta e desconto. */
   seriousErrors?: { description: string; patterns: string[]; penalty: number }[];
   modelAnswer: string;
@@ -75,8 +79,13 @@ interface BaseQuestion {
   subtopic?: string;
   /** Habilidade avaliada (questões com a mesma skill testam o mesmo conceito). */
   skill: string;
-  /** Marca casos especiais, ex.: 'ambev'. */
-  caseTag?: 'ambev';
+  /** Caso a que a questão pertence: 'ambev' | 'renner' | id de caso fictício do roteiro. */
+  caseTag?: string;
+  /**
+   * Questão do "roteiro de análise em 3 partes" (formato da prova): Parte 1 BP (investimento e
+   * financiamento), Parte 2 DRE (resultados), Parte 3 Estratégia. `order` ordena dentro do caso.
+   */
+  roteiro?: { case: string; part: 1 | 2 | 3; order: number };
   dataSource: DataSource;
   difficulty: Difficulty;
   cognitiveLevel: CognitiveLevel;
@@ -94,8 +103,8 @@ interface BaseQuestion {
   /** Explicação curta do conceito (botão "Explicar conceito"). */
   concept?: string;
   sourceReference: string;
-  /** Para casos com balanço: o validador confere Ativo = Passivo + PL. */
-  balanceCheck?: { label: string; ativo: number; passivo: number; pl: number }[];
+  /** Para casos com balanço: o validador confere Ativo = Passivo + PL (tolerância padrão 0,5; use maior para R$ milhões arredondados). */
+  balanceCheck?: { label: string; ativo: number; passivo: number; pl: number; tolerance?: number }[];
 }
 
 export interface MultipleChoiceQuestion extends BaseQuestion {
@@ -183,6 +192,8 @@ export interface PublicQuestion {
   context?: string;
   tables?: DataTable[];
   dataSource: DataSource;
+  /** Parte do roteiro (formato da prova) — enviada sempre, pois é a estrutura da prova. */
+  roteiroPart?: 1 | 2 | 3;
   /** Só enviados fora do modo prova. */
   topic?: TopicId;
   difficulty?: Difficulty;
@@ -236,7 +247,8 @@ export interface GradedQuestion {
   cognitiveLevel: CognitiveLevel;
   type: QuestionType;
   dataSource: DataSource;
-  caseTag?: 'ambev';
+  caseTag?: string;
+  roteiro?: { case: string; part: 1 | 2 | 3; order: number };
   earned: number;
   points: number;
   /** 'correct' | 'partial' | 'wrong' | 'blank' */

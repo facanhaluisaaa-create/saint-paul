@@ -6,6 +6,7 @@ import { gradeQuestion, toPublic } from './grading';
 import { buildExam, pickAdaptive, pickFixation, type BuildRequest, type StudentSignals } from './selection';
 import { llmEnabled } from './llm';
 import { validateBank } from './validate';
+import { CASES } from '../shared/cases';
 
 export interface ApiResponse {
   status: number;
@@ -39,25 +40,36 @@ export async function handleApi(method: string, path: string, body: any, opts: {
     return ok({
       total: QUESTION_BANK.length,
       byTopic,
-      ambev: QUESTION_BANK.filter((q) => q.caseTag === 'ambev').length,
+      ambev: QUESTION_BANK.filter((q) => (q.caseTag === 'ambev' || q.caseTag === 'renner') && !q.roteiro).length,
+      roteiro: QUESTION_BANK.filter((q) => q.roteiro).length,
       llm: llmEnabled(),
     });
   }
 
+  if (method === 'GET' && p === '/api/cases') {
+    const cases = CASES.map((c) => ({ ...c, questions: QUESTION_BANK.filter((q) => q.roteiro?.case === c.id).length })).filter((c) => c.questions > 0);
+    return ok({ cases });
+  }
+
   if (method === 'POST' && p === '/api/exam') {
     const mode = body?.mode as BuildRequest['mode'];
-    if (!['p1', 'topic', 'review', 'ambev', 'mixed'].includes(mode)) return bad('modo inválido');
+    if (!['p1', 'topic', 'review', 'ambev', 'mixed', 'roteiro'].includes(mode)) return bad('modo inválido');
+    if (mode === 'roteiro' && !CASES.some((c) => c.id === body?.caseId)) return bad('caso inválido');
     const topics = Array.isArray(body?.topics) ? (body.topics as string[]).filter((t): t is TopicId => t in TOPICS) : undefined;
     const qs = buildExam(QUESTION_BANK, {
       mode,
       count: Number(body?.count) || 25,
       topics,
       exclude: Array.isArray(body?.exclude) ? body.exclude : [],
+      caseId: typeof body?.caseId === 'string' ? body.caseId : undefined,
       ...sanitizeSignals(body),
     });
     // No modo prova o tema NÃO é enviado.
     const revealMeta = body?.revealMeta === true;
-    return ok({ questions: qs.map((q) => toPublic(q, { revealMeta })) });
+    const pub = qs.map((q) => toPublic(q, { revealMeta }));
+    // Anexo das DFs (consulta permitida, como na prova): tabelas completas do caso.
+    const caseTables = mode === 'roteiro' ? (qs[0]?.tables ?? (qs[0]?.table ? [qs[0].table] : [])) : undefined;
+    return ok({ questions: pub, caseTables });
   }
 
   if (method === 'POST' && p === '/api/grade') {

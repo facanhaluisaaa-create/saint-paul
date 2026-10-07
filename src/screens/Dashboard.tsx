@@ -28,13 +28,14 @@ export function Dashboard() {
           <p className="eyebrow">Avaliação P1 · Simulados</p>
           <h1>Sua preparação</h1>
           <p className="lead">
-            Simule a prova, corrija com profundidade e repita até dominar. {catalog && <>Banco com {catalog.total} questões, incluindo {catalog.ambev} do Caso Ambev.</>}
+            Simule a prova, corrija com profundidade e repita até dominar. {catalog && <>Banco com {catalog.total} questões construídas a partir das Aulas 1 a 5, da atividade da Aula 4, da planilha e do Caso Ambev.</>}
           </p>
         </div>
         <div className="hero-actions">
-          <button className="btn btn-primary btn-lg" onClick={() => navigate('/prova?preset=p1')}>
+          <button className="btn btn-primary btn-lg" onClick={() => navigate('/prova?preset=roteiro')}>
             Iniciar P1 simulada
           </button>
+          <p className="muted small">Formato da prova: roteiro em 3 partes com consulta às DFs.</p>
         </div>
       </section>
 
@@ -104,7 +105,8 @@ export function Dashboard() {
       <section className="actions" aria-label="Ações">
         <h2>O que fazer agora</h2>
         <div className="action-grid">
-          <ActionCard title="Prova real" text="Simulado no formato da P1: cronômetro, navegação, sem dicas e correção só no final." onClick={() => navigate('/prova?preset=p1')} />
+          <ActionCard title="Prova no formato da P1" text="Roteiro em 3 partes (Balanço · DRE · Estratégia) sobre as DFs de uma empresa, com consulta ao anexo. Ambev, Renner ou caso surpresa." onClick={() => navigate('/prova?preset=roteiro')} />
+          <ActionCard title="Prova mista" text="25 questões objetivas, numéricas e discursivas curtas cobrindo as Aulas 1 a 5, com cronômetro e correção só no final." onClick={() => navigate('/prova?preset=p1')} />
           <ActionCard title="Estudo guiado" text="Correção e explicação após cada resposta, com dica, fórmula e solução passo a passo." onClick={() => navigate('/estudo?mode=mixed&count=12')} />
           <ActionCard
             title="Treinar meus erros"
@@ -113,7 +115,7 @@ export function Dashboard() {
             disabled={!wrongCount}
           />
           <ActionCard title="Treinar tema" text="Escolha um ou mais temas (BP, débito e crédito, DRE, A.V./A.H., margens, DuPont...)." onClick={() => navigate('/tema')} />
-          <ActionCard title="Simulado Caso Ambev" text="Questões com os dados reais da Ambev 2025 × 2024: A.V., A.H., margens, liquidez, ROE e DuPont." onClick={() => navigate('/prova?preset=ambev')} />
+          <ActionCard title="Casos reais: Ambev e Renner" text="Questões objetivas e numéricas sobre as DFs reais 2025 × 2024, com o anexo disponível." onClick={() => navigate('/prova?preset=ambev')} />
           <ActionCard title="Prova adaptativa" text="A dificuldade sobe quando você acerta; ao errar, volta aos fundamentos antes de avançar." onClick={() => navigate('/adaptativa')} />
           <ActionCard title="Revisão expressa" text="Todas as fórmulas e regras da P1 em cartões compactos." onClick={() => navigate('/expressa')} />
           <ActionCard title="Histórico" text={`${stats.exams} simulado(s) realizado(s). Abra qualquer prova antiga com a correção completa.`} onClick={() => navigate('/historico')} />

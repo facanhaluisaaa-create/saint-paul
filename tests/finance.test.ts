@@ -5,15 +5,21 @@ import { AMBEV } from '../shared/ambev';
 describe('fórmulas da disciplina', () => {
   it('A.V. = conta / base × 100', () => {
     expect(F.analiseVertical(250, 1000)).toBe(25);
-    expect(F.round(F.analiseVertical(AMBEV.bp[2025].intangivel, AMBEV.bp[2025].ativoTotal), 2)).toBe(36.24);
+    expect(F.round(F.analiseVertical(AMBEV.bp[2025].agio, AMBEV.bp[2025].ativoTotal), 2)).toBe(28.63);
+    expect(F.round(F.analiseVertical(AMBEV.bp[2025].intangivel, AMBEV.bp[2025].ativoTotal), 2)).toBe(7.61);
   });
 
   it('A.H. = (atual − anterior) / anterior × 100, com sinal', () => {
     expect(F.analiseHorizontal(120, 100)).toBeCloseTo(20);
     expect(F.analiseHorizontal(80, 100)).toBeCloseTo(-20);
     expect(F.round(F.analiseHorizontal(AMBEV.dre[2025].receitaLiquida, AMBEV.dre[2024].receitaLiquida), 2)).toBe(-1.35);
-    // Base negativa: piora de −2.318 para −4.001 é variação negativa
-    expect(F.analiseHorizontal(-4001728, -2318249)).toBeLessThan(0);
+    // Convenção da planilha (|atual|/|anterior| − 1): resultado financeiro de −2.318 para −4.002 cresceu 72,6%
+    expect(F.round(F.analiseHorizontal(-4002, -2318), 1)).toBe(72.6);
+    // CPV caiu: −43.615 → −42.864 = −1,72%
+    expect(F.round(F.analiseHorizontal(AMBEV.dre[2025].custoVendas, AMBEV.dre[2024].custoVendas), 2)).toBe(-1.72);
+    // Sinal mudou (Renner: +61,7 → −82,5): não significativo
+    expect(Number.isNaN(F.analiseHorizontal(-82.5, 61.7))).toBe(true);
+    expect(F.variacaoPct(-4002, -2318)).toBeLessThan(0);
   });
 
   it('margens bruta, operacional e líquida', () => {
@@ -21,7 +27,7 @@ describe('fórmulas da disciplina', () => {
     expect(F.margem(120, 1000)).toBe(12);
     const d = AMBEV.dre[2025];
     expect(F.round(F.margem(d.lucroBruto, d.receitaLiquida), 2)).toBe(51.42);
-    expect(F.round(F.margem(d.lucroOperacional, d.receitaLiquida), 2)).toBe(26.54);
+    expect(F.round(F.margem(d.lucroOperacional, d.receitaLiquida), 2)).toBe(26.43);
     expect(F.round(F.margem(d.lucroLiquido, d.receitaLiquida), 2)).toBe(18.12);
   });
 
@@ -67,16 +73,31 @@ describe('fórmulas da disciplina', () => {
   });
 });
 
+describe('dados reais da Renner fecham e batem com os slides', () => {
+  it('BP e DRE somam; ROE 13,9% como no slide', async () => {
+    const { RENNER } = await import('../shared/renner');
+    const b = RENNER.bp[2025];
+    const d = RENNER.dre[2025];
+    expect(F.round(b.passivoCirculante + b.passivoNaoCirculante + b.patrimonioLiquido, 1)).toBe(b.ativoTotal);
+    expect(F.round(b.ativoCirculante + b.ativoNaoCirculante, 1)).toBe(b.ativoTotal);
+    expect(F.round(d.lucroOperacional + d.resultadoFinanceiro + d.irCs, 1)).toBe(d.lucroLiquido);
+    expect(F.round(F.roe(d.lucroLiquido, b.patrimonioLiquido), 1)).toBe(13.9);
+    expect(F.round(F.margem(d.lucroLiquido, d.receitaLiquida), 1)).toBe(9.2);
+    expect(F.round(F.analiseHorizontal(d.lucroOperacional, RENNER.dre[2024].lucroOperacional), 1)).toBe(42.7);
+  });
+});
+
 describe('dados reais da Ambev fecham', () => {
   for (const y of [2024, 2025] as const) {
     it(`Ativo = Passivo + PL e subtotais da DRE (${y})`, () => {
       const b = AMBEV.bp[y];
       const d = AMBEV.dre[y];
-      expect(b.ativoTotal).toBe(b.passivoCirculante + b.passivoNaoCirculante + b.patrimonioLiquido);
-      expect(b.ativoTotal).toBe(b.ativoCirculante + b.ativoNaoCirculante);
-      expect(d.lucroBruto).toBe(d.receitaLiquida + d.custoVendas);
-      expect(d.lair).toBe(d.lucroOperacional + d.resultadoFinanceiro);
-      expect(d.lucroLiquido).toBe(d.lair + d.irCs);
+      // Planilha em R$ milhões arredondados: tolerância de ±1,5
+      expect(Math.abs(b.ativoTotal - (b.passivoCirculante + b.passivoNaoCirculante + b.patrimonioLiquido))).toBeLessThanOrEqual(1.5);
+      expect(Math.abs(b.ativoTotal - (b.ativoCirculante + b.ativoNaoCirculante))).toBeLessThanOrEqual(1.5);
+      expect(Math.abs(d.lucroBruto - (d.receitaLiquida + d.custoVendas))).toBeLessThanOrEqual(1.5);
+      expect(Math.abs(d.lair - (d.lucroOperacional + d.resultadoFinanceiro + d.participacaoColigadas))).toBeLessThanOrEqual(1.5);
+      expect(Math.abs(d.lucroLiquido - (d.lair + d.irCs))).toBeLessThanOrEqual(1.5);
     });
   }
 });

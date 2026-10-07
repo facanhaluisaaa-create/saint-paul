@@ -14,11 +14,12 @@ import { AmbevStatements } from './screens/AmbevStatements';
 
 const NAV = [
   { path: '/', label: 'Painel' },
-  { path: '/prova?preset=p1', label: 'Simular P1' },
+  { path: '/prova?preset=roteiro', label: 'Simular P1' },
   { path: '/tema', label: 'Treino por tema' },
   { path: '/estudo?mode=review', label: 'Meus erros' },
   { path: '/adaptativa', label: 'Adaptativa' },
   { path: '/expressa', label: 'Revisão expressa' },
+  { path: '/ambev', label: 'Anexos (DFs)' },
   { path: '/historico', label: 'Histórico' },
 ];
 

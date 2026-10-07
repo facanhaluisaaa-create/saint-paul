@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Answer } from '../../shared/types';
 import { AnswerInput, QuestionBody, SourceBadge, handleChoiceKey, isTypingTarget } from '../components/QuestionView';
-import { AmbevStatementsPanel } from './AmbevStatements';
+import { AmbevStatementsPanel, AnnexPanel } from './AmbevStatements';
+import { ROTEIRO_PARTS } from '../../shared/cases';
 import { api } from '../lib/api';
 import {
   clearSession,
@@ -172,9 +173,9 @@ export function ExamRunner() {
             )}
           </div>
           <div className="exam-bar-actions">
-            {s.mode === 'ambev' && (
+            {(s.mode === 'ambev' || s.caseTables?.length) && (
               <button className="btn btn-ghost small" onClick={() => setShowDFs((v) => !v)} aria-expanded={showDFs}>
-                {showDFs ? 'Ocultar DFs' : 'Ver DFs da Ambev'}
+                {showDFs ? 'Ocultar anexo' : 'Consultar anexo (DFs)'}
               </button>
             )}
             <button className="btn btn-secondary small" onClick={() => setView('review')}>
@@ -236,9 +237,9 @@ export function ExamRunner() {
         </aside>
 
         <section className="exam-main">
-          {showDFs && s.mode === 'ambev' && (
+          {showDFs && (
             <div className="dfs-drawer">
-              <AmbevStatementsPanel />
+              {s.caseTables?.length ? <AnnexPanel tables={s.caseTables} note="Anexo das DFs — consulta permitida, como na prova. Valores em R$ milhões, com A.V. e A.H. prontos." /> : <AmbevStatementsPanel />}
             </div>
           )}
 
@@ -258,6 +259,12 @@ export function ExamRunner() {
 
           {view === 'question' ? (
             <article className="question-card" aria-labelledby="qtitle">
+              {q.roteiroPart && (
+                <div className="part-banner">
+                  <strong>{ROTEIRO_PARTS[q.roteiroPart].title}</strong>
+                  <span>{ROTEIRO_PARTS[q.roteiroPart].subtitle}</span>
+                </div>
+              )}
               <header className="q-head">
                 <h1 id="qtitle" ref={headingRef} tabIndex={-1}>
                   Questão {s.current + 1}

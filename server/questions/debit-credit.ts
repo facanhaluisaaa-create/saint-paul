@@ -6,15 +6,15 @@ import type { Question } from '../../shared/types';
 //   PASSIVO e PL: aumentam = CRÉDITO; diminuem = DÉBITO.
 //   Receita aumenta o PL (crédito); despesa diminui o PL (débito).
 
-const REF_DC = 'Aula 3 — Débito e Crédito / Partidas Dobradas (resumo da P1)';
-const REF_RAZ = 'Aula 3 — Razão e Razonetes (resumo da P1)';
-const REF_BAL = 'Aula 3 — Balancete de Verificação (resumo da P1)';
+const REF_DC = 'Aula 3 — Débito e crédito, natureza das contas e partidas dobradas (slides)';
+const REF_RAZ = 'Aula 3 — Razão, razonetes e saldo devedor/credor (slides)';
+const REF_BAL = 'Aula 3 — Balancete de verificação e balanço (exemplo das 7 operações; Remendão S.A.) (slides)';
 
 const RULE_NATUREZA =
   'Antes de escolher débito ou crédito, identifique a natureza da conta (Ativo, Passivo ou PL) e se ela aumentou ou diminuiu — nunca pense em entrada ou saída de dinheiro.';
 
 const CONCEPT_DC =
-  'Débito e crédito são apenas os dois lados de um lançamento contábil, sem relação com cartão de débito/crédito. Contas de Ativo aumentam por débito; contas de Passivo e PL aumentam por crédito.';
+  'Débito é o lado esquerdo e crédito o lado direito do razonete, sem relação com cartão de débito/crédito. "A natureza da conta é que determina o lado": contas de Ativo (saldo devedor) aumentam por débito; contas de Passivo e PL (saldo credor) aumentam por crédito.';
 
 const CTX_OFICINA = 'CASO FICTÍCIO PARA ESTUDO — Oficina Ponto Certo Ltda. (serviços de manutenção automotiva)';
 const CTX_COMERCIAL = 'CASO FICTÍCIO PARA ESTUDO — Comercial Ipê Ltda. (comércio de materiais de construção)';
@@ -151,7 +151,7 @@ export const questions: Question[] = [
     rule: 'Em lançamentos compostos, classifique cada conta isoladamente pela natureza e pelo sentido do movimento e depois confira se Σ débitos = Σ créditos.',
     hint: 'Some os valores de cada lado. Eles precisam bater.',
     concept:
-      'Partidas dobradas: todo fato contábil tem débitos e créditos de mesmo valor total. Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
+      'Partidas dobradas: "a um débito numa ou mais contas deve corresponder um crédito equivalente em uma ou mais contas" — não há débito(s) sem crédito(s) correspondente(s). Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
     sourceReference: REF_DC,
   },
   {
@@ -403,7 +403,7 @@ export const questions: Question[] = [
     rule: 'Em lançamentos compostos, classifique cada conta isoladamente pela natureza e pelo sentido do movimento e depois confira se Σ débitos = Σ créditos.',
     hint: 'Quantas contas aumentaram de Ativo? E de onde vieram os recursos?',
     concept:
-      'Partidas dobradas: todo fato contábil tem débitos e créditos de mesmo valor total. Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
+      'Partidas dobradas: "a um débito numa ou mais contas deve corresponder um crédito equivalente em uma ou mais contas" — não há débito(s) sem crédito(s) correspondente(s). Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
     sourceReference: REF_DC,
   },
   {
@@ -444,7 +444,7 @@ export const questions: Question[] = [
       'Verdadeiro ou falso: "Em um lançamento com três contas — por exemplo, compra de veículo paga parte à vista e parte a prazo —, a soma dos débitos continua obrigatoriamente igual à soma dos créditos, mesmo que haja um débito e dois créditos."',
     correct: true,
     explanation:
-      'Verdadeiro. Pelo método das partidas dobradas, não há débito sem crédito correspondente, e isso vale para o valor total, não para o número de contas. No exemplo, D Veículos 90.000 = C Caixa 30.000 + C Financiamentos 60.000.',
+      'Verdadeiro. Pelo método das partidas dobradas, "não há débito(s) sem crédito(s) correspondente(s)": a soma dos valores debitados é sempre igual à soma dos valores creditados, em uma ou mais contas. A igualdade vale para o valor total, não para o número de contas. No exemplo, D Veículos 90.000 = C Caixa 30.000 + C Financiamentos 60.000.',
     reasoningSteps: [
       'Lembre o princípio: Σ débitos = Σ créditos em todo lançamento.',
       'Perceba que o princípio compara valores, não quantidade de contas.',
@@ -454,7 +454,7 @@ export const questions: Question[] = [
     rule: 'Partidas dobradas comparam valores: a soma dos débitos sempre iguala a soma dos créditos, qualquer que seja o número de contas (1×1, 1×n ou n×n).',
     hint: 'O que precisa ser igual: a quantidade de contas ou os valores?',
     concept:
-      'Partidas dobradas: todo fato contábil tem débitos e créditos de mesmo valor total. Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
+      'Partidas dobradas: "a um débito numa ou mais contas deve corresponder um crédito equivalente em uma ou mais contas" — não há débito(s) sem crédito(s) correspondente(s). Um lançamento pode ser 1×1, 1×n (uma conta contra várias) ou n×n.',
     sourceReference: REF_DC,
   },
   {
@@ -585,7 +585,7 @@ export const questions: Question[] = [
     rule: 'Saldo do razonete = lado maior − lado menor, e recebe o nome do lado maior (devedor ou credor); contas de Ativo normalmente têm saldo devedor.',
     formula: 'Saldo = Σ Débitos − Σ Créditos',
     hint: 'Some cada lado separadamente antes de subtrair.',
-    concept: 'O razonete (conta em T) é a forma simplificada do Razão: à esquerda os débitos, à direita os créditos; o saldo é a diferença entre os lados.',
+    concept: 'O razonete (conta em T) é a forma simplificada do Razão (livro → fichas → computador): à esquerda os débitos, à direita os créditos; o saldo é a diferença entre os lados — devedor se débitos > créditos, credor se créditos > débitos.',
     sourceReference: REF_RAZ,
   },
   {

@@ -31,9 +31,9 @@ export const TOPIC_IDS = Object.keys(TOPICS) as TopicId[];
 
 export const GROUPS = {
   'fundamentos-bp': { label: 'Fundamentos e BP', short: 'BP', p1Weight: 3 },
-  'debito-credito': { label: 'Débito, Crédito e Razonetes', short: 'Débito/Crédito', p1Weight: 4 },
+  'debito-credito': { label: 'Débito, Crédito e Razonetes', short: 'Débito/Crédito', p1Weight: 3 },
   dre: { label: 'DRE e Competência', short: 'DRE', p1Weight: 4 },
-  'av-ah': { label: 'Análise Vertical e Horizontal', short: 'A.V./A.H.', p1Weight: 3 },
+  'av-ah': { label: 'Análise Vertical e Horizontal', short: 'A.V./A.H.', p1Weight: 4 },
   margens: { label: 'Margens', short: 'Margens', p1Weight: 3 },
   liquidez: { label: 'Liquidez Corrente', short: 'Liquidez', p1Weight: 2 },
   'roe-dupont': { label: 'ROE, Giro, Alavancagem e DuPont', short: 'ROE/DuPont', p1Weight: 4 },

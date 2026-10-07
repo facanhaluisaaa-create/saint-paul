@@ -1,14 +1,15 @@
 import type { Question } from '../../shared/types';
 
 // Banco de questões — Aula 4: DRE, Custo × Despesa, Competência × Caixa,
-// Resultado Financeiro, Equivalência Patrimonial e MC/PE (nível introdutório).
+// Resultado Financeiro. Equivalência Patrimonial e MC/PE (nível introdutório) ficam
+// sinalizados: não aparecem nos slides das Aulas 1–5 (possivelmente Aula 6).
 
-const REF_DRE = 'Aula 4 — DRE: estrutura e subtotais (resumo da P1)';
-const REF_CD = 'Aula 4 — Custo × Despesa (resumo da P1)';
-const REF_CC = 'Aula 4 — Competência × Caixa: "Lucro não é caixa" (resumo da P1)';
-const REF_RF = 'Aula 4 — Resultado Financeiro (resumo da P1)';
-const REF_EP = 'Aula 4 — Equivalência Patrimonial, nível introdutório (resumo da P1)';
-const REF_MCPE = 'Aula 4 — Margem de Contribuição e Ponto de Equilíbrio, nível introdutório (resumo da P1)';
+const REF_DRE = 'Aula 4 — DRE em degraus: "cada = é um lucro diferente" (Padaria São Jorge, Pedal Forte) (slides)';
+const REF_CD = 'Aula 4 — Custo × Despesa: "o gasto gruda no produto?" (Camisetas Aurora) (slides)';
+const REF_CC = 'Aula 4 — Competência × Caixa: "o que manda é o fato gerador"; "Lucro não é caixa" (slides)';
+const REF_RF = 'Aula 4 — Resultado financeiro: efeito das dívidas e do caixa, entre o Lucro Operacional e o LAIR (slides)';
+const REF_EP = 'Equivalência Patrimonial, nível introdutório (possivelmente Aula 6) — conteúdo não localizado nos slides das Aulas 1–5';
+const REF_MCPE = 'Margem de Contribuição e Ponto de Equilíbrio, nível introdutório (possivelmente Aula 6) — conteúdo não localizado nos slides das Aulas 1–5';
 const NOTE = 'Valores em R$ mil';
 
 const DRE_RULE =
@@ -1725,7 +1726,7 @@ export const questions: Question[] = [
     ],
     correct: 'C',
     explanation:
-      'Equivalência patrimonial é a forma de reconhecer, no resultado da investidora, a sua parte no lucro (ou prejuízo) de uma empresa em que ela tem participação: resultado = lucro da investida × % de participação. Esse valor afeta o resultado da investidora, mas não é receita de vendas.',
+      'Equivalência patrimonial é a forma de reconhecer, no resultado da investidora, a sua parte no lucro (ou prejuízo) de uma empresa em que ela tem participação: resultado = lucro da investida × % de participação. Esse valor afeta o resultado da investidora, mas não é receita de vendas nem entra no Lucro Operacional: na planilha da disciplina (DRE da Ambev), a linha "Participação em coligadas" aparece DEPOIS do resultado financeiro, antes do LAIR.',
     reasoningSteps: [
       'Identifique a palavra-chave: participação em outra empresa.',
       'Lembre a lógica: a investidora "acompanha" o lucro da investida na proporção da sua participação.',
@@ -1926,7 +1927,7 @@ export const questions: Question[] = [
     subtopic: 'Sensibilidade do ponto de equilíbrio',
     skill: 'pe-sensibilidade',
     dataSource: 'ficticio',
-    difficulty: 'hard',
+    difficulty: 'medium',
     cognitiveLevel: 'analysis',
     type: 'multiple-choice',
     context: 'CASO FICTÍCIO PARA ESTUDO — Fábrica de Sorvetes Polo Norte Ltda. (alimentos)',
@@ -1992,5 +1993,76 @@ export const questions: Question[] = [
     hint: 'Quanto cada unidade vendida deixa para pagar os gastos fixos?',
     concept: 'A margem de contribuição é o "motor" que paga os fixos; sem ela, não há ponto de equilíbrio.',
     sourceReference: REF_MCPE,
+  },
+
+  // =========================================================================
+  // PEGADINHAS DOS SLIDES (2)
+  // =========================================================================
+  {
+    id: 'dre-040',
+    topic: 'dre',
+    subtopic: 'Leitura da DRE',
+    skill: 'dre-estrutura',
+    dataSource: 'conceitual',
+    difficulty: 'easy',
+    cognitiveLevel: 'recognition',
+    type: 'true-false',
+    stem:
+      'Verdadeiro ou falso: para ler e interpretar uma DRE (saber se o produto é rentável, se a operação para em pé e quanto sobra para o sócio), é indispensável dominar os lançamentos de débito e crédito que a originaram.',
+    correct: false,
+    explanation:
+      'Falso. Nos slides, "a DRE é o filme que explica esse resultado, degrau por degrau — sem precisar de débito e crédito para ler". Débito e crédito são a técnica de registro (Aula 3); a leitura da DRE exige entender a cascata de degraus: Receita Líquida − Custo = Lucro Bruto; − Despesas Operacionais = Lucro Operacional; ± Resultado Financeiro = LAIR; − IR/CS = Lucro Líquido. Cada "=" responde a uma pergunta do gestor.',
+    reasoningSteps: [
+      'Separe duas habilidades: registrar (débito e crédito) e ler (interpretar a demonstração pronta).',
+      'Lembre que a DRE é apresentada em degraus, com subtotais que já contam a história do resultado.',
+      'Conclua que a leitura depende de entender os degraus, não a mecânica dos lançamentos.',
+    ],
+    commonMistake: 'Achar que só quem domina a escrituração consegue analisar demonstrações, ou, no extremo oposto, achar que débito e crédito "não servem para nada".',
+    rule: 'Para ler a DRE, siga os degraus e pergunte o que cada "=" responde; débito e crédito ficam na etapa de registro.',
+    formula: 'RL − Custo = LB; LB − DO = LO; LO ± RF = LAIR; LAIR − IR/CS = LL',
+    hint: 'A frase da aula é: "sem precisar de débito e crédito para ler".',
+    concept: 'A DRE é o filme do resultado, lido degrau por degrau; a escrituração por débito e crédito é a técnica que produz os números, não a chave para interpretá-los.',
+    sourceReference: REF_DRE,
+  },
+  {
+    id: 'dre-041',
+    topic: 'dre',
+    subtopic: 'Cada "=" é um lucro diferente',
+    skill: 'dre-leitura-subtotais',
+    dataSource: 'conceitual',
+    difficulty: 'medium',
+    cognitiveLevel: 'interpretation',
+    type: 'classification',
+    stem:
+      'Nos slides, "cada = é um lucro diferente" e cada degrau da DRE responde a uma pergunta. Associe cada pergunta ou descrição ao subtotal da DRE correspondente.',
+    items: [
+      { id: 'i1', label: 'O produto é rentável? (a sobra da atividade em si)' },
+      { id: 'i2', label: 'A operação para em pé? (a sobra da operação completa, antes de juros)' },
+      { id: 'i3', label: 'Sobra para o sócio? (o que resta depois da fatia do governo)' },
+      { id: 'i4', label: 'A base sobre a qual o IR/CS é calculado' },
+      { id: 'i5', label: 'Receita Líquida − Custo das mercadorias/serviços vendidos' },
+      { id: 'i6', label: 'Lucro Operacional ± Resultado financeiro (juros, efeito das dívidas e do caixa)' },
+    ],
+    categories: [
+      { id: 'lb', label: 'Lucro Bruto' },
+      { id: 'lo', label: 'Lucro Operacional' },
+      { id: 'lair', label: 'Lucro antes do IR/CS (LAIR)' },
+      { id: 'll', label: 'Lucro Líquido' },
+    ],
+    correct: { i1: 'lb', i2: 'lo', i3: 'll', i4: 'lair', i5: 'lb', i6: 'lair' },
+    explanation:
+      'A DRE em degraus: Receita Líquida − Custo = Lucro Bruto (sobra da atividade em si: o produto é rentável?); − Despesas operacionais = Lucro Operacional (sobra da operação completa: a operação para em pé?); ± Resultado financeiro = Lucro antes do IR/CS (base do imposto); − IR/CS (a fatia do governo) = Lucro Líquido (o que sobra para os sócios). Cada "=" é um lucro diferente e responde a uma pergunta diferente.',
+    reasoningSteps: [
+      'Escreva a cascata da DRE com os quatro subtotais.',
+      'Para cada pergunta, localize em que degrau ela é respondida: produto → bruto; operação → operacional; sócio → líquido.',
+      'Para as descrições por fórmula, identifique as duas linhas que geram o subtotal.',
+      'Lembre que o IR/CS incide sobre o LAIR, já depois do resultado financeiro.',
+    ],
+    commonMistake: 'Associar "a operação para em pé?" ao Lucro Líquido, ou achar que o IR/CS é calculado sobre o Lucro Operacional (antes dos juros).',
+    rule: 'Cada subtotal da DRE responde a uma pergunta: Lucro Bruto = produto; Lucro Operacional = operação; LAIR = base do imposto; Lucro Líquido = sócio.',
+    formula: 'RL − Custo = LB; LB − DO = LO; LO ± RF = LAIR; LAIR − IR/CS = LL',
+    hint: 'Desça a DRE de cima para baixo e pare no primeiro "=" que responde à pergunta.',
+    concept: 'Os quatro subtotais da DRE isolam fontes de resultado: produto, operação, financeiro e tributos; por isso "cada = é um lucro diferente".',
+    sourceReference: REF_DRE,
   },
 ];

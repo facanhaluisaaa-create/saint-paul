@@ -3,11 +3,14 @@ import type { Question } from '../../shared/types';
 // Banco de questões — Aulas 1 e 2: Contabilidade e Decisão, Balanço Patrimonial,
 // classificação em Ativo / Passivo / PL, Circulante × Não Circulante e Patrimônio Líquido.
 
-const AULA1 = 'Aula 1 — Contabilidade e Decisão (resumo da P1)';
-const AULA2_BP = 'Aula 2 — Balanço Patrimonial e equação patrimonial (resumo da P1)';
-const AULA2_CLASS = 'Aula 2 — Bens, direitos e obrigações; Ativo, Passivo e PL (resumo da P1)';
-const AULA2_CIRC = 'Aula 2 — Circulante × Não Circulante; liquidez e exigibilidade (resumo da P1)';
-const AULA2_PL = 'Aula 2 — Patrimônio Líquido (resumo da P1)';
+const AULA1 = 'Aula 1 — Contexto da contabilidade: usuários, finalidades (planejamento, controle, decisão) e visão geral das DFs (slides)';
+const AULA2_BP = 'Aula 2 — Balanço Patrimonial: estrutura e formação; Ativo = Passivo + PL; Caso Alfenas S.A. (slides)';
+const AULA2_CLASS = 'Aulas 1 e 2 — Bens, direitos e obrigações; Ativo, Passivo e PL (estática patrimonial) (slides)';
+const AULA2_CIRC = 'Aula 2 — Grupos do BP: ordenação por liquidez (Ativo) e por exigibilidade (Passivo) (slides)';
+const AULA2_GRUPOS = 'Aulas 2 e 4 — Grupos do Ativo: AC, Realizável a LP, Investimentos, Imobilizado e Intangível (slides)';
+const AULA4_CRIT = 'Aula 4 — Forma e conteúdo do BP: critérios de classificação (Circulante até 1 ano; RLP / Exigível a LP após 1 ano) (slides)';
+const AULA2_PL = 'Aula 2 — Patrimônio Líquido: capital social, reservas e lucros acumulados — a riqueza dos sócios (slides)';
+const AULA4_PL = 'Aula 4 — Variações do PL: capital investido e resultado (receitas × despesas) (slides)';
 const MIL = 'Valores em R$ mil';
 
 export const questions: Question[] = [
@@ -165,7 +168,7 @@ export const questions: Question[] = [
     ],
     correct: 'D',
     explanation:
-      'Controle é comparar o que aconteceu com o que foi planejado e investigar desvios. O planejamento vem antes (orçar), o controle vem depois (comparar realizado × orçado) e alimenta novas decisões. Todas as finalidades — patrimônio, informação, planejamento, controle e decisão — se conectam, mas a comparação com o orçamento é a marca do controle.',
+      'Controle, nos slides, é "o processo pelo qual a alta administração se certifica de que a organização está agindo em conformidade com seus planos e políticas" — exatamente comparar o realizado com o orçado e investigar desvios. O planejamento vem antes ("decidir que curso de ação deverá ser tomado para o futuro") e a decisão é "o conjunto de ações que leva à obtenção dos objetivos definidos pelo planejamento". As três finalidades se conectam, mas a comparação com o orçamento é a marca do controle.',
     reasoningSteps: [
       'Localize a atividade no tempo: antes (planejar), durante/depois (controlar) ou na escolha entre alternativas (decidir).',
       'Comparar realizado com previsto acontece depois do plano.',
@@ -174,7 +177,7 @@ export const questions: Question[] = [
     commonMistake: 'Escolher "planejamento" só porque a palavra "orçamento" aparece no enunciado.',
     rule: 'Planejar é definir o que deve acontecer; controlar é medir o que aconteceu contra o planejado; decidir é escolher entre alternativas com base nessa informação.',
     hint: 'O orçamento já foi feito. O que a gerente está fazendo com ele?',
-    concept: 'Finalidades da Contabilidade: registrar o patrimônio, gerar informação, apoiar o planejamento, o controle e a tomada de decisão.',
+    concept: 'Finalidades da Contabilidade (Aula 1): Planejamento = decidir o curso de ação para o futuro; Controle = certificar-se de que a organização age conforme planos e políticas (comunicação, motivação e verificação); Decisão = ações que levam aos objetivos do planejamento — "o coração desta disciplina".',
     sourceReference: AULA1,
   },
   {
@@ -330,7 +333,7 @@ export const questions: Question[] = [
       {
         id: 'C',
         text: 'Ativo = bens, direitos e obrigações; Passivo = dívidas bancárias; PL = capital social.',
-        whyWrong: 'Obrigações não são Ativo, Passivo não é só dívida bancária (inclui fornecedores, salários, impostos) e PL não é só capital social (inclui reservas e lucros/prejuízos).',
+        whyWrong: 'Obrigações não são Ativo, Passivo não é só dívida bancária (inclui fornecedores, salários, impostos) e PL não é só capital social (inclui reservas, ajustes de avaliação patrimonial e lucros/prejuízos acumulados).',
       },
       {
         id: 'D',
@@ -762,7 +765,7 @@ export const questions: Question[] = [
     commonMistake: 'Classificar Prejuízos Acumulados como Passivo ("é algo negativo") ou Aplicações financeiras como PL.',
     rule: 'Não classifique pela "sensação" (bom/ruim): pergunte se é bem/direito, obrigação com terceiros ou recurso dos proprietários.',
     hint: 'Prejuízo é "negativo", mas é dívida com alguém?',
-    concept: 'O PL é composto por Capital Social, Reservas e Lucros/Prejuízos Acumulados; prejuízos reduzem o PL.',
+    concept: 'O PL é composto por Capital Social, Reservas (de capital e de lucros), Ajustes de Avaliação Patrimonial e Lucros/Prejuízos Acumulados; prejuízos reduzem o PL.',
     sourceReference: AULA2_CLASS,
   },
   {
@@ -855,7 +858,7 @@ export const questions: Question[] = [
     commonMistake: 'Tratar a marca como despesa porque "não é algo físico".',
     rule: 'Não ter forma física não impede algo de ser Ativo: marcas, patentes e softwares adquiridos são Intangível.',
     hint: 'O fato de não ser possível tocar a marca muda o benefício futuro que ela gera?',
-    concept: 'Intangível = bens incorpóreos (marcas, patentes, softwares) que geram benefícios por longo prazo.',
+    concept: 'Intangível = bens incorpóreos (marcas, patentes, softwares e ágio) que geram benefícios por longo prazo.',
     sourceReference: AULA2_CLASS,
   },
   {
@@ -885,7 +888,7 @@ export const questions: Question[] = [
     ],
     correct: { i1: 'bem', i2: 'bem', i3: 'direito', i4: 'direito', i5: 'obrigacao', i6: 'obrigacao', i7: 'bem', i8: 'obrigacao' },
     explanation:
-      'Bens são itens que a empresa possui e usa ou vende (veículo, estoque, imóvel). Direitos são valores a receber de terceiros (duplicatas de clientes, aplicações a resgatar no banco). Obrigações são valores devidos a terceiros (fornecedores, empregados, governo). Bens e direitos formam o Ativo; obrigações formam o Passivo.',
+      'Bens são itens que satisfazem uma necessidade e têm avaliação econômica, tangíveis (veículo, estoque, imóvel) ou intangíveis (marcas, patentes). Direitos, nas palavras dos slides, são valores sobre os quais "exercemos o domínio, mas estão na posse de terceiros" (duplicatas de clientes, aplicações a resgatar no banco). Obrigações são "bens que se encontram sob nossa posse, mas cujo domínio é exercido por terceiros" (fornecedores, empregados, governo). Bens e direitos formam o Ativo; obrigações formam o Passivo.',
     reasoningSteps: [
       'A empresa possui o item fisicamente ou como propriedade? Bem.',
       'A empresa tem algo a receber de alguém? Direito.',
@@ -894,7 +897,7 @@ export const questions: Question[] = [
     commonMistake: 'Classificar Aplicações financeiras como bem por "ser dinheiro", ou Duplicatas a Receber como obrigação por ter a palavra "duplicata".',
     rule: 'Leia o sufixo: "a Receber" indica direito; "a Pagar"/"a Recolher" indica obrigação.',
     hint: 'Uma aplicação é algo que a empresa tem fisicamente ou algo que o banco lhe deve devolver?',
-    concept: 'Bens e direitos compõem o Ativo; obrigações com terceiros compõem o Passivo.',
+    concept: 'Bens e direitos compõem o Ativo; obrigações com terceiros compõem o Passivo. Direito = domínio nosso, posse de terceiros; obrigação = posse nossa, domínio de terceiros.',
     sourceReference: AULA2_CLASS,
   },
   {
@@ -944,7 +947,7 @@ export const questions: Question[] = [
     commonMistake: 'Confundir Duplicatas a Receber com Duplicatas a Pagar pela palavra "duplicata".',
     rule: 'Para distinguir bem de direito, pergunte se o valor depende de alguém pagar à empresa — se sim, é direito.',
     hint: 'Direito = alguém deve à empresa.',
-    concept: 'Direitos são créditos da empresa contra terceiros (clientes, bancos, outros devedores).',
+    concept: 'Direitos são créditos da empresa contra terceiros (clientes, bancos, outros devedores): a empresa exerce o domínio, mas o valor está na posse de outrem.',
     sourceReference: AULA2_CLASS,
   },
   {
@@ -1055,18 +1058,18 @@ export const questions: Question[] = [
     ],
     correct: { i1: 'ac', i2: 'ac', i3: 'ac', i4: 'rlp', i5: 'inv', i6: 'imob', i7: 'intang', i8: 'intang' },
     explanation:
-      'O Ativo Circulante reúne o que se realiza em até 12 meses (caixa, recebíveis de curto prazo, estoques). O Não Circulante se divide em: Realizável a Longo Prazo (direitos a receber após 12 meses), Investimentos (participações permanentes em outras empresas), Imobilizado (bens tangíveis de uso, como máquinas) e Intangível (bens incorpóreos, como marcas e softwares).',
+      'O Ativo Circulante reúne o que se realiza em até 12 meses (caixa e equivalentes, contas a receber, estoques). O Não Circulante se divide em: Realizável a Longo Prazo (créditos e títulos após 12 meses), Investimentos (participações em outras empresas e imóveis não usados na operação), Imobilizado (terrenos, edifícios, máquinas e veículos usados na atividade) e Intangível (marcas, patentes, softwares e ágio). Investimentos, Imobilizado e Intangível "não se destinam à venda".',
     reasoningSteps: [
       'Primeiro decida: vira caixa em até 12 meses? Se sim, Ativo Circulante.',
       'Se não, é direito a receber no longo prazo? RLP.',
-      'É participação em outra empresa? Investimentos.',
-      'É bem físico de uso? Imobilizado. É incorpóreo? Intangível.',
+      'É participação em outra empresa ou imóvel fora da operação? Investimentos.',
+      'É bem físico de uso? Imobilizado. É incorpóreo (marca, patente, software, ágio)? Intangível.',
     ],
     commonMistake: 'Colocar o empréstimo a receber em 3 anos no Ativo Circulante só porque é "dinheiro a receber".',
-    rule: 'Classifique em duas etapas: prazo (até 12 meses → Circulante) e, se Não Circulante, natureza (direito LP, participação, bem tangível ou incorpóreo).',
+    rule: 'Classifique em duas etapas: prazo (até 12 meses → Circulante) e, se Não Circulante, natureza (direito LP, participação/imóvel fora da operação, bem tangível ou incorpóreo).',
     hint: 'Comece pelo prazo; depois pela natureza do item.',
-    concept: 'ANC = Realizável a Longo Prazo, Investimentos, Imobilizado e Intangível.',
-    sourceReference: AULA2_CIRC,
+    concept: 'ANC = Realizável a Longo Prazo, Investimentos (participações e imóveis não operacionais), Imobilizado (bens de uso) e Intangível (marcas, patentes, softwares, ágio).',
+    sourceReference: AULA2_GRUPOS,
   },
   {
     id: 'bp-025',
@@ -1093,7 +1096,7 @@ export const questions: Question[] = [
     ],
     correct: { i1: 'pc', i2: 'pc', i3: 'pc', i4: 'pc', i5: 'pnc', i6: 'pc', i7: 'pnc' },
     explanation:
-      'O critério é o prazo de exigibilidade a partir da data do balanço: obrigações que vencem em até 12 meses são Passivo Circulante; as que vencem depois, Passivo Não Circulante. Um mesmo financiamento pode ser dividido: a parcela que vence em 10 meses vai para o PC, e as parcelas de 2 a 4 anos ficam no PNC.',
+      'O critério é o prazo de exigibilidade a partir da data do balanço: obrigações que vencem em até 12 meses são Passivo Circulante; as que vencem depois, Passivo Não Circulante (chamado nos slides de "Exigível a Longo Prazo"). Um mesmo financiamento pode ser dividido: a parcela que vence em 10 meses vai para o PC, e as parcelas de 2 a 4 anos ficam no PNC.',
     reasoningSteps: [
       'Para cada obrigação, conte o prazo até o vencimento a partir da data do balanço.',
       'Até 12 meses → Passivo Circulante.',
@@ -1103,8 +1106,8 @@ export const questions: Question[] = [
     commonMistake: 'Classificar o financiamento inteiro pelo prazo do contrato ("é de longo prazo"), ignorando a parcela que vence nos próximos 12 meses.',
     rule: 'Classifique pelo vencimento de cada parcela na data do balanço, não pelo nome ou pelo prazo total do contrato.',
     hint: 'O que importa é quando cada valor precisa ser pago.',
-    concept: 'PC = obrigações exigíveis em até 12 meses; PNC = exigíveis após 12 meses.',
-    sourceReference: AULA2_CIRC,
+    concept: 'PC = obrigações exigíveis em até 12 meses; PNC (Exigível a Longo Prazo) = exigíveis após 12 meses.',
+    sourceReference: AULA4_CRIT,
   },
   {
     id: 'bp-026',
@@ -1148,8 +1151,8 @@ export const questions: Question[] = [
     commonMistake: 'Associar Circulante a "barato" ou a "comprado recentemente".',
     rule: 'Circulante × Não Circulante é uma questão de prazo (12 meses a partir do balanço), não de valor, natureza física ou data de compra.',
     hint: 'O critério é de tempo.',
-    concept: 'Ativo e Passivo Circulantes: realização/exigibilidade em até 12 meses.',
-    sourceReference: AULA2_CIRC,
+    concept: 'Ativo e Passivo Circulantes: realização/exigibilidade em até 12 meses (nos slides: "tudo que se transformará em dinheiro, ou será pago, até 1 ano").',
+    sourceReference: AULA4_CRIT,
   },
   {
     id: 'bp-027',
@@ -1211,7 +1214,7 @@ export const questions: Question[] = [
     rule: 'Dívida de longo prazo com parcelas no próximo ano é dividida: a parte que vence em até 12 meses vai para o PC; o restante fica no PNC.',
     hint: 'Quantas parcelas vencem nos próximos 12 meses?',
     concept: 'A exigibilidade é avaliada por parcela, e não pelo prazo total do contrato.',
-    sourceReference: AULA2_CIRC,
+    sourceReference: AULA4_CRIT,
   },
   {
     id: 'bp-028',
@@ -1235,7 +1238,7 @@ export const questions: Question[] = [
     rule: 'Sempre olhe o prazo de cada item na data do balanço; o nome da conta não decide o grupo.',
     hint: 'Em quanto tempo esse direito vira caixa?',
     concept: 'Realizável a Longo Prazo = direitos que se convertem em caixa após 12 meses.',
-    sourceReference: AULA2_CIRC,
+    sourceReference: AULA4_CRIT,
   },
   {
     id: 'bp-029',
@@ -1294,7 +1297,7 @@ export const questions: Question[] = [
         'Liquidez é a velocidade (ou facilidade) com que um ativo se converte em caixa: Caixa é o mais líquido, depois recebíveis, estoques e, por fim, imobilizado e intangível. Exigibilidade é o prazo em que uma obrigação precisa ser paga: quanto mais cedo vence, mais exigível. O Ativo é apresentado em ordem decrescente de liquidez e o Passivo em ordem decrescente de exigibilidade — por isso Circulante vem antes de Não Circulante nos dois lados.',
     },
     explanation:
-      'Os dois conceitos tratam de tempo, mas de lados diferentes: liquidez olha para os ativos (quanto tempo para virar caixa) e exigibilidade para as obrigações (quanto tempo até ter de pagar). Essa lógica explica a ordem das contas no BP e a divisão entre Circulante e Não Circulante.',
+      'Os dois conceitos tratam de tempo, mas de lados diferentes: liquidez olha para os ativos ("do que vira dinheiro mais rápido para o mais lento") e exigibilidade para as obrigações ("do que vence primeiro para o que vence depois"). Essa lógica explica a ordem das contas no BP e a divisão entre Circulante e Não Circulante.',
     reasoningSteps: [
       'Associe liquidez ao Ativo e à conversão em caixa.',
       'Associe exigibilidade ao Passivo e ao prazo de pagamento.',
@@ -1324,7 +1327,7 @@ export const questions: Question[] = [
       { id: 'o5', label: 'Imobilizado' },
     ],
     explanation:
-      'O Ativo é ordenado por liquidez decrescente. Caixa já é dinheiro. Duplicatas a Receber viram caixa quando o cliente paga. Estoques precisam primeiro ser vendidos e, depois, recebidos. O Realizável a Longo Prazo só vira caixa após 12 meses, e o Imobilizado não se destina à venda — é usado na operação.',
+      'O Ativo é ordenado por liquidez decrescente: "do que vira dinheiro mais rápido para o mais lento". Caixa já é dinheiro. Duplicatas a Receber viram caixa quando o cliente paga. Estoques precisam primeiro ser vendidos e, depois, recebidos. O Realizável a Longo Prazo só vira caixa após 12 meses, e o Imobilizado não se destina à venda — é usado na operação (grau de liquidez: rápida no circulante, lenta no RLP, inexistente nos bens de uso).',
     reasoningSteps: [
       'Pergunte, para cada item, quantos passos faltam para virar caixa.',
       'Caixa: zero passos; Duplicatas: receber; Estoques: vender e receber.',
@@ -1348,7 +1351,7 @@ export const questions: Question[] = [
     stem: 'Julgue: "No Passivo, as obrigações são apresentadas em ordem de exigibilidade: as que vencem primeiro aparecem primeiro."',
     correct: true,
     explanation:
-      'O Passivo segue a exigibilidade, isto é, o prazo de pagamento. Por isso o Passivo Circulante (vence em até 12 meses) vem antes do Passivo Não Circulante. O Ativo, por sua vez, segue a liquidez.',
+      'O Passivo segue a exigibilidade, isto é, o prazo de pagamento: "do que vence primeiro para o que vence depois". Por isso o Passivo Circulante (vence em até 12 meses) vem antes do Passivo Não Circulante (Exigível a Longo Prazo), e o PL fica por último — "não vai ser pago, não é obrigação exigível". O Ativo, por sua vez, segue a liquidez.',
     reasoningSteps: [
       'Associe o Passivo ao conceito de exigibilidade.',
       'Exigibilidade = prazo de pagamento.',
@@ -1397,16 +1400,16 @@ export const questions: Question[] = [
     ],
     correct: 'C',
     explanation:
-      'O PL é formado por Capital Social, Reservas e Lucros ou Prejuízos Acumulados. Duplicatas a Receber são um direito da empresa contra clientes — portanto, Ativo.',
+      'O PL é formado por Capital Social, Reservas (de capital e de lucros), Ajustes de Avaliação Patrimonial e Lucros ou Prejuízos Acumulados — "a riqueza dos sócios". Duplicatas a Receber são um direito da empresa contra clientes — portanto, Ativo.',
     reasoningSteps: [
-      'Lembre os componentes do PL: Capital Social, Reservas, Lucros/Prejuízos.',
+      'Lembre os componentes do PL: Capital Social, Reservas, Ajustes de Avaliação Patrimonial, Lucros/Prejuízos Acumulados.',
       'Verifique se alguma alternativa é bem, direito ou obrigação.',
       'Direito a receber → Ativo, não PL.',
     ],
     commonMistake: 'Excluir Prejuízos Acumulados do PL por achar que "prejuízo é dívida".',
     rule: 'PL contém apenas o que pertence aos proprietários: capital aportado e resultados acumulados/reservados (positivos ou negativos).',
     hint: 'Uma das contas representa algo que clientes devem à empresa.',
-    concept: 'PL = Capital Social + Reservas ± Lucros/Prejuízos Acumulados.',
+    concept: 'PL = Capital Social + Reservas (de capital e de lucros) ± Ajustes de Avaliação Patrimonial ± Lucros/Prejuízos Acumulados.',
     sourceReference: AULA2_PL,
   },
   {
@@ -1480,8 +1483,8 @@ export const questions: Question[] = [
     commonMistake: 'Achar que qualquer entrada de dinheiro (como um empréstimo) aumenta o PL.',
     rule: 'Antes de mexer no PL, verifique se o fato é aporte/retirada dos sócios ou resultado; caso contrário, o PL fica igual.',
     hint: 'O PL tem apenas duas fontes de alteração.',
-    concept: 'Fontes de alteração do PL: aportes dos sócios e resultado (lucro ou prejuízo).',
-    sourceReference: AULA2_PL,
+    concept: 'Fontes de alteração do PL: investimento de capital pelos sócios e resultado do confronto entre receitas e despesas. Receita = entrada de elementos para o ativo (dinheiro ou direitos a receber) → aumenta o PL; despesa = consumo de bens ou serviços que ajuda a produzir receita, diminuindo o ativo ou aumentando o passivo → diminui o PL.',
+    sourceReference: AULA4_PL,
   },
   {
     id: 'bp-035',
@@ -1518,8 +1521,8 @@ export const questions: Question[] = [
     rule: 'PL final = PL inicial + aportes − retiradas + lucro (ou − prejuízo).',
     formula: 'PL final = PL inicial + Aportes ± Resultado',
     hint: 'Prejuízo tem sinal negativo no PL.',
-    concept: 'Resultado e aportes são as duas fontes de variação do PL.',
-    sourceReference: AULA2_PL,
+    concept: 'Resultado (Receita > Despesa = lucro; Receita < Despesa = prejuízo) e aportes de capital são as duas fontes de variação do PL.',
+    sourceReference: AULA4_PL,
   },
   {
     id: 'bp-036',
@@ -1643,5 +1646,68 @@ export const questions: Question[] = [
     hint: 'Onde estão os R$ 150 mil de lucros retidos agora?',
     concept: 'O PL é fonte de financiamento do Ativo; o dinheiro disponível é só o saldo de Caixa.',
     sourceReference: AULA2_PL,
+  },
+  {
+    id: 'bp-038',
+    topic: 'bp',
+    subtopic: 'Estados patrimoniais',
+    skill: 'bp-estados-patrimoniais',
+    dataSource: 'conceitual',
+    difficulty: 'medium',
+    cognitiveLevel: 'interpretation',
+    type: 'multiple-choice',
+    stem:
+      'Em 31/12, uma empresa apresenta Ativo de R$ 60 mil e Passivo (obrigações com terceiros) de R$ 100 mil. Pelos "estados patrimoniais" vistos em aula, como se descreve essa situação?',
+    options: [
+      {
+        id: 'A',
+        text: 'Situação normal: o PL é de R$ 40 mil, pois PL = Passivo − Ativo.',
+        whyWrong: 'Inverteu a equação. PL = Ativo − Passivo = 60 − 100 = −40: o PL é negativo, não positivo.',
+      },
+      {
+        id: 'B',
+        text: 'O balanço está errado, pois o Passivo nunca pode ser maior que o Ativo.',
+        whyWrong: 'Pode, sim. Quando prejuízos acumulados consomem o capital, o Passivo supera o Ativo e o PL fica negativo; a equação continua fechando com PL = −40.',
+      },
+      {
+        id: 'C',
+        text: 'Passivo a descoberto: o PL é negativo, PL = −40 (R$ mil), pois os prejuízos acumulados consumiram o capital — situação típica de empresas em recuperação judicial.',
+      },
+      {
+        id: 'D',
+        text: 'Situação de equilíbrio: terceiros financiam 100% do Ativo e o PL é zero.',
+        whyWrong: 'PL = 0 ocorre quando Ativo = Passivo (a "fronteira entre a saúde e o desequilíbrio"). Aqui o Passivo é maior que o Ativo, então o PL é negativo.',
+      },
+      {
+        id: 'E',
+        text: 'Situação-limite teórica: só restam dívidas, pois o Ativo é zero.',
+        whyWrong: 'O Ativo não é zero (R$ 60 mil). O estado "Ativo = 0, PL = −Passivo" é outro dos cinco estados, mais extremo que este.',
+      },
+    ],
+    correct: 'C',
+    calc: { fn: 'subtrai', args: [60, 100] },
+    solution: {
+      formula: 'PL = Ativo − Passivo',
+      substitution: 'PL = 60 − 100',
+      computation: '60 − 100 = −40',
+      result: 'PL = −R$ 40 mil (passivo a descoberto)',
+      unit: 'R$ mil',
+      interpretation: 'Ativo 60 = Passivo 100 + PL (−40): a equação fecha, mas a riqueza dos sócios é negativa — as dívidas superam tudo o que a empresa tem.',
+    },
+    balanceCheck: [{ label: 'Passivo a descoberto', ativo: 60, passivo: 100, pl: -40 }],
+    explanation:
+      'Os slides apresentam cinco estados patrimoniais: (1) Ativo > Passivo, PL positivo; (2) Passivo = 0, Ativo = PL; (3) Ativo = Passivo, PL = 0, terceiros financiam 100% do ativo; (4) Passivo > Ativo, PL negativo — o "passivo a descoberto", em que prejuízos acumulados consumiram o capital, típico de empresas em recuperação judicial; (5) Ativo = 0, PL = −Passivo (situação-limite teórica). Com Ativo 60 e Passivo 100, PL = −40: estado 4.',
+    reasoningSteps: [
+      'Calcule o PL pela equação: PL = Ativo − Passivo.',
+      'Leia o sinal: positivo (riqueza própria), zero (fronteira) ou negativo (passivo a descoberto).',
+      'Confira que a equação continua fechando mesmo com PL negativo: 60 = 100 + (−40).',
+      'Associe ao estado patrimonial correspondente e à sua leitura (prejuízos consumiram o capital).',
+    ],
+    commonMistake: 'Achar que PL negativo é impossível ou "erro de balanço", ou confundir Passivo > Ativo (PL negativo) com Ativo = Passivo (PL zero).',
+    rule: 'PL = Ativo − Passivo: se der negativo, é passivo a descoberto — a equação fecha, mas os sócios já não têm riqueza própria na empresa.',
+    formula: 'Ativo = Passivo + PL',
+    hint: 'Qual é o sinal de Ativo − Passivo?',
+    concept: 'Passivo a descoberto = Passivo maior que o Ativo, com PL negativo; prejuízos acumulados consumiram o capital investido pelos sócios.',
+    sourceReference: 'Aula 2 — Os cinco estados patrimoniais; passivo a descoberto (slides)',
   },
 ];

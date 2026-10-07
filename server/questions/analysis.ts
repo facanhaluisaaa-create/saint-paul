@@ -8,10 +8,11 @@ import type { Question, DataTable } from '../../shared/types';
 // ---------------------------------------------------------------------------
 
 const NOTE = 'Valores em R$ mil';
-const REF_AV = 'Aula 5 — Análise Vertical (resumo da P1)';
-const REF_AH = 'Aula 5 — Análise Horizontal (resumo da P1)';
-const REF_MG = 'Aula 5 — Margens Bruta, Operacional e Líquida (resumo da P1)';
-const REF_LC = 'Aula 5 — Liquidez Corrente (resumo da P1)';
+const REF_AV = 'Aula 4 — Como se analisa uma DRE / BP: A.V. = cada linha ÷ base (Caso Renner) (slides)';
+const REF_AH = 'Aula 4 — Como se analisa uma DRE / BP: A.H. = variação de cada linha entre os anos, convenção |Atual| ÷ |Anterior| − 1 da planilha (slides)';
+const REF_MG = 'Aula 4 — Margens Bruta, Operacional e Líquida: "margem melhora quando a linha de baixo cresce mais devagar que a receita" (slides)';
+const REF_LC = 'Aula 5 — Liquidez Corrente = AC ÷ PC; regra de bolso e leitura da composição (slides)';
+const F_AH = 'A.H. = |Atual| ÷ |Anterior| − 1 (× 100) — equivale a (Atual − Anterior) ÷ Anterior para valores positivos';
 
 const CTX_JAC = 'CASO FICTÍCIO PARA ESTUDO — Rede Jacarandá Supermercados S.A. (varejo alimentar: margem baixa, giro alto)';
 const CTX_SERRA = 'CASO FICTÍCIO PARA ESTUDO — Metalúrgica Serra Azul S.A. (indústria de autopeças, intensiva em máquinas)';
@@ -382,7 +383,7 @@ export const questions: Question[] = [
         points: 3,
         calc: { fn: 'analiseHorizontal', args: [1000, 900] },
         solution: {
-          formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+          formula: F_AH,
           substitution: '(1.000 − 900) / 900 × 100',
           computation: '100 / 900 = 0,1111 → 11,11',
           result: '+11,11%',
@@ -414,7 +415,7 @@ export const questions: Question[] = [
     ],
     commonMistake: 'Concluir que a conta "diminuiu" porque a A.V. caiu.',
     rule: 'A.V. mede peso na estrutura; A.H. mede crescimento no tempo — sempre combine as duas antes de concluir.',
-    formula: 'A.V. = Conta / Base × 100; A.H. = (Atual − Anterior) / Anterior × 100',
+    formula: `A.V. = Conta / Base × 100; ${F_AH}`,
     hint: 'Quanto cresceu o Ativo Total no mesmo período?',
     concept: 'A participação de uma conta é uma razão: ela muda quando a conta muda, mas também quando a base muda.',
     sourceReference: REF_AV,
@@ -579,7 +580,7 @@ export const questions: Question[] = [
     decimals: 1,
     calc: { fn: 'analiseHorizontal', args: [12000, 10000] },
     solution: {
-      formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+      formula: F_AH,
       substitution: '(12.000 − 10.000) / 10.000 × 100',
       computation: '2.000 / 10.000 = 0,20 → × 100 = 20,0',
       result: '+20,0%',
@@ -596,7 +597,7 @@ export const questions: Question[] = [
     ],
     commonMistake: 'Dividir pelo valor atual (2.000 / 12.000 = 16,7%).',
     rule: 'Na A.H., a base é sempre o período anterior.',
-    formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+    formula: F_AH,
     hint: 'De onde a receita partiu?',
     concept: 'A A.H. mede a evolução de uma conta ao longo do tempo, em percentual sobre o valor de partida.',
     sourceReference: REF_AH,
@@ -619,7 +620,7 @@ export const questions: Question[] = [
     decimals: 1,
     calc: { fn: 'analiseHorizontal', args: [300, 400] },
     solution: {
-      formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+      formula: F_AH,
       substitution: '(300 − 400) / 400 × 100',
       computation: '−100 / 400 = −0,25 → × 100 = −25,0',
       result: '−25,0%',
@@ -636,7 +637,7 @@ export const questions: Question[] = [
     ],
     commonMistake: 'Escrever +25% (esquecer o sinal) ou dividir pelo atual (−100 / 300 = −33,3%).',
     rule: 'Quedas aparecem com sinal negativo na A.H.; sempre faça (atual − anterior), nunca o contrário.',
-    formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+    formula: F_AH,
     hint: 'O caixa aumentou ou diminuiu?',
     concept: 'O sinal da A.H. indica a direção do movimento: positivo = cresceu; negativo = caiu.',
     sourceReference: REF_AH,
@@ -663,7 +664,7 @@ export const questions: Question[] = [
     correct: 'D',
     calc: { fn: 'analiseHorizontal', args: [630, 640] },
     solution: {
-      formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+      formula: F_AH,
       substitution: '(630 − 640) / 640 × 100',
       computation: '−10 / 640 = −0,015625 → × 100 = −1,5625',
       result: '−1,56%',
@@ -680,7 +681,7 @@ export const questions: Question[] = [
     ],
     commonMistake: 'Dividir pelo atual ou esquecer o sinal negativo.',
     rule: 'A.H. = (atual − anterior) / anterior: o sinal vem da subtração e a base é sempre o passado.',
-    formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+    formula: F_AH,
     hint: 'O lucro de X2 é maior ou menor que o de X1?',
     concept: 'A A.H. mede a evolução percentual de um valor; variações de percentuais (como margens) são expressas em pontos percentuais.',
     sourceReference: REF_AH,
@@ -697,7 +698,7 @@ export const questions: Question[] = [
     stem: 'Julgue: "Na Análise Horizontal, se uma conta passou de R$ 400 mil para R$ 300 mil, a variação deve ser apresentada como −25%, pois a base de comparação é o valor anterior."',
     correct: true,
     explanation:
-      'A A.H. é (300 − 400) / 400 × 100 = −25%. A base é o valor anterior (400), e o sinal negativo indica queda. Se a base fosse o atual (300), o resultado seria −33,3%, o que distorce a leitura.',
+      'A A.H. é 300 / 400 − 1 = −25% (para valores positivos, o mesmo que (300 − 400) / 400). A base é o valor anterior (400), e o sinal negativo indica queda. Se a base fosse o atual (300), o resultado seria −33,3%, o que distorce a leitura.',
     reasoningSteps: [
       'Faça atual − anterior: 300 − 400 = −100.',
       'Divida pelo anterior: −100 / 400 = −0,25.',
@@ -767,7 +768,7 @@ export const questions: Question[] = [
         points: 3,
         calc: { fn: 'analiseHorizontal', args: [9000, 8000] },
         solution: {
-          formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
+          formula: F_AH,
           substitution: '(9.000 − 8.000) / 8.000 × 100',
           computation: '1.000 / 8.000 = 0,125 → 12,5',
           result: '+12,5%',
@@ -778,19 +779,19 @@ export const questions: Question[] = [
       {
         id: 'b',
         kind: 'numeric',
-        prompt: 'A.H. do Custo dos Produtos Vendidos (%, 2 casas decimais).',
+        prompt: 'A.H. do Custo dos Produtos Vendidos (%, 2 casas decimais). Siga a convenção da planilha da disciplina: a A.H. de uma linha negativa mede a variação do VALOR da linha.',
         correct: 17.69,
         unit: 'percent',
         decimals: 2,
         points: 3,
         calc: { fn: 'analiseHorizontal', args: [6120, 5200] },
         solution: {
-          formula: 'A.H. = (Atual − Anterior) / Anterior × 100',
-          substitution: '(6.120 − 5.200) / 5.200 × 100',
-          computation: '920 / 5.200 = 0,1769 → 17,69',
+          formula: F_AH,
+          substitution: '|6.120| / |5.200| − 1 (o CPV aparece como (5.200) e (6.120) na DRE, mas a A.H. usa os módulos)',
+          computation: '6.120 / 5.200 = 1,1769 → 1,1769 − 1 = 0,1769 → 17,69',
           result: '+17,69%',
           unit: '% de variação',
-          interpretation: 'O custo dos produtos vendidos cresceu 17,69%, acima da receita.',
+          interpretation: 'O custo dos produtos vendidos cresceu 17,69%, acima da receita. A.H. positiva numa linha de custo significa que o custo aumentou (pior para a margem); se tivesse caído, a A.H. seria negativa, como o CPV da Ambev (−1,72%).',
         },
       },
       {
@@ -816,8 +817,8 @@ export const questions: Question[] = [
       'Evite subtrair A.H.s para obter margens.',
     ],
     commonMistake: 'Comemorar o crescimento da receita sem comparar com o crescimento do custo.',
-    rule: 'Compare a A.H. da receita com a A.H. dos custos e despesas: se o custo cresce mais rápido, a margem encolhe.',
-    formula: 'A.H. = (Atual − Anterior) / Anterior × 100; MB = LB / RL',
+    rule: 'Compare a A.H. da receita com a A.H. dos custos e despesas: a margem melhora quando a linha de baixo cresce mais devagar que a receita — e encolhe quando cresce mais rápido.',
+    formula: `${F_AH}; MB = LB / RL`,
     hint: 'O que cresceu mais rápido: a receita ou o custo?',
     concept: 'A A.H. de linhas da DRE, lida em conjunto, mostra se o crescimento é acompanhado de ganho ou perda de margem.',
     sourceReference: REF_AH,
@@ -888,7 +889,7 @@ export const questions: Question[] = [
         { description: 'Indica o valor atual como base da A.H.', patterns: ['dividido pelo atual', 'base e o valor atual', 'base e o atual'], penalty: 2 },
       ],
       modelAnswer:
-        'A Análise Vertical responde "quanto essa conta representa dentro da estrutura?": divide a conta pelo total do mesmo período (Ativo Total, Passivo + PL Total ou Receita Líquida na DRE). A Análise Horizontal responde "quanto essa conta cresceu ou caiu?": (atual − anterior) / anterior × 100, sempre com o período anterior como base e mantendo o sinal. Usadas em conjunto, mostram se uma variação é relevante: uma conta pequena pode ter A.H. enorme sem mudar a estrutura, e uma conta pode crescer em valor e ainda assim perder participação (A.V.) se o total cresceu mais.',
+        'A Análise Vertical responde "quanto essa conta representa dentro da estrutura?": divide a conta pelo total do mesmo período (Ativo Total, Passivo + PL Total ou Receita Líquida na DRE). A Análise Horizontal responde "quanto essa conta cresceu ou caiu?": na convenção da planilha, |atual| / |anterior| − 1 (× 100), sempre com o período anterior como base — para valores positivos é o mesmo que (atual − anterior) / anterior; para linhas negativas (custos, despesas) mede a variação do valor da linha, e, se o sinal muda, a A.H. é "n.m.". Usadas em conjunto, mostram se uma variação é relevante: uma conta pequena pode ter A.H. enorme sem mudar a estrutura, e uma conta pode crescer em valor e ainda assim perder participação (A.V.) se o total cresceu mais.',
     },
     explanation:
       'A.V. e A.H. são complementares: a primeira é um corte "no mesmo ano" (estrutura), a segunda uma comparação "entre anos" (evolução). A leitura conjunta evita superestimar variações em contas pequenas e esclarece mudanças de participação.',
@@ -1481,7 +1482,7 @@ export const questions: Question[] = [
       'Considere a natureza do negócio e a velocidade de giro.',
     ],
     commonMistake: 'Tratar LC < 1 como prova de insolvência.',
-    rule: 'Nunca conclua sobre solvência só pela LC: olhe caixa, recebíveis, estoques, natureza do negócio, giro e composição do PC.',
+    rule: 'Nunca leia a LC sozinha: caixa e recebíveis valem mais que estoque, um dividendo declarado incha o PC sem ser dívida nova e giro rápido convive bem com índice < 1.',
     hint: 'A regra didática fala em "atenção" ou em "falência"?',
     concept: 'A LC é um termômetro de folga de curto prazo; sua leitura depende do contexto do negócio.',
     sourceReference: REF_LC,
@@ -1687,9 +1688,9 @@ export const questions: Question[] = [
         },
         {
           id: 'c3',
-          description: 'Lista fatores a investigar: caixa, recebíveis, estoques, giro, composição do PC (fornecedores × empréstimos).',
+          description: 'Lista fatores a investigar: caixa, recebíveis, estoques, giro, composição do PC (fornecedores × empréstimos; dividendo declarado incha o PC sem ser dívida nova).',
           points: 3,
-          keywords: [['caixa', 'estoque'], ['receb', 'estoque'], ['giro'], ['composicao', 'passivo'], ['fornecedor']],
+          keywords: [['caixa', 'estoque'], ['receb', 'estoque'], ['giro'], ['composicao', 'passivo'], ['fornecedor'], ['dividendo']],
         },
         {
           id: 'c4',
@@ -1706,7 +1707,7 @@ export const questions: Question[] = [
         'Não necessariamente. LC = 0,85 significa que existem aproximadamente R$ 0,85 de Ativos Circulantes para cada R$ 1 de obrigação de curto prazo; pela regra didática (> 1 folga, = 1 limite, < 1 atenção), é um sinal de atenção, não de falência. O índice não deve ser analisado isoladamente: é preciso ver quanto do AC é caixa e recebíveis de curto prazo, se os estoques giram rápido ou estão encalhados, e do que é feito o PC (fornecedores que se renovam com o giro ou empréstimos bancários vencendo). Em um supermercado que vende à vista, gira estoques rapidamente e paga fornecedores a prazo, uma LC abaixo de 1 pode ser estrutural e sustentável. Preocupa quando o PC está concentrado em empréstimos vencendo, o caixa vem caindo, os estoques estão parados ou o índice mostra tendência de piora em relação a anos anteriores e a pares do setor.',
     },
     explanation:
-      'A regra didática (> 1 folga, = 1 limite, < 1 atenção) é um ponto de partida. A conclusão depende do caixa, dos recebíveis, dos estoques, da natureza do negócio, do giro e da composição do PC, além da comparação com o histórico e com pares.',
+      'A regra de bolso (> 1 folga, = 1 limite, < 1 atenção) é um ponto de partida; "nunca leia o número sozinho". A conclusão depende do que compõe numerador e denominador e do que mudou de um ano para o outro: caixa e recebíveis valem mais que estoque; um dividendo declarado incha o PC sem ser dívida nova; giro rápido convive bem com índice < 1. Compare também com o histórico e com pares.',
     reasoningSteps: [
       'Traduza o índice: R$ 0,85 de AC por R$ 1 de PC.',
       'Aplique a regra didática (atenção), sem decretar falência.',

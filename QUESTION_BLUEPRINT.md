@@ -1,78 +1,58 @@
 # QUESTION_BLUEPRINT — Banco de questões da P1
 
+Construído a partir dos materiais reais da disciplina (ver `CONTENT_MAP.md`). Duas camadas:
+
+1. **Formato da prova (roteiro em 3 partes):** 12 perguntas discursivas por caso, com consulta ao anexo das DFs, rubrica de 10 pontos e a regra "resposta sem número vale no máximo metade". Casos: Ambev (real, as 12 perguntas originais), Renner (real), dois fictícios (varejo e indústria).
+2. **Treino de competências:** questões objetivas, numéricas, de classificação, débito/crédito, ordenação, multipartes e discursivas curtas sobre todo o conteúdo das Aulas 1–5, incluindo os exercícios dos slides.
+
 ## Metas globais
 
 | Dimensão | Meta |
 |---|---|
-| Total | ≥ 160 questões, sem "clones" que só trocam números (entregue: 217) |
-| Nível cognitivo | Reconhecer 30% · Calcular 25% · Interpretar 30% · Analisar/Decidir 15% |
+| Nível cognitivo (treino) | Reconhecer 30% · Calcular 25% · Interpretar 30% · Analisar/Decidir 15% |
 | Dificuldade | Fácil 25% · Média 50% · Difícil 25% |
-| Origem | Conceitual · Fictícia (marcada **CASO FICTÍCIO PARA ESTUDO**) · Real Ambev (DFP 2025 × 2024) |
+| Origem | Conceitual (slides) · Exercício da disciplina · Fictício (marcado) · Real Ambev · Real Renner |
 
-## Quantidade por tema (arquivo → temas)
+## Arquivos e cobertura
 
-| Arquivo | Tema | Qtde | Formatos principais | Habilidades |
-|---|---|---|---|---|
-| `balance-sheet.ts` | fundamentos | 7 | ME, V/F, discursiva curta | BP × DRE × DFC; usuários; finalidade |
-| | bp | 7 | ME, numérica, V/F | Equação patrimonial; descobrir PL/Passivo |
-| | classificacao | 9 | classificação, ME, V/F | Bens, direitos, obrigações, PL |
-| | circulante | 8 | classificação, ME, V/F | 12 meses; liquidez × exigibilidade; grupos do ANC |
-| | pl | 6 | ME, V/F, discursiva | Aportes × resultado; PL ≠ caixa |
-| `debit-credit.ts` | debito-credito | 15 | débito/crédito, ME, V/F | Natureza da conta; partidas dobradas; 1×n |
-| | razonetes | 7 | numérica, ME | Saldo devedor/credor; sequência de fatos |
-| | balancete | 6 | ME, V/F, numérica | Igualdade; limites do balancete |
-| `dre.ts` | dre | 10 | ordenação, numérica, ME | Estrutura; subtotais |
-| | custo-despesa | 7 | classificação, ME, discursiva | "Gruda no produto?" |
-| | competencia-caixa | 9 | ME, V/F, discursiva, numérica | Lucro ≠ caixa; 3 exemplos obrigatórios |
-| | resultado-financeiro | 5 | ME, discursiva analítica | Operação × financeiro |
-| | equivalencia | 3 | ME, numérica | Participações; impacto no resultado |
-| | mc-pe | 5 | numérica, ME | MCu; PE; exemplo da água |
-| `analysis.ts` | av | 8 | numérica, ME, multipartes | Bases corretas; leitura |
-| | ah | 8 | numérica, ME, V/F | Sinal; base anterior; A.V. × A.H. |
-| | margens | 10 | numérica, ME, multipartes | MB/MO/ML; interpretação "a cada R$ 100" |
-| | liquidez | 9 | numérica, ME, V/F, discursiva | AC/PC; leitura não isolada |
-| `dupont.ts` | roe | 7 | numérica, ME, V/F | LL/PL; comparação |
-| | giro | 5 | numérica, ME | Receita/Ativo; varejo × capital intensivo |
-| | alavancagem | 6 | numérica, ME, V/F | Ativo/PL; risco |
-| | dupont | 10 | ME, multipartes, discursiva | Decomposição; comparação entre anos |
-| | estrategia | 6 | discursiva analítica, ME | Decisão integrada BP + DRE |
-| `ambev.ts` | vários (caseTag `ambev`) | 22 | todas | A.V., A.H., LC, margens, RF, ROE, DuPont, riscos, ações |
+| Arquivo | Fonte principal | O que cobre |
+|---|---|---|
+| `aulas.ts` | Slides das Aulas 1–4 e Atividade da Aula 4 | Definições e finalidades da contabilidade, usuários, B/D/O, Alfenas, Cia. Simétrica, Comercial Bahia, 5 estados patrimoniais, exemplo da Aula 3, Remendão, variações do PL, Padaria São Jorge, Pedal Forte, Camisetas Aurora, competência (Ex. 2), V/F (Ex. 5), CPC 51 |
+| `balance-sheet.ts` | Aulas 1, 2 e 4 | Fundamentos, equação patrimonial, classificação, circulante × não circulante, PL |
+| `debit-credit.ts` | Aula 3 | Natureza das contas, partidas dobradas, razonetes, balancete |
+| `dre.ts` | Aula 4 | Degraus da DRE, custo × despesa, competência × caixa, resultado financeiro (+ EP e MC/PE sinalizados) |
+| `analysis.ts` | Aulas 4 e 5 | A.V., A.H. (convenção da planilha), margens, liquidez — casos fictícios |
+| `dupont.ts` | Aula 5 | ROE, giro, alavancagem, DuPont, estratégia — casos fictícios |
+| `recognition.ts` | Aulas 4 e 5 | Reconhecimento de fórmulas e perguntas-chave |
+| `ambev.ts` | Planilha + Caso Ambev + Atividade Ex. 4 | Treino com dados reais e as 12 perguntas do roteiro |
+| `renner.ts` | Slides da Aula 4 e Aula 5 | Treino com dados reais da Renner, roteiro da Renner e conceitos da Aula 5 (barraca de praia, liquidez, DuPont) |
+| `roteiro-ficticio.ts` | Formato da prova | Dois casos fictícios completos com 12 perguntas cada e treino objetivo |
 
 ## Formatos e regras de qualidade
 
-- **Múltipla escolha:** 4–5 alternativas. Cada distrator representa um erro real e traz `whyWrong` (ex.: "usou Passivo Total", "leu 0,18 como 0,18%", "dividiu pelo Ativo").
-- **Numérica:** traz `calc` (função da biblioteca `shared/finance.ts` + argumentos), recalculado pelo validador, e `solution` com fórmula → substituição → conta → resultado → unidade → interpretação. Aceita 18 / 18% / 0,18 quando equivalentes; tolerância padrão de 0,1 p.p. (percentual) ou 0,01 (índice).
-- **Discursiva:** rubrica de 10 pontos com critérios, palavras-chave (grupos de sinônimos), erros graves e resposta-modelo.
-- **Débito/crédito:** contas envolvidas no fato; o aluno marca D ou C em cada uma; pontuação parcial.
-- **Ordenação:** linhas da DRE embaralhadas.
-- **Multipartes:** cálculo + interpretação, com pontuação parcial.
-- Toda questão tem `reasoningSteps` (COMO PENSAR), `commonMistake` (PEGADINHA), `rule` (REGRA TRANSFERÍVEL) e `sourceReference`.
-- Julgamentos sempre condicionados à comparação (período anterior, pares, custo de capital), nunca "ROE de 18% é ótimo".
+- **Múltipla escolha:** 4–5 alternativas, cada distrator com `whyWrong` (erro real: base errada, escala 0,18 × 0,18%, A.V. × A.H., Passivo Total × PC, Ativo no lugar de PL).
+- **Numérica:** `calc` recalculado pelo validador; `solution` com fórmula → substituição → conta → resultado → unidade → interpretação; aceita 18 / 18% / 0,18.
+- **Discursiva:** rubrica de 10 pontos; nas de roteiro, `requireNumbers: true` e critérios com os números esperados.
+- **Débito/crédito, classificação, ordenação, multipartes:** pontuação parcial.
+- Toda questão: `reasoningSteps`, `commonMistake`, `rule`, `sourceReference` (aula e slide).
+- Julgamentos sempre por comparação (ano anterior, pares, custo de capital).
+- **A.H. = |atual| ÷ |anterior| − 1** (planilha); sinal mudou → n.m.
 
-## Distribuição do "Simular P1" (25 questões; proporcional para outros tamanhos)
+## Distribuição da prova mista (25 questões)
 
 | Grupo | Questões |
 |---|---|
 | Fundamentos/BP | 3 |
-| Débito/crédito/razonetes/balancete | 4 |
+| Débito/crédito/razonetes/balancete | 3 |
 | DRE/custo × despesa/competência | 4 |
-| A.V./A.H. | 3 |
+| A.V./A.H. | 4 |
 | Margens | 3 |
 | Liquidez | 2 |
 | ROE/Giro/Alavancagem/DuPont | 4 |
-| Estratégia/RF/EP/MC-PE | 2 |
+| Estratégia/resultado financeiro | 2 |
 
-Restrições do sorteio: ≈ 25/50/25 de dificuldade; pelo menos 1 questão de cada nível cognitivo por grupo grande; no máximo 3 discursivas em 25; questões vistas recentemente têm peso menor; temas fracos e habilidades já erradas têm peso maior.
+Fora da prova mista: questões do roteiro (só no modo roteiro) e os temas MC/PE e equivalência (não localizados nos slides).
 
-## Banco entregue (saída de `npm run validate`)
+## Banco entregue
 
-217 questões · 0 erros · 74 cálculos recalculados · 53 balanços conferidos.
-
-| Dimensão | Resultado | Meta |
-|---|---|---|
-| Fácil / Média / Difícil | 27% / 50% / 24% | 25 / 50 / 25 |
-| Reconhecer / Calcular / Interpretar / Analisar | 29% / 23% / 29% / 20% | 30 / 25 / 30 / 15 |
-| Origem | conceitual 102 · fictício 91 · real Ambev 24 | — |
-| Tipos | ME 70 · V/F 47 · numérica 36 · multipartes 19 · débito/crédito 12 · classificação 11 · discursiva 10 · curta 8 · ordenação 4 | — |
-
-Por tema: débito/crédito 15 · margens 15 · DuPont 15 · A.V. 14 · A.H. 14 · liquidez 14 · DRE 11 · classificação 9 · competência 10 · ROE 9 · alavancagem 8 · custo × despesa 8 · resultado financeiro 9 · estratégia 8 · circulante 8 · fundamentos 7 · BP 7 · razonetes 7 · giro 7 · PL 6 · balancete 6 · MC/PE 6 · equivalência 4.
+(preenchido pela saída de `npm run validate` — ver abaixo)

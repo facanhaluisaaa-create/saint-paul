@@ -6,8 +6,21 @@ export function analiseVertical(conta: number, base: number): number {
   return (conta / base) * 100;
 }
 
-/** A.H. = (Atual − Anterior) / Anterior × 100. Usa |anterior| para preservar o sinal com bases negativas. */
+/**
+ * A.H. conforme a planilha da disciplina: |Atual| ÷ |Anterior| − 1 (× 100).
+ * Para linhas positivas é o mesmo que (Atual − Anterior) / Anterior. Para linhas negativas da DRE
+ * (custos, despesas, resultado financeiro negativo) mede a variação do VALOR da linha: CPV de −43.615
+ * para −42.864 → −1,72% (o custo caiu); resultado financeiro de −2.318 para −4.002 → +72,6% (a despesa
+ * financeira líquida cresceu). Quando o sinal muda (ex.: +61,7 → −82,5) a A.H. não é significativa (n.m.).
+ */
 export function analiseHorizontal(atual: number, anterior: number): number {
+  if (anterior === 0) return NaN;
+  if (atual !== 0 && Math.sign(atual) !== Math.sign(anterior)) return NaN;
+  return (Math.abs(atual) / Math.abs(anterior) - 1) * 100;
+}
+
+/** Variação simples com sinal: (Atual − Anterior) / |Anterior| × 100 — usada quando a questão pede "variação em R$ e %". */
+export function variacaoPct(atual: number, anterior: number): number {
   return ((atual - anterior) / Math.abs(anterior)) * 100;
 }
 
@@ -86,6 +99,7 @@ export function multiplica(...valores: number[]): number {
 export const CALC = {
   analiseVertical,
   analiseHorizontal,
+  variacaoPct,
   margem,
   liquidezCorrente,
   roe,

@@ -13,7 +13,7 @@ const TITLES: Record<Mode, string> = {
   mixed: 'Estudo guiado',
   topic: 'Treino por tema',
   review: 'Revisão dos erros',
-  ambev: 'Treino — Caso Ambev',
+  ambev: 'Treino — casos reais (Ambev e Renner)',
 };
 const KIND: Record<Mode, SessionKind> = { mixed: 'study', topic: 'topic', review: 'review', ambev: 'topic' };
 

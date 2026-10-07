@@ -1,121 +1,117 @@
-// DADOS REAIS — Ambev S.A., Demonstrações Financeiras Padronizadas (DFP) consolidadas,
-// exercício 2025 (com comparativo 2024). Fonte: Portal de Dados Abertos da CVM,
-// dfp_cia_aberta_2025.zip (CNPJ 07.526.557/0001-00). Valores em R$ mil.
-// Se a planilha XLSX da disciplina divergir destes números, a planilha prevalece:
-// substitua os valores abaixo e rode `npm run validate`.
+// DADOS REAIS — Ambev S.A., demonstrações consolidadas 31/12/2025 × 31/12/2024.
+// FONTE PRINCIPAL: planilha da disciplina "Planilha_Ambev.xlsx" (abas Ativo, Passivo e DRE),
+// anexo do "Caso Ambev — Exercício de Análise das DFs" (Divulgação de Resultados 4T25, ri.ambev.com.br).
+// Valores em R$ MILHÕES, exatamente como na planilha (arredondados; subtotais podem diferir em ±1).
+// A estrutura de linhas e os nomes seguem a planilha do professor:
+//   • Ágio aparece separado do Intangível;
+//   • "Lucro operacional" NÃO inclui a "Participação em coligadas" (equivalência), que vem depois do
+//     resultado financeiro;
+//   • A.V. = conta ÷ Ativo total (ou ÷ Passivo total + PL, ou ÷ Receita líquida);
+//   • A.H. = |atual| ÷ |anterior| − 1 (fórmula da planilha: ABS(B)/ABS(D)-1).
+// Conferência cruzada com a DFP oficial (CVM): totais, LL, PL e Ativo coincidem (em R$ mil ÷ 1.000).
 
 export const AMBEV_SOURCE =
-  'REAL — Ambev S.A., DFP consolidada 2025 × 2024 (CVM, dados abertos).';
+  'REAL — Ambev S.A., DFs consolidadas 2025 × 2024 (planilha da disciplina; Divulgação de Resultados 4T25). Valores em R$ milhões.';
 
 export const AMBEV = {
   bp: {
     2025: {
-      ativoTotal: 145087151,
-      ativoCirculante: 43875596,
-      caixa: 18638228,
-      aplicacoesFinanceiras: 1681692,
-      contasReceber: 6351608,
-      estoques: 10520090,
-      tributosRecuperar: 3623379,
-      despesasAntecipadas: 714539,
-      outrosAC: 2346060,
-      ativoNaoCirculante: 101211555,
-      rlp: 20500355,
-      investimentos: 485792,
-      imobilizado: 27644317,
-      intangivel: 52581091,
-      passivoCirculante: 45599307,
-      obrigacoesTrabalhistas: 2200729,
-      fornecedores: 22596092,
-      obrigacoesFiscais: 7440459,
-      emprestimosCP: 1167325,
-      outrasObrigacoesCP: 11623337,
-      provisoesCP: 571365,
-      passivoNaoCirculante: 10713063,
-      emprestimosLP: 2219599,
-      outrasObrigacoesLP: 3703504,
-      tributosDiferidos: 3912270,
-      provisoesLP: 877690,
-      patrimonioLiquido: 88774781,
-      capitalSocial: 58275079,
-      reservasCapital: 53781385,
-      reservasLucros: 54222078,
-      ajustesAvaliacao: -78364503,
-      naoControladores: 860742,
+      ativoTotal: 145087,
+      ativoCirculante: 43876,
+      caixa: 18638,
+      aplicacoesFinanceiras: 1682,
+      contasReceber: 6352,
+      estoques: 10520,
+      tributosRecuperar: 3623,
+      derivativosOutrosAC: 3061,
+      ativoNaoCirculante: 101212,
+      rlp: 20500,
+      investimentos: 486,
+      imobilizado: 27644,
+      intangivel: 11043,
+      agio: 41538,
+      passivoCirculante: 45599,
+      fornecedores: 23743,
+      emprestimosCP: 1167,
+      dividendosJcp: 4928,
+      impostosRecolher: 7440,
+      salariosEncargos: 2201,
+      derivativosProvisoesOutrosPC: 6120,
+      passivoNaoCirculante: 10713,
+      emprestimosLP: 2220,
+      irDiferido: 3912,
+      demaisObrigacoesLP: 4581,
+      patrimonioLiquido: 88775,
+      capitalSocial: 58275,
+      reservas: 108003,
+      ajustesAvaliacao: -78365,
+      naoControladores: 861,
     },
     2024: {
-      ativoTotal: 162507949,
-      ativoCirculante: 54155784,
-      caixa: 28595666,
-      aplicacoesFinanceiras: 1242001,
-      contasReceber: 6269863,
-      estoques: 11689767,
-      tributosRecuperar: 3582275,
-      despesasAntecipadas: 706041,
-      outrosAC: 2070171,
-      ativoNaoCirculante: 108352165,
-      rlp: 20913198,
-      investimentos: 395393,
-      imobilizado: 30170194,
-      intangivel: 56873380,
-      passivoCirculante: 49388714,
-      obrigacoesTrabalhistas: 2779753,
-      fornecedores: 24042927,
-      obrigacoesFiscais: 7589939,
-      emprestimosCP: 1276391,
-      outrasObrigacoesCP: 13258793,
-      provisoesCP: 440911,
-      passivoNaoCirculante: 13538721,
-      emprestimosLP: 2176337,
-      outrasObrigacoesLP: 5683769,
-      tributosDiferidos: 5007711,
-      provisoesLP: 670904,
-      patrimonioLiquido: 99580514,
-      capitalSocial: 58226036,
-      reservasCapital: 55336410,
-      reservasLucros: 53637019,
-      ajustesAvaliacao: -68557326,
-      naoControladores: 938375,
+      ativoTotal: 162508,
+      ativoCirculante: 54156,
+      caixa: 28596,
+      aplicacoesFinanceiras: 1242,
+      contasReceber: 6270,
+      estoques: 11690,
+      tributosRecuperar: 3582,
+      derivativosOutrosAC: 2776,
+      ativoNaoCirculante: 108352,
+      rlp: 20913,
+      investimentos: 395,
+      imobilizado: 30170,
+      intangivel: 12531,
+      agio: 44343,
+      passivoCirculante: 49389,
+      fornecedores: 25224,
+      emprestimosCP: 1276,
+      dividendosJcp: 8487,
+      impostosRecolher: 7590,
+      salariosEncargos: 2780,
+      derivativosProvisoesOutrosPC: 4032,
+      passivoNaoCirculante: 13539,
+      emprestimosLP: 2176,
+      irDiferido: 5008,
+      demaisObrigacoesLP: 6355,
+      patrimonioLiquido: 99581,
+      capitalSocial: 58226,
+      reservas: 108973,
+      ajustesAvaliacao: -68557,
+      naoControladores: 938,
     },
   },
   dre: {
     2025: {
-      receitaLiquida: 88242467,
-      custoVendas: -42864127,
-      lucroBruto: 45378340,
-      despesasVendas: -19276988,
-      despesasLogisticas: -10928913,
-      despesasComerciais: -8348075,
-      despesasAdministrativas: -5862917,
-      outrasReceitasOperacionais: 2986148,
-      outrasDespesasOperacionais: 93018,
-      equivalenciaPatrimonial: 105785,
-      lucroOperacional: 23423386,
-      resultadoFinanceiro: -4001728,
-      receitasFinanceiras: 2216616,
-      despesasFinanceiras: -6218344,
-      lair: 19421658,
-      irCs: -3433225,
-      lucroLiquido: 15988433,
+      receitaLiquida: 88242,
+      custoVendas: -42864,
+      lucroBruto: 45378,
+      despesasLogisticas: -10929,
+      despesasComerciais: -8348,
+      despesasAdministrativas: -5863,
+      outrasReceitasDespesasOperacionais: 2436,
+      itensNaoUsuais: 643,
+      lucroOperacional: 23318,
+      resultadoFinanceiro: -4002,
+      participacaoColigadas: 106,
+      lair: 19422,
+      irCs: -3433,
+      lucroLiquido: 15988,
     },
     2024: {
-      receitaLiquida: 89452669,
-      custoVendas: -43615080,
-      lucroBruto: 45837589,
-      despesasVendas: -20191324,
-      despesasLogisticas: -11557161,
-      despesasComerciais: -8634163,
-      despesasAdministrativas: -6201074,
-      outrasReceitasOperacionais: 2800226,
-      outrasDespesasOperacionais: -443759,
-      equivalenciaPatrimonial: 3918,
-      lucroOperacional: 21805576,
-      resultadoFinanceiro: -2318249,
-      receitasFinanceiras: 2423704,
-      despesasFinanceiras: -4741953,
-      lair: 19487327,
-      irCs: -4640375,
-      lucroLiquido: 14846952,
+      receitaLiquida: 89453,
+      custoVendas: -43615,
+      lucroBruto: 45838,
+      despesasLogisticas: -11557,
+      despesasComerciais: -8634,
+      despesasAdministrativas: -6201,
+      outrasReceitasDespesasOperacionais: 2457,
+      itensNaoUsuais: -101,
+      lucroOperacional: 21802,
+      resultadoFinanceiro: -2318,
+      participacaoColigadas: 4,
+      lair: 19487,
+      irCs: -4640,
+      lucroLiquido: 14847,
     },
   },
 } as const;
@@ -123,81 +119,123 @@ export const AMBEV = {
 export type AmbevYear = 2024 | 2025;
 
 const fmt = (v: number) => v.toLocaleString('pt-BR');
+const av = (v: number, base: number) => `${((v / base) * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+const ah = (a: number, b: number) => (b === 0 ? '—' : `${((Math.abs(a) / Math.abs(b) - 1) * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`);
 
-/** Tabelas prontas para exibir nas questões e no painel "Ver DFs da Ambev". */
-export function ambevBalanceTable() {
-  const a = AMBEV.bp[2025];
-  const b = AMBEV.bp[2024];
-  const row = (label: string, k: keyof typeof a) => [label, fmt(a[k]), fmt(b[k])];
+/** Tabela no formato do anexo da disciplina: valor, A.V., valor anterior, A.V. anterior, A.H. */
+function annexTable<K extends string>(
+  caption: string,
+  a: Readonly<Record<K, number>>,
+  b: Readonly<Record<K, number>>,
+  baseKey: K,
+  rows: [string, K][],
+  totalLabels: string[],
+) {
+  const data = rows.map(([label, k]) => [label, fmt(a[k]), av(a[k], a[baseKey]), fmt(b[k]), av(b[k], b[baseKey]), ah(a[k], b[k])]);
   return {
-    caption: 'Ambev S.A. — Balanço Patrimonial Consolidado',
-    note: 'Valores em R$ mil. ' + AMBEV_SOURCE,
-    headers: ['Conta', '31/12/2025', '31/12/2024'],
-    rows: [
-      row('ATIVO CIRCULANTE', 'ativoCirculante'),
-      row('  Caixa e equivalentes de caixa', 'caixa'),
-      row('  Aplicações financeiras', 'aplicacoesFinanceiras'),
-      row('  Contas a receber', 'contasReceber'),
-      row('  Estoques', 'estoques'),
-      row('  Tributos a recuperar', 'tributosRecuperar'),
-      row('  Despesas antecipadas', 'despesasAntecipadas'),
-      row('  Outros ativos circulantes', 'outrosAC'),
-      row('ATIVO NÃO CIRCULANTE', 'ativoNaoCirculante'),
-      row('  Realizável a Longo Prazo', 'rlp'),
-      row('  Investimentos', 'investimentos'),
-      row('  Imobilizado', 'imobilizado'),
-      row('  Intangível', 'intangivel'),
-      row('ATIVO TOTAL', 'ativoTotal'),
-      row('PASSIVO CIRCULANTE', 'passivoCirculante'),
-      row('  Obrigações sociais e trabalhistas', 'obrigacoesTrabalhistas'),
-      row('  Fornecedores', 'fornecedores'),
-      row('  Obrigações fiscais', 'obrigacoesFiscais'),
-      row('  Empréstimos e financiamentos', 'emprestimosCP'),
-      row('  Outras obrigações', 'outrasObrigacoesCP'),
-      row('  Provisões', 'provisoesCP'),
-      row('PASSIVO NÃO CIRCULANTE', 'passivoNaoCirculante'),
-      row('  Empréstimos e financiamentos', 'emprestimosLP'),
-      row('  Outras obrigações', 'outrasObrigacoesLP'),
-      row('  Tributos diferidos', 'tributosDiferidos'),
-      row('  Provisões', 'provisoesLP'),
-      row('PATRIMÔNIO LÍQUIDO', 'patrimonioLiquido'),
-      row('  Capital social realizado', 'capitalSocial'),
-      row('  Reservas de capital', 'reservasCapital'),
-      row('  Reservas de lucros', 'reservasLucros'),
-      row('  Ajustes de avaliação patrimonial', 'ajustesAvaliacao'),
-      row('  Participação de não controladores', 'naoControladores'),
-    ],
-    totalRows: [0, 8, 13, 14, 21, 26],
+    caption,
+    note: 'Valores em R$ milhões. A.V. = conta ÷ total; A.H. = |2025| ÷ |2024| − 1. ' + AMBEV_SOURCE,
+    headers: ['Conta', '31/12/2025', 'A.V.% 25', '31/12/2024', 'A.V.% 24', 'A.H.%'],
+    rows: data,
+    totalRows: rows.map(([label], i) => (totalLabels.includes(label) ? i : -1)).filter((i) => i >= 0),
   };
 }
 
-export function ambevIncomeTable() {
-  const a = AMBEV.dre[2025];
-  const b = AMBEV.dre[2024];
-  const row = (label: string, k: keyof typeof a) => [label, fmt(a[k]), fmt(b[k])];
-  return {
-    caption: 'Ambev S.A. — Demonstração do Resultado Consolidada',
-    note:
-      'Valores em R$ mil. "Lucro Operacional" corresponde à linha "Resultado antes do resultado financeiro e dos tributos" da DFP (inclui equivalência patrimonial). ' +
-      AMBEV_SOURCE,
-    headers: ['Linha', '2025', '2024'],
-    rows: [
-      row('Receita Líquida', 'receitaLiquida'),
-      row('(−) Custo das vendas', 'custoVendas'),
-      row('= Lucro Bruto', 'lucroBruto'),
-      row('(−) Despesas com vendas (logísticas + comerciais)', 'despesasVendas'),
-      row('(−) Despesas gerais e administrativas', 'despesasAdministrativas'),
-      row('(+) Outras receitas operacionais', 'outrasReceitasOperacionais'),
-      row('(+/−) Outras despesas operacionais', 'outrasDespesasOperacionais'),
-      row('(+) Equivalência patrimonial', 'equivalenciaPatrimonial'),
-      row('= Lucro Operacional', 'lucroOperacional'),
-      row('  Receitas financeiras', 'receitasFinanceiras'),
-      row('  Despesas financeiras', 'despesasFinanceiras'),
-      row('(+/−) Resultado Financeiro', 'resultadoFinanceiro'),
-      row('= Lucro antes do IR/CS', 'lair'),
-      row('(−) IR/CS', 'irCs'),
-      row('= Lucro Líquido', 'lucroLiquido'),
+export function ambevAssetTable() {
+  return annexTable(
+    'Ambev S.A. — ATIVO (consolidado)',
+    AMBEV.bp[2025],
+    AMBEV.bp[2024],
+    'ativoTotal',
+    [
+      ['ATIVO TOTAL', 'ativoTotal'],
+      ['ATIVO CIRCULANTE', 'ativoCirculante'],
+      ['  Caixa e equivalentes de caixa', 'caixa'],
+      ['  Aplicações financeiras', 'aplicacoesFinanceiras'],
+      ['  Contas a receber', 'contasReceber'],
+      ['  Estoques', 'estoques'],
+      ['  Tributos a recuperar', 'tributosRecuperar'],
+      ['  Derivativos, mantidos p/ venda e outros', 'derivativosOutrosAC'],
+      ['ATIVO NÃO CIRCULANTE', 'ativoNaoCirculante'],
+      ['  Realizável a longo prazo (tributos, IR diferido)', 'rlp'],
+      ['  Investimentos', 'investimentos'],
+      ['  Imobilizado', 'imobilizado'],
+      ['  Intangível', 'intangivel'],
+      ['  Ágio', 'agio'],
     ],
-    totalRows: [0, 2, 8, 12, 14],
+    ['ATIVO TOTAL', 'ATIVO CIRCULANTE', 'ATIVO NÃO CIRCULANTE'],
+  );
+}
+
+export function ambevLiabilityTable() {
+  return annexTable(
+    'Ambev S.A. — PASSIVO E PL (consolidado)',
+    AMBEV.bp[2025],
+    AMBEV.bp[2024],
+    'ativoTotal',
+    [
+      ['PASSIVO TOTAL + PL', 'ativoTotal'],
+      ['PASSIVO CIRCULANTE', 'passivoCirculante'],
+      ['  Fornecedores (contas a pagar)', 'fornecedores'],
+      ['  Empréstimos e financiamentos', 'emprestimosCP'],
+      ['  Dividendos e JCP a pagar', 'dividendosJcp'],
+      ['  Impostos e IR/CS a recolher', 'impostosRecolher'],
+      ['  Salários e encargos', 'salariosEncargos'],
+      ['  Derivativos, provisões e outros', 'derivativosProvisoesOutrosPC'],
+      ['PASSIVO NÃO CIRCULANTE', 'passivoNaoCirculante'],
+      ['  Empréstimos e financiamentos (LP)', 'emprestimosLP'],
+      ['  IR diferido', 'irDiferido'],
+      ['  Demais obrigações (LP)', 'demaisObrigacoesLP'],
+      ['PATRIMÔNIO LÍQUIDO', 'patrimonioLiquido'],
+      ['  Capital social', 'capitalSocial'],
+      ['  Reservas', 'reservas'],
+      ['  Ajustes de avaliação patrimonial', 'ajustesAvaliacao'],
+      ['  Participação de não controladores', 'naoControladores'],
+    ],
+    ['PASSIVO TOTAL + PL', 'PASSIVO CIRCULANTE', 'PASSIVO NÃO CIRCULANTE', 'PATRIMÔNIO LÍQUIDO'],
+  );
+}
+
+export function ambevIncomeTable() {
+  return annexTable(
+    'Ambev S.A. — DRE (consolidado) 2025 × 2024',
+    AMBEV.dre[2025],
+    AMBEV.dre[2024],
+    'receitaLiquida',
+    [
+      ['Receita líquida', 'receitaLiquida'],
+      ['(−) Custo dos produtos vendidos', 'custoVendas'],
+      ['= Lucro bruto', 'lucroBruto'],
+      ['(−) Despesas logísticas', 'despesasLogisticas'],
+      ['(−) Despesas comerciais', 'despesasComerciais'],
+      ['(−) Despesas administrativas', 'despesasAdministrativas'],
+      ['(+/−) Outras receitas/despesas operacionais', 'outrasReceitasDespesasOperacionais'],
+      ['(+/−) Itens não usuais', 'itensNaoUsuais'],
+      ['= Lucro operacional', 'lucroOperacional'],
+      ['(+/−) Resultado financeiro líquido', 'resultadoFinanceiro'],
+      ['(+) Participação em coligadas', 'participacaoColigadas'],
+      ['= Lucro antes do IR/CS', 'lair'],
+      ['(−) IR e contribuição social', 'irCs'],
+      ['= Lucro líquido do exercício', 'lucroLiquido'],
+    ],
+    ['Receita líquida', '= Lucro bruto', '= Lucro operacional', '= Lucro antes do IR/CS', '= Lucro líquido do exercício'],
+  );
+}
+
+/** As três tabelas do anexo "DFs Ambev 2025 × 2024". */
+export function ambevAnnex() {
+  return [ambevAssetTable(), ambevLiabilityTable(), ambevIncomeTable()];
+}
+
+/** Compatibilidade: BP em uma tabela só (Ativo seguido de Passivo + PL). */
+export function ambevBalanceTable() {
+  const a = ambevAssetTable();
+  const p = ambevLiabilityTable();
+  return {
+    caption: 'Ambev S.A. — Balanço Patrimonial consolidado 31/12/2025 × 31/12/2024',
+    note: a.note,
+    headers: a.headers,
+    rows: [...a.rows, ...p.rows],
+    totalRows: [...a.totalRows, ...p.totalRows.map((i) => i + a.rows.length)],
   };
 }

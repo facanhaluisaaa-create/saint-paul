@@ -3,7 +3,7 @@ import type { Answer, CognitiveLevel, Difficulty, GradedQuestion, PublicQuestion
 import { GROUPS, GROUP_IDS, TOPICS, TOPIC_IDS, groupOf, type GroupId, type TopicId } from '../../shared/topics';
 import { KEYS, readJSON, writeJSON } from './storage';
 
-export type SessionKind = 'p1' | 'ambev' | 'custom' | 'study' | 'review' | 'topic' | 'adaptive';
+export type SessionKind = 'p1' | 'ambev' | 'custom' | 'study' | 'review' | 'topic' | 'adaptive' | 'roteiro';
 
 export interface Attempt {
   qid: string;
@@ -80,7 +80,12 @@ export function summarizeResults(results: GradedQuestion[]) {
   const byGroup = {} as Record<GroupId, { earned: number; total: number }>;
   const byTopic = {} as Record<TopicId, { earned: number; total: number }>;
   const byLevel = {} as Record<CognitiveLevel, { earned: number; total: number }>;
+  const byPart = {} as Record<1 | 2 | 3, { earned: number; total: number }>;
   for (const r of results) {
+    if (r.roteiro) {
+      (byPart[r.roteiro.part] ??= { earned: 0, total: 0 }).earned += r.earned;
+      byPart[r.roteiro.part].total += r.points;
+    }
     const g = groupOf(r.topic);
     (byGroup[g] ??= { earned: 0, total: 0 }).earned += r.earned;
     byGroup[g].total += r.points;
@@ -98,6 +103,7 @@ export function summarizeResults(results: GradedQuestion[]) {
     byGroup,
     byTopic,
     byLevel,
+    byPart,
   };
 }
 
@@ -169,7 +175,7 @@ export function studentSignals() {
 }
 
 export function dashboardStats() {
-  const hist = getHistory().filter((r) => r.kind === 'p1' || r.kind === 'ambev' || r.kind === 'custom');
+  const hist = getHistory().filter((r) => r.kind === 'p1' || r.kind === 'ambev' || r.kind === 'custom' || r.kind === 'roteiro');
   const attempts = getAttempts();
   const pcts = hist.map((r) => r.percent);
   return {

@@ -50,6 +50,7 @@ export function toPublic(q: Question, opts: { revealMeta: boolean }): PublicQues
     context: q.context,
     tables: q.tables ?? (q.table ? [q.table] : undefined),
     dataSource: q.dataSource,
+    roteiroPart: q.roteiro?.part,
     points: 1,
   };
   if (opts.revealMeta) {
@@ -142,6 +143,7 @@ export async function gradeQuestion(q: Question, answer: Answer | undefined): Pr
     type: q.type,
     dataSource: q.dataSource,
     caseTag: q.caseTag,
+    roteiro: q.roteiro,
     earned: 0,
     points: 1,
     status: 'wrong',

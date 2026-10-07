@@ -1,8 +1,8 @@
 // Estado da prova (modo Prova Real / Simulado). Funções puras + persistência (autosave).
-import type { Answer, PublicQuestion } from '../../shared/types';
+import type { Answer, DataTable, PublicQuestion } from '../../shared/types';
 import { KEYS, readJSON, removeKey, writeJSON } from './storage';
 
-export type ExamMode = 'p1' | 'ambev' | 'custom';
+export type ExamMode = 'p1' | 'ambev' | 'custom' | 'roteiro';
 
 export interface ExamConfig {
   mode: ExamMode;
@@ -10,6 +10,9 @@ export interface ExamConfig {
   /** null = sem limite */
   timeLimitSec: number | null;
   autoSubmit: boolean;
+  /** Anexo das DFs disponível para consulta durante a prova (modo roteiro / caso). */
+  caseTables?: DataTable[];
+  caseId?: string;
 }
 
 export interface ExamSession extends ExamConfig {

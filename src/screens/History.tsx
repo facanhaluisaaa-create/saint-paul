@@ -12,6 +12,7 @@ const KIND_LABEL: Record<string, string> = {
   review: 'Revisão dos erros',
   topic: 'Treino por tema',
   adaptive: 'Adaptativa',
+  roteiro: 'Roteiro da prova',
 };
 
 export function History() {

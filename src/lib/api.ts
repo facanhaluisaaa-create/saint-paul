@@ -1,4 +1,5 @@
-import type { Answer, Difficulty, GradedQuestion, PublicQuestion } from '../../shared/types';
+import type { Answer, DataTable, Difficulty, GradedQuestion, PublicQuestion } from '../../shared/types';
+import type { CaseInfo } from '../../shared/cases';
 import type { TopicId } from '../../shared/topics';
 import { studentSignals } from './progress';
 
@@ -22,12 +23,15 @@ export interface Catalog {
 
 export const api = {
   catalog: () => call<Catalog>('GET', '/api/catalog'),
-  buildExam: (opts: { mode: 'p1' | 'topic' | 'review' | 'ambev' | 'mixed'; count: number; topics?: TopicId[]; revealMeta: boolean; wrongSkills?: string[]; wrongIds?: string[] }) => {
+  cases: () => call<{ cases: (CaseInfo & { questions: number })[] }>('GET', '/api/cases').then((r) => r.cases),
+  buildExam: (opts: { mode: 'p1' | 'topic' | 'review' | 'ambev' | 'mixed' | 'roteiro'; count: number; topics?: TopicId[]; revealMeta: boolean; wrongSkills?: string[]; wrongIds?: string[]; caseId?: string }) => {
     const signals = studentSignals();
     if (opts.wrongSkills) signals.wrongSkills = opts.wrongSkills;
     if (opts.wrongIds) signals.wrongIds = opts.wrongIds;
     return call<{ questions: PublicQuestion[] }>('POST', '/api/exam', { ...opts, signals }).then((r) => r.questions);
   },
+  buildExamWithAnnex: (opts: { mode: 'roteiro'; caseId: string }) =>
+    call<{ questions: PublicQuestion[]; caseTables?: DataTable[] }>('POST', '/api/exam', { ...opts, count: 12, revealMeta: false, signals: studentSignals() }),
   grade: (items: { id: string; answer?: Answer }[], withFixation = true) =>
     call<{ results: GradedQuestion[] }>('POST', '/api/grade', { items, withFixation }).then((r) => r.results),
   aids: (id: string, kind: 'hint' | 'formula' | 'concept') => call<{ text: string; sourceReference: string }>('POST', '/api/aids', { id, kind }),

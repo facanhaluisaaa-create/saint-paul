@@ -13,11 +13,16 @@ export interface StudentSignals {
 }
 
 export interface BuildRequest extends StudentSignals {
-  mode: 'p1' | 'topic' | 'review' | 'ambev' | 'mixed';
+  mode: 'p1' | 'topic' | 'review' | 'ambev' | 'mixed' | 'roteiro';
   count: number;
   topics?: TopicId[];
   exclude?: string[];
+  /** Modo roteiro: id do caso (shared/cases.ts). */
+  caseId?: string;
 }
+
+/** Temas citados no resumo da aluna, mas não localizados nos slides das Aulas 1–5: ficam fora do simulado misto. */
+const OUT_OF_P1: TopicId[] = ['mc-pe', 'equivalencia'];
 
 const DIFF_TARGET: Record<Difficulty, number> = { easy: 0.25, medium: 0.5, hard: 0.25 };
 const DAY = 86_400_000;
@@ -115,7 +120,13 @@ export function buildExam(bank: Question[], req: BuildRequest): Question[] {
     maxEssays: Math.max(1, Math.round(count * 0.12)),
     total: 0,
   };
-  const available = bank.filter((q) => !exclude.has(q.id));
+  // Questões do roteiro (12 perguntas encadeadas com anexo) só entram no modo roteiro.
+  const available = bank.filter((q) => !exclude.has(q.id) && !q.roteiro);
+
+  if (req.mode === 'roteiro') {
+    const pool = bank.filter((q) => q.roteiro && q.roteiro.case === req.caseId);
+    return pool.sort((a, b) => a.roteiro!.part - b.roteiro!.part || a.roteiro!.order - b.roteiro!.order);
+  }
 
   if (req.mode === 'p1' || req.mode === 'mixed') {
     // Na P1, o Caso Ambev entra como parte dos grupos (é conteúdo da disciplina).
@@ -124,18 +135,19 @@ export function buildExam(bank: Question[], req: BuildRequest): Question[] {
       count,
     );
     let picked: Question[] = [];
+    const p1pool = req.mode === 'p1' ? available.filter((q) => !OUT_OF_P1.includes(q.topic)) : available;
     for (const g of GROUP_IDS) {
-      const pool = available.filter((q) => groupOf(q.topic) === g);
+      const pool = p1pool.filter((q) => groupOf(q.topic) === g);
       picked.push(...pickBalanced(pool, quotas[g], req, state, chosen));
     }
-    if (picked.length < count) picked.push(...pickBalanced(available, count - picked.length, req, state, chosen));
+    if (picked.length < count) picked.push(...pickBalanced(p1pool, count - picked.length, req, state, chosen));
     // Ordem de conteúdo, como numa prova real (sem revelar o tema).
     picked = picked.sort(byContentOrder);
     return picked;
   }
 
   if (req.mode === 'ambev') {
-    const pool = available.filter((q) => q.caseTag === 'ambev');
+    const pool = available.filter((q) => q.caseTag === 'ambev' || q.caseTag === 'renner');
     state.maxEssays = Math.max(2, Math.round(count * 0.25));
     return pickBalanced(pool, Math.min(count, pool.length), req, state, chosen).sort(byContentOrder);
   }
@@ -177,7 +189,7 @@ export function pickAdaptive(
   const order: Difficulty[] =
     difficulty === 'easy' ? ['easy', 'medium', 'hard'] : difficulty === 'medium' ? ['medium', 'easy', 'hard'] : ['hard', 'medium', 'easy'];
   for (const d of order) {
-    const pool = bank.filter((q) => q.topic === topic && q.difficulty === d && !ex.has(q.id));
+    const pool = bank.filter((q) => q.topic === topic && q.difficulty === d && !ex.has(q.id) && !q.roteiro);
     const objective = pool.filter(isObjective);
     const q = weightedPick(objective.length ? objective : pool, (x) => questionWeight(x, s));
     if (q) return q;

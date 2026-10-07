@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { GROUPS, type GroupId } from '../../shared/topics';
+import { ROTEIRO_PARTS } from '../../shared/cases';
 import { PercentBars } from '../components/Charts';
 import { FeedbackPanel, scoreText } from '../components/Feedback';
 import { QuestionBody } from '../components/QuestionView';
@@ -33,6 +34,11 @@ export function Report({ id }: { id: string }) {
     label: GROUPS[g].short,
     pct: (s.byGroup[g].earned / s.byGroup[g].total) * 100,
     detail: `(${fmt(s.byGroup[g].earned)}/${s.byGroup[g].total})`,
+  }));
+  const parts = ([1, 2, 3] as const).filter((p) => s.byPart[p]).map((p) => ({
+    label: ROTEIRO_PARTS[p].title.split(' — ')[0],
+    pct: (s.byPart[p].earned / s.byPart[p].total) * 100,
+    detail: `(${fmt(s.byPart[p].earned)}/${s.byPart[p].total})`,
   }));
   const qById = new Map(rec.questions.map((q) => [q.id, q]));
   const indexed = rec.results.map((r, i) => ({ r, i }));
@@ -84,7 +90,14 @@ export function Report({ id }: { id: string }) {
 
       <div className="grid-2">
         <section className="card">
-          <h2>Por assunto</h2>
+          {parts.length > 0 && (
+            <>
+              <h2>Por parte do roteiro</h2>
+              <PercentBars rows={parts} />
+              <p className="muted small">Nota em pontos: cada pergunta vale 1 ponto (10 na rubrica). Resposta sem número vale no máximo metade.</p>
+            </>
+          )}
+          <h2 className={parts.length ? 'mt' : ''}>Por assunto</h2>
           <PercentBars rows={groups} />
         </section>
         <section className="card">
@@ -164,7 +177,7 @@ export function Report({ id }: { id: string }) {
         <button className="btn btn-ghost" onClick={() => navigate('/')}>
           Voltar ao painel
         </button>
-        <button className="btn btn-secondary" onClick={() => navigate(`/prova?preset=${rec.kind === 'ambev' ? 'ambev' : 'p1'}`)}>
+        <button className="btn btn-secondary" onClick={() => navigate(`/prova?preset=${rec.kind === 'ambev' ? 'ambev' : rec.kind === 'roteiro' ? 'roteiro' : 'p1'}`)}>
           Novo simulado
         </button>
       </div>

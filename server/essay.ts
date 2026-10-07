@@ -54,6 +54,10 @@ export function gradeEssayKeywords(text: string, rubric: Rubric): EssayGrade {
     }
   }
   const raw = criteria.reduce((s, c) => s + c.earned, 0);
-  const earned = Math.max(0, Math.min(total, raw - penalty));
+  let earned = Math.max(0, Math.min(total, raw - penalty));
+  if (rubric.requireNumbers && !/\d/.test(text ?? '')) {
+    earned = Math.min(earned, total / 2);
+    seriousErrors.push('Resposta sem números: na prova, resposta sem número vale no máximo metade. Cite os valores, A.V. e A.H. que sustentam a análise.');
+  }
   return { earned, total, criteria, seriousErrors, method: 'keywords' };
 }

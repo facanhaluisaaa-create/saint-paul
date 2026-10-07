@@ -28,7 +28,10 @@ export function TopicPicker() {
           Misturado (todos os temas)
         </button>
         <button className="btn btn-secondary" onClick={() => navigate(`/estudo?mode=ambev&count=${Math.min(count, catalog?.ambev ?? count)}`)}>
-          Caso Ambev {catalog && <>({catalog.ambev})</>}
+          Casos reais Ambev e Renner {catalog && <>({catalog.ambev})</>}
+        </button>
+        <button className="btn btn-ghost" onClick={() => navigate('/prova?preset=roteiro')}>
+          Roteiro da prova (3 partes)
         </button>
       </div>
 

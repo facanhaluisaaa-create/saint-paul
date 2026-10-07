@@ -18,14 +18,14 @@ Outros comandos:
 | Comando | O que faz |
 |---|---|
 | `npm test` | Testes automáticos (fórmulas, arredondamento, 0,18/18%, correção, sessão, timer, autosave, retomada, domínio, adaptativa, API) |
-| `npm run validate` | Valida o banco: recalcula todos os gabaritos numéricos, confere A = P + PL, alternativas, rubricas e partidas dobradas |
+| `npm run validate` | Valida o banco: recalcula todos os gabaritos numéricos, confere A = P + PL, alternativas, rubricas, partidas dobradas e a estrutura do roteiro |
 | `npm run audit:rubrics` | Corrige cada resposta-modelo com o corretor automático (deve tirar nota alta) e uma resposta vaga (deve tirar nota baixa) |
 | `npm run build` | Typecheck + build de produção em `dist/` |
 | `npm start` | Servidor de produção (build + API) em http://localhost:4173 |
 
 ### Correção semântica das discursivas (opcional)
 
-Sem configuração, as discursivas são corrigidas por rubrica com conceitos, palavras-chave e sinônimos, e o app avisa que a correção é aproximada. Para usar a correção semântica (restrita à rubrica, com saída JSON por critério), defina uma chave da API da Anthropic antes de subir o servidor:
+Sem configuração, as discursivas são corrigidas por rubrica com conceitos, palavras-chave e sinônimos, e o app avisa que a correção é aproximada. Nas questões do roteiro, a regra da disciplina é aplicada automaticamente: resposta sem nenhum número vale no máximo metade. Para usar a correção semântica (restrita à rubrica, com saída JSON por critério), defina uma chave da API da Anthropic antes de subir o servidor:
 
 ```bash
 export ANTHROPIC_API_KEY=...        # usada só no servidor, nunca enviada ao navegador
@@ -39,12 +39,14 @@ Se a chamada falhar, o servidor volta automaticamente para o corretor determiní
 
 | Modo | Onde | Características |
 |---|---|---|
-| **Prova real / Simular P1** | Painel → Iniciar P1 simulada | 20–25 questões (configurável), cronômetro (sem limite, 30, 45, 60, 90 min ou personalizado), entrega automática opcional, navegador de questões, marcação para revisão, autosave e retomada, tela "Revisar antes de entregar", **tema oculto**, correção só no final |
+| **Simular P1 — formato da prova (roteiro)** | Painel → Iniciar P1 simulada | O formato anunciado na Aula 5: 12 perguntas em 3 partes (Balanço · DRE · Estratégia) sobre as DFs de uma empresa, **com consulta ao anexo** (A.V. e A.H. prontos). Casos: Ambev (real), Renner (real), dois fictícios ou "surpresa". Correção por rubrica com a regra "resposta sem número vale no máximo metade" |
+| **Prova mista** | Simular P1 → Prova mista | 20–25 questões objetivas, numéricas e discursivas curtas das Aulas 1 a 5, cronômetro (sem limite, 45, 60, 90, 120 min ou personalizado), entrega automática opcional, navegador, marcação para revisão, autosave e retomada, tela "Revisar antes de entregar", **tema oculto**, correção só no final |
 | **Estudo guiado** | Painel → Estudo guiado | Correção imediata; botões Dica, Mostrar fórmula, Explicar conceito, Tentar novamente e Ver solução passo a passo |
 | **Revisão dos erros** | Menu → Meus erros | Variações das habilidades erradas (outra questão, mesma skill), depois conceitos relacionados; não repete necessariamente a mesma pergunta |
-| **Treino por tema** | Menu → Treino por tema | 23 temas, mais "Misturado" e "Caso Ambev" |
+| **Treino por tema** | Menu → Treino por tema | 23 temas, mais "Misturado" e "Casos reais" |
 | **Prova adaptativa** | Menu → Adaptativa | 2 acertos seguidos sobem o nível; um erro desce o nível e, em temas compostos, volta aos pré-requisitos (ex.: DuPont → Margem, Giro, Alavancagem → DuPont) |
-| **Simulado Caso Ambev** | Painel → Simulado Caso Ambev | Dados reais, com as DFs completas disponíveis durante a prova |
+| **Casos reais (Ambev e Renner)** | Painel → Casos reais | Questões objetivas e numéricas sobre as DFs reais 2025 × 2024, com o anexo disponível |
+| **Anexos (DFs)** | Menu → Anexos | As DFs da Ambev (planilha da disciplina) e da Renner (slides da Aula 4) no formato do anexo da prova |
 | **Revisão expressa** | Menu → Revisão expressa | Cartões com todas as fórmulas, regras e pegadinhas (imprimível) |
 | **Histórico** | Menu → Histórico | Abre qualquer prova antiga com a correção completa |
 | **Banco de questões** | `#/question-bank` | Rota de auditoria, **só em desenvolvimento** (`npm run dev`) |
@@ -61,7 +63,9 @@ shared/              código comum a cliente e servidor
   topics.ts          temas, grupos do simulado e pré-requisitos da adaptativa
   finance.ts         fórmulas da disciplina (A.V., A.H., margens, LC, ROE, giro, alavancagem, DuPont, MC/PE)
   numeric.ts         leitura de números pt-BR, equivalência 0,18 / 18% / 18, tolerância
-  ambev.ts           DFP Ambev 2025 × 2024 (R$ mil)
+  ambev.ts           Ambev 2025 × 2024 (planilha da disciplina, R$ milhões) + tabelas do anexo
+  renner.ts          Lojas Renner 2025 × 2024 (slides da Aula 4, R$ milhões) + tabelas do anexo
+  cases.ts           casos do modo roteiro e títulos das 3 partes
 server/              camada de correção: o gabarito nunca vai para o navegador
   questions/*.ts     banco de questões (com gabarito, explicação e rubrica)
   grading.ts         versão pública das questões + correção por tipo
@@ -84,14 +88,19 @@ scripts/             validate-bank.ts, audit-rubrics.ts
 
 **Domínio por tema (0–100):** média ponderada das tentativas por dificuldade (fácil 0,8; média 1; difícil 1,3) e por recência (decaimento de 0,88 por tentativa). Recuperação após erro na mesma habilidade dá bônus, e há um peso inicial que impede domínio alto com poucas tentativas.
 
-**Simulado P1 (25 questões):** Fundamentos/BP 3 · Débito/Crédito 4 · DRE/Competência 4 · A.V./A.H. 3 · Margens 3 · Liquidez 2 · ROE/DuPont 4 · Estratégia 2, com proporção para outros tamanhos. Também persegue a meta 25/50/25 de dificuldade, permite no máximo cerca de 12% de discursivas e evita repetir a mesma habilidade. Questões vistas recentemente têm peso menor (8% no mesmo dia), e temas fracos e habilidades erradas têm peso maior.
+**Prova mista (25 questões):** Fundamentos/BP 3 · Débito/Crédito 3 · DRE/Competência 4 · A.V./A.H. 4 · Margens 3 · Liquidez 2 · ROE/DuPont 4 · Estratégia 2, com proporção para outros tamanhos. Também persegue a meta 25/50/25 de dificuldade, permite no máximo cerca de 12% de discursivas e evita repetir a mesma habilidade. Questões vistas recentemente têm peso menor (8% no mesmo dia), e temas fracos e habilidades erradas têm peso maior.
 
-## Fontes do conteúdo (leia antes de confiar)
+## Fontes do conteúdo
 
-- **Os materiais da disciplina (slides, PDFs, XLSX, exercícios) não estavam no repositório.** O conteúdo segue o resumo da P1 enviado pela aluna (blocos A–Y). Detalhes em [`CONTENT_MAP.md`](CONTENT_MAP.md).
-- **Ambev:** valores da DFP consolidada oficial (CVM, dados abertos), que reproduzem os números citados no resumo (ML 18,1%, giro 0,61x, alavancagem 1,63x, LC 43/45 = 0,96). Se a planilha da disciplina divergir, edite `shared/ambev.ts` e rode `npm run validate`.
-- **Casos fictícios** são marcados como "Caso fictício para estudo". Nenhum número foi atribuído a Alfenas, Remendão, Padaria São Jorge ou Renner, porque seus dados não estavam disponíveis.
-- Distribuição do banco e metas por tema: [`QUESTION_BLUEPRINT.md`](QUESTION_BLUEPRINT.md).
+O banco foi construído a partir dos materiais da disciplina enviados pela aluna, lidos integralmente:
+
+- **Slides das Aulas 1 a 5** (contexto e DFs; BP; razonetes; DRE, competência e custos × despesas; análise conjunta, DuPont e Caso Ambev), **Atividade em classe da Aula 4**, **Caso Ambev — Exercício de Análise das DFs** e **Planilha_Ambev.xlsx**. O mapa completo, com os exemplos, números e frases do professor, está em [`CONTENT_MAP.md`](CONTENT_MAP.md).
+- **Ambev:** valores da planilha da disciplina (R$ milhões), com a estrutura do professor: Ágio separado do Intangível, "Lucro operacional" antes da participação em coligadas, A.H. = |atual| ÷ |anterior| − 1. Conferidos com a DFP oficial (CVM): totais, lucro líquido, PL e ativo coincidem.
+- **Renner:** DRE, Ativo e Passivo 2025 × 2024 transcritos dos slides da Aula 4 (R$ milhões); ROE 13,9% confere com o slide.
+- **Exercícios dos slides** (Alfenas S.A., Comercial Bahia S.A., Cia. Simétrica, exemplo da Aula 3, Remendão S.A., Padaria São Jorge, Bicicletas Pedal Forte, Camisetas Aurora) geram questões marcadas "Exercício da disciplina", com perguntas novas sobre os mesmos dados.
+- **Casos fictícios** são marcados como "Caso fictício para estudo".
+- Margem de contribuição/ponto de equilíbrio e equivalência patrimonial (citados no resumo da aluna, não localizados nos slides das Aulas 1–5) ficam só no treino por tema, sinalizados, fora do simulado misto.
+- Distribuição do banco: [`QUESTION_BLUEPRINT.md`](QUESTION_BLUEPRINT.md).
 
 ## Como adicionar questões
 

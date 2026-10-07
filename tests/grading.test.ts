@@ -129,6 +129,15 @@ describe('discursivas (fallback determinístico)', () => {
     expect(g.earned).toBeLessThan(10);
   });
 
+  it('resposta sem número vale no máximo metade quando a rubrica exige números', () => {
+    const r = { ...rubric, requireNumbers: true };
+    const g = gradeEssayKeywords('A DRE usa o regime de competência, já a DFC registra o caixa quando há recebimento ou pagamento efetivo.', r);
+    expect(g.earned).toBe(5);
+    expect(g.seriousErrors.some((e) => /sem número/i.test(e))).toBe(true);
+    const h = gradeEssayKeywords('A DRE usa o regime de competência (receita de 88.242), já a DFC registra o caixa quando há recebimento ou pagamento efetivo.', r);
+    expect(h.earned).toBe(10);
+  });
+
   it('desconta erro conceitual grave', () => {
     const g = gradeEssayKeywords('No regime de competência, lucro e caixa são iguais porque todo recebimento entra no caixa da empresa sempre.', rubric);
     expect(g.seriousErrors.length).toBe(1);
@@ -190,6 +199,52 @@ describe('montagem do simulado P1', () => {
     const wrong = QUESTION_BANK.find((q) => q.skill && QUESTION_BANK.filter((x) => x.skill === q.skill).length >= 3)!;
     const exam = buildExam(QUESTION_BANK, { mode: 'review', count: 5, wrongSkills: [wrong.skill], wrongIds: [wrong.id] });
     expect(exam.some((q) => q.skill === wrong.skill && q.id !== wrong.id)).toBe(true);
+  });
+});
+
+describe('modo roteiro (formato da prova)', () => {
+  it('monta as 12 perguntas do caso em ordem de parte, com rubrica que exige números', () => {
+    for (const caseId of ['ambev', 'renner', 'rot-varejo', 'rot-industria']) {
+      const exam = buildExam(QUESTION_BANK, { mode: 'roteiro', caseId, count: 12 });
+      expect(exam.length, caseId).toBe(12);
+      const parts = exam.map((q) => q.roteiro!.part);
+      expect([...parts].sort((a, b) => a - b), caseId).toEqual(parts);
+      expect(parts.filter((p) => p === 1).length, caseId).toBe(4);
+      expect(parts.filter((p) => p === 2).length, caseId).toBe(5);
+      expect(parts.filter((p) => p === 3).length, caseId).toBe(3);
+      for (const q of exam) {
+        expect(q.type === 'essay' || q.type === 'short-answer' || q.type === 'multi-part', q.id).toBe(true);
+        if (q.type === 'essay' || q.type === 'short-answer') expect(q.rubric.requireNumbers, q.id).toBe(true);
+        expect((q.tables?.length ?? 0) + (q.table ? 1 : 0), q.id).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('questões do roteiro e temas fora dos slides não entram na prova mista', () => {
+    for (let i = 0; i < 5; i++) {
+      const exam = buildExam(QUESTION_BANK, { mode: 'p1', count: 25 });
+      expect(exam.some((q) => q.roteiro)).toBe(false);
+      expect(exam.some((q) => q.topic === 'mc-pe' || q.topic === 'equivalencia')).toBe(false);
+    }
+  });
+
+  it('API devolve o anexo e a parte de cada pergunta no modo roteiro', async () => {
+    const r = (await handleApi('POST', '/api/exam', { mode: 'roteiro', caseId: 'renner', count: 12 }, { dev: false })) as any;
+    expect(r.status).toBe(200);
+    expect(r.json.caseTables.length).toBeGreaterThanOrEqual(3);
+    expect(r.json.questions.map((q: any) => q.roteiroPart)).toEqual([1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3]);
+    expect(JSON.stringify(r.json)).not.toContain('modelAnswer');
+    const cases = (await handleApi('GET', '/api/cases', undefined, { dev: false })) as any;
+    expect(cases.json.cases.map((c: any) => c.id)).toEqual(['ambev', 'renner', 'rot-varejo', 'rot-industria']);
+  });
+
+  it('resposta do roteiro sem números é limitada a metade pela API', async () => {
+    const exam = buildExam(QUESTION_BANK, { mode: 'roteiro', caseId: 'ambev', count: 12 });
+    const q = exam.find((x) => x.type === 'essay')!;
+    const g = (await handleApi('POST', '/api/grade', { items: [{ id: q.id, answer: { kind: 'text', value: (q as any).rubric.modelAnswer.replace(/[\d.,%]+/g, 'x') } }] }, { dev: false })) as any;
+    expect(g.json.results[0].earned).toBeLessThanOrEqual(0.5);
+    const h = (await handleApi('POST', '/api/grade', { items: [{ id: q.id, answer: { kind: 'text', value: (q as any).rubric.modelAnswer } }] }, { dev: false })) as any;
+    expect(h.json.results[0].earned).toBeGreaterThan(0.8);
   });
 });
 
