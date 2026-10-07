@@ -1,0 +1,32 @@
+{
+  "name": "p1-contabilidade-decisoes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Plataforma de simulados para a P1 de Contabilidade para Tomada de Decisões I — Escola de Negócios Saint Paul",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "start": "NODE_ENV=production tsx server/prod.ts",
+    "preview": "npm run build && npm start",
+    "test": "vitest run",
+    "validate": "tsx scripts/validate-bank.ts",
+    "audit:rubrics": "tsx scripts/audit-rubrics.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tsx": "^4.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "typescript": "~5.9.0",
+    "vite": "^8.0.0",
+    "vitest": "^5.0.0"
+  }
+}
