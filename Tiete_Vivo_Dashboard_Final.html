@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tietê Vivo — Is the Tietê Really Recovering?</title>
+<meta name="description" content="Group 09 strategic dashboard for SEMIL's IntegraTietê programme: kilometres of good-quality water vs the pollution-stain headline, 2018–2025.">
+<style>
+/* ============================================================
+   TIETÊ VIVO — design tokens
+   Dark (river-slate) is the default; light mode via data-theme.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+  --bg:#0a1424;
+  --bg-2:#0f1b2d;
+  --surface:#132238;
+  --surface-2:#18294a;
+  --line:#24395a;
+  --line-strong:#345180;
+  --text:#f3f7fb;
+  --text-2:#b9c6d8;
+  --text-3:#8597b0;
+  --water:#3aa7e8;
+  --water-2:#5cc6ff;
+  --turq:#19a090;
+  --turq-2:#2ec4b6;
+  --accent-bg:rgba(58,167,232,.14);
+  /* water-quality classes (semantic status scale, validated vs dark surface) */
+  --q-good:#1fae66;
+  --q-regular:#d6ad1c;
+  --q-poor:#e46e22;
+  --q-vpoor:#cf3b3b;
+  --q-nodata:#8b9bb0;
+  /* trend series */
+  --s-stain:#e46e22;
+  --s-good:#1fae66;
+  /* bar series (year identity) */
+  --y2024:#6f86e8;
+  --y2025:#19a090;
+  /* status / deltas */
+  --up-good:#1fae66;
+  --down-bad:#e5484d;
+  --neutral:#d6ad1c;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:16px;
+  --font:"Inter","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#eef3f9;
+  --bg-2:#f4f7fb;
+  --surface:#ffffff;
+  --surface-2:#f1f5fa;
+  --line:#d7e0ec;
+  --line-strong:#b8c6da;
+  --text:#0f1b2d;
+  --text-2:#3d4f68;
+  --text-3:#66748a;
+  --water:#1874b8;
+  --water-2:#1f8fd6;
+  --turq:#0f8f85;
+  --turq-2:#13a397;
+  --accent-bg:rgba(24,116,184,.10);
+  --q-good:#0f8a4c;
+  --q-regular:#b3860a;
+  --q-poor:#d85a10;
+  --q-vpoor:#c62828;
+  --q-nodata:#66748a;
+  --s-stain:#d85a10;
+  --s-good:#0f8a4c;
+  --y2024:#5a6fd8;
+  --y2025:#0f8f85;
+  --up-good:#0f8a4c;
+  --down-bad:#c62828;
+  --neutral:#b3860a;
+  --shadow:0 10px 30px rgba(15,27,45,.10);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 10% -10%, rgba(58,167,232,.14), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(25,160,144,.12), transparent 60%);
+  background-attachment:fixed;
+}
+a{color:var(--water-2)}
+h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.01em}
+p{margin:0}
+button{font-family:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  border-bottom:1px solid var(--line);
+}
+.topbar .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.08em;font-size:14px;text-transform:uppercase}
+.brand .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--water),var(--turq-2));display:grid;place-items:center}
+.brand .mark svg{width:18px;height:18px}
+.nav{display:flex;gap:4px;margin-left:auto;overflow:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{color:var(--text-2);text-decoration:none;font-size:13px;padding:6px 10px;border-radius:8px;white-space:nowrap}
+.nav a:hover{background:var(--accent-bg);color:var(--text)}
+.tools{display:flex;gap:8px;align-items:center}
+.btn{
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--text);
+  padding:8px 12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;transition:.2s;
+}
+.btn:hover{border-color:var(--water);background:var(--accent-bg)}
+.btn.primary{background:linear-gradient(135deg,var(--water),var(--turq));border-color:transparent;color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn svg{width:16px;height:16px}
+.icon-btn{width:38px;height:38px;padding:0;justify-content:center}
+@media (max-width:900px){.nav{display:none}}
+
+/* ---------- sections ---------- */
+section{padding:48px 0;scroll-margin-top:72px}
+@media (max-width:640px){section{padding:34px 0}}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--turq-2);font-weight:700}
+.section-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:20px}
+.section-head h2{font-size:26px}
+.section-head p{color:var(--text-2);max-width:720px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;box-shadow:var(--shadow);position:relative;
+}
+.spotlight{outline:2px solid var(--water-2);outline-offset:4px;box-shadow:0 0 0 8px var(--accent-bg),var(--shadow);transition:.3s}
+.note{
+  font-size:13px;color:var(--text-2);background:var(--surface-2);border-left:3px solid var(--water);
+  padding:10px 14px;border-radius:0 10px 10px 0;margin-top:14px;
+}
+.note.warn{border-left-color:var(--q-poor)}
+.note strong{color:var(--text)}
+.small{font-size:12px;color:var(--text-3)}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 24px}
+.hero h1{font-size:clamp(34px,5.4vw,60px);font-weight:900;max-width:900px}
+.hero h1 span{background:linear-gradient(90deg,var(--water-2),var(--turq-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{color:var(--text-2);font-size:18px;max-width:780px;margin-top:14px}
+.decision-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:28px}
+@media (max-width:860px){.decision-grid{grid-template-columns:1fr}}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--accent-bg);color:var(--water-2);margin-bottom:10px}
+.decision-grid .q{font-size:20px;font-weight:700;line-height:1.3}
+.who{display:flex;gap:14px;align-items:flex-start}
+.who .avatar{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--surface-2),var(--line-strong));display:grid;place-items:center;flex:none}
+.who .avatar svg{width:24px;height:24px;color:var(--water-2)}
+
+/* ---------- north star ---------- */
+.switch{
+  display:inline-flex;padding:4px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);gap:4px;
+}
+.switch button{
+  border:0;background:transparent;color:var(--text-2);padding:9px 16px;border-radius:9px;cursor:pointer;font-weight:700;font-size:13px;transition:.2s;
+}
+.switch button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.switch button:focus-visible{outline:2px solid var(--water-2)}
+.ns-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+@media (max-width:900px){.ns-grid{grid-template-columns:1fr}}
+#nsCard{display:flex;flex-direction:column}
+.hero-number{display:flex;flex-direction:column;gap:8px;min-height:250px;justify-content:center;flex:1}
+.hero-number .label{font-size:14px;color:var(--text-2);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.hero-number .value{font-size:clamp(56px,9vw,96px);font-weight:900;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.hero-number .value small{font-size:.35em;font-weight:700;color:var(--text-2);margin-left:6px;letter-spacing:0}
+.hero-number .sub{font-size:20px;font-weight:700}
+.delta{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:14px;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+.delta.bad{color:var(--down-bad);background:color-mix(in srgb,var(--down-bad) 14%,transparent);border-color:color-mix(in srgb,var(--down-bad) 35%,transparent)}
+.delta.good{color:var(--up-good);background:color-mix(in srgb,var(--up-good) 14%,transparent);border-color:color-mix(in srgb,var(--up-good) 35%,transparent)}
+.delta.neutral{color:var(--neutral);background:color-mix(in srgb,var(--neutral) 14%,transparent);border-color:color-mix(in srgb,var(--neutral) 35%,transparent)}
+.delta svg{width:14px;height:14px}
+.fade{animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.compare .mini{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.compare .mini .t{font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.compare .mini .v{font-size:24px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+.compare .mini .v small{font-size:13px;color:var(--text-2);font-weight:600}
+.insight-banner{
+  margin-top:16px;padding:18px 20px;border-radius:14px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--water) 18%,var(--surface)),color-mix(in srgb,var(--turq) 14%,var(--surface)));
+  border:1px solid color-mix(in srgb,var(--water) 40%,var(--line));
+}
+.insight-banner .big{font-size:clamp(18px,2.4vw,24px);font-weight:800;line-height:1.3}
+.insight-banner p{color:var(--text-2);margin-top:8px;font-size:14px}
+.ns-explain h3{font-size:16px;margin-bottom:8px}
+.ns-explain ul{margin:0;padding-left:18px;color:var(--text-2);font-size:14px}
+.ns-explain li{margin:6px 0}
+.ns-explain li b{color:var(--text)}
+
+/* ---------- KPI cards ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.kpis{grid-template-columns:1fr}}
+.kpi{display:flex;flex-direction:column;gap:6px;padding:18px 18px 16px}
+.kpi .name{font-size:13px;font-weight:700;color:var(--text-2);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.kpi .name .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.kpi .val{font-size:34px;font-weight:900;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .val small{font-size:14px;font-weight:700;color:var(--text-2);margin-left:4px}
+.kpi .year{font-size:12px;color:var(--text-3);font-weight:600}
+.kpi .cmp{font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+.kpi .interp{font-size:13px;color:var(--text-2);border-top:1px solid var(--line);padding-top:10px;margin-top:6px}
+.kpi .interp b{color:var(--text)}
+.kpi .flag{font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.4}
+
+/* ---------- waffle ---------- */
+.waffle-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}
+@media (max-width:900px){.waffle-grid{grid-template-columns:1fr}}
+.year-btns{display:inline-flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:12px;border:1px solid var(--line)}
+.year-btns button{border:0;background:transparent;color:var(--text-2);font-weight:800;font-size:14px;padding:8px 18px;border-radius:9px;cursor:pointer;transition:.2s}
+.year-btns button[aria-pressed="true"]{background:var(--water);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--water) 40%,transparent)}
+.year-btns button:focus-visible{outline:2px solid var(--water-2)}
+.waffle{
+  display:grid;grid-template-columns:repeat(24,1fr);gap:4px;
+  aspect-ratio:1/1;max-width:560px;margin:16px auto 0;padding:14px;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
+}
+.waffle .d{
+  border-radius:50%;background:var(--q-nodata);
+  transition:background-color .6s ease,transform .5s cubic-bezier(.2,.8,.2,1),opacity .4s;
+  transform:scale(.92);
+}
+.waffle .d.pop{transform:scale(1.18)}
+.waffle .d[data-c="good"]{background:var(--q-good)}
+.waffle .d[data-c="regular"]{background:var(--q-regular)}
+.waffle .d[data-c="poor"]{background:var(--q-poor)}
+.waffle .d[data-c="vpoor"]{background:var(--q-vpoor)}
+.waffle .d[data-c="nodata"]{background:var(--q-nodata);opacity:.55}
+@media (prefers-reduced-motion:reduce){.waffle .d{transition:background-color .2s}}
+.legend{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.legend .row{display:grid;grid-template-columns:18px 1fr auto auto;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
+.legend .sw{width:14px;height:14px;border-radius:50%}
+.legend .lbl{font-weight:700;font-size:14px}
+.legend .km{font-weight:900;font-size:18px;font-variant-numeric:tabular-nums;text-align:right}
+.legend .km small{font-size:12px;color:var(--text-2);font-weight:600}
+.legend .pct{font-size:12px;color:var(--text-3);width:52px;text-align:right;font-variant-numeric:tabular-nums}
+.legend .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.legend .bar i{display:block;height:100%;border-radius:2px;transition:width .7s ease}
+.total-line{display:flex;justify-content:space-between;font-size:13px;color:var(--text-2);padding:8px 4px 0}
+.total-line b{color:var(--text);font-variant-numeric:tabular-nums}
+
+/* ---------- charts ---------- */
+.chart-wrap{position:relative;margin-top:10px}
+.chart-wrap svg{width:100%;height:auto;display:block;overflow:visible}
+.chart-wrap text{font-family:var(--font);fill:var(--text-2);font-size:12px}
+.chart-wrap .axis-title{fill:var(--text-3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.chart-wrap .grid{stroke:var(--line);stroke-width:1}
+.chart-wrap .axis{stroke:var(--line-strong);stroke-width:1}
+.chart-wrap .dlabel{font-weight:800;fill:var(--text);font-size:12px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0 4px;font-size:13px;color:var(--text-2)}
+.chart-legend .it{display:inline-flex;align-items:center;gap:8px}
+.chart-legend .sw{width:22px;height:3px;border-radius:2px;position:relative}
+.chart-legend .sw.sq{width:14px;height:14px;border-radius:3px}
+.chart-legend .sw .m{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:inherit;border:2px solid var(--surface)}
+.chart-legend .sw .m.square{border-radius:2px}
+.tip{
+  position:fixed;z-index:80;pointer-events:none;background:var(--surface);border:1px solid var(--line-strong);
+  color:var(--text);padding:8px 10px;border-radius:10px;font-size:12px;box-shadow:var(--shadow);opacity:0;transition:opacity .12s;max-width:240px;
+}
+.tip b{font-size:13px}
+.tip .r{display:flex;align-items:center;gap:6px;margin-top:3px;white-space:nowrap}
+.tip .r i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:1000px){.charts-2{grid-template-columns:1fr}}
+details.table{margin-top:12px;font-size:13px}
+details.table summary{cursor:pointer;color:var(--text-3);font-weight:600}
+details.table table{border-collapse:collapse;margin-top:8px;width:100%}
+details.table th,details.table td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums}
+details.table th:first-child,details.table td:first-child{text-align:left}
+details.table th{color:var(--text-3);font-weight:700;font-size:12px}
+
+/* ---------- insights ---------- */
+.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.insights{grid-template-columns:1fr}}
+.insight{display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--water)}
+.insight.descr{border-top-color:var(--water)}
+.insight.diag{border-top-color:var(--q-regular)}
+.insight.lead{border-top-color:var(--turq-2)}
+.insight .tag{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+.insight .num{font-size:40px;font-weight:900;line-height:1;color:var(--line-strong)}
+.insight .txt{font-size:15px;font-weight:600;line-height:1.45}
+.insight .so{font-size:13px;color:var(--text-2);border-top:1px solid var(--line);padding-top:10px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+@media (max-width:900px){.ladder{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.ladder{grid-template-columns:1fr}}
+.ladder .step{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.ladder .step b{display:block;font-size:13px;margin-bottom:4px}
+.ladder .step .st{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;margin-top:8px}
+.st.done{background:color-mix(in srgb,var(--up-good) 16%,transparent);color:var(--up-good)}
+.st.partial{background:color-mix(in srgb,var(--neutral) 16%,transparent);color:var(--neutral)}
+.st.none{background:color-mix(in srgb,var(--text-3) 16%,transparent);color:var(--text-2)}
+
+/* ---------- action ---------- */
+.action{
+  border:1px solid color-mix(in srgb,var(--turq-2) 50%,var(--line));
+  background:linear-gradient(135deg,color-mix(in srgb,var(--turq) 20%,var(--surface)),color-mix(in srgb,var(--water) 12%,var(--surface)));
+  padding:28px;
+}
+.action .pill{background:color-mix(in srgb,var(--turq-2) 20%,transparent);color:var(--turq-2)}
+.action h3{font-size:clamp(20px,2.6vw,28px);line-height:1.3;max-width:900px}
+.action p{color:var(--text-2);margin-top:12px;max-width:900px;font-size:15px}
+.action .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+@media (max-width:800px){.action .steps{grid-template-columns:1fr}}
+.action .steps div{background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.action .steps b{display:block;margin-bottom:4px}
+
+/* ---------- limitation ---------- */
+.limit{border:1px solid color-mix(in srgb,var(--q-poor) 55%,var(--line));background:color-mix(in srgb,var(--q-poor) 9%,var(--surface));padding:24px}
+.limit .pill{background:color-mix(in srgb,var(--q-poor) 18%,transparent);color:var(--q-poor)}
+.limit p{font-size:16px;line-height:1.55;max-width:960px}
+.limit .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media (max-width:800px){.limit .grid{grid-template-columns:1fr}}
+.limit .grid div{font-size:13px;background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text-2)}
+.limit .grid b{color:var(--text)}
+
+/* ---------- sources ---------- */
+.sources{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+@media (max-width:900px){.sources{grid-template-columns:1fr}}
+.src-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.src-list li{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.src-list b{display:block;font-size:14px}
+.src-list .meta{color:var(--text-3);font-size:12px;margin-top:4px}
+.badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.badge.primary{background:color-mix(in srgb,var(--up-good) 16%,transparent);color:var(--up-good)}
+.badge.verify{background:color-mix(in srgb,var(--q-regular) 18%,transparent);color:var(--q-regular)}
+.badge.removed{background:color-mix(in srgb,var(--down-bad) 16%,transparent);color:var(--down-bad)}
+.method table{width:100%;border-collapse:collapse;font-size:13px}
+.method th,.method td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.method th{color:var(--text-3);font-size:12px}
+.method td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:26px 0 36px;color:var(--text-2);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+footer b{color:var(--text)}
+
+/* ---------- guided briefing ---------- */
+.brief{
+  position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);z-index:90;width:min(860px,calc(100% - 24px));
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);
+  padding:14px 16px 12px;visibility:hidden;transition:transform .4s cubic-bezier(.2,.8,.2,1),visibility .4s;
+}
+.brief.on{transform:translate(-50%,0);visibility:visible}
+.brief .top{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-3);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.brief .top .live{width:8px;height:8px;border-radius:50%;background:var(--turq-2);box-shadow:0 0 0 4px color-mix(in srgb,var(--turq-2) 25%,transparent)}
+.brief .cap{font-size:clamp(15px,2vw,18px);font-weight:600;line-height:1.45;margin:8px 0 10px;min-height:48px}
+.brief .ctr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.brief .ctr .sp{flex:1}
+.brief .prog{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:10px}
+.brief .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--water),var(--turq-2))}
+.brief .step{font-variant-numeric:tabular-nums;color:var(--text-2);font-size:13px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media print{
+  .topbar,.brief{display:none}
+  body{background:#fff;color:#000}
+  section{padding:18px 0;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 8c3-3 6-3 9 0s6 3 9 0"/><path d="M3 13c3-3 6-3 9 0s6 3 9 0"/><path d="M3 18c3-3 6-3 9 0s6 3 9 0"/></svg>
+      </span>
+      Tietê Vivo
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#northstar">North Star</a>
+      <a href="#kpis">KPIs</a>
+      <a href="#waffle">576 km</a>
+      <a href="#trend">Trend</a>
+      <a href="#classes">2024 vs 2025</a>
+      <a href="#insights">So what?</a>
+      <a href="#action">Action</a>
+      <a href="#limits">Limits</a>
+      <a href="#sources">Sources</a>
+    </nav>
+    <div class="tools">
+      <button class="btn primary" id="briefBtn" aria-controls="brief">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        Guided briefing
+      </button>
+      <button class="btn icon-btn" id="themeBtn" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">Tietê Vivo · Strategic environmental intelligence dashboard · Observando o Tietê 2023–2025</div>
+    <h1 style="margin-top:10px">Is the Tietê <span>Really Recovering?</span></h1>
+    <p class="lede">The headline pollution stain shrank in 2025. The kilometres of good-quality water collapsed. This dashboard separates the two measures so one decision can be made on the right one.</p>
+
+    <div class="decision-grid">
+      <div class="card" id="decisionCard">
+        <span class="pill">The decision</span>
+        <p class="q">Should Guarulhos receive priority for targeted pollution monitoring and source investigation before major 2027 investment decisions?</p>
+        <p class="small" style="margin-top:12px">Framed as a question of <b>where to investigate first</b>, not who is responsible. The available data cannot attribute the river's deterioration to any municipality.</p>
+      </div>
+      <div class="card who">
+        <div class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <div>
+          <span class="pill">The decision-maker</span>
+          <p style="font-weight:700;font-size:16px">IntegraTietê programme coordinator</p>
+          <p class="small">São Paulo State Secretariat for the Environment, Infrastructure and Logistics (SEMIL)</p>
+          <p class="small" style="margin-top:10px">Needs: one outcome metric to steer by, a clear reading of 2025 versus 2024, and a defensible next step for 2027 budget planning.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NORTH STAR ================= -->
+<section id="northstar">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">North Star metric</div>
+        <h2>Kilometres of good-quality water</h2>
+        <p>Switch between the traditional headline and the North Star. Both come from the same annual study, but they measure different things.</p>
+      </div>
+      <div class="switch" role="group" aria-label="Metric view">
+        <button id="swHeadline" aria-pressed="false">Headline metric</button>
+        <button id="swNorth" aria-pressed="true">North Star</button>
+      </div>
+    </div>
+
+    <div class="ns-grid">
+      <div class="card" id="nsCard">
+        <div class="hero-number" id="heroNumber" aria-live="polite">
+          <div class="label" id="hnLabel">Good-quality water · 2025</div>
+          <div class="value"><span id="hnValue">34</span><small>km</small></div>
+          <div class="sub" id="hnSub">Good-quality water</div>
+          <div><span class="delta bad" id="hnDelta"></span></div>
+          <p class="small" id="hnWhy"></p>
+        </div>
+        <div class="compare">
+          <div class="mini"><div class="t">2024</div><div class="v" id="cmpPrev">119 <small>km</small></div></div>
+          <div class="mini"><div class="t">2025</div><div class="v" id="cmpNow">34 <small>km</small></div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="insight-banner" id="mainInsight">
+          <div class="big">A smaller pollution stain does not necessarily mean the river is recovering.</div>
+          <p>The stain shrank by 15.9% (207 km → 174 km), yet good-quality water fell by 85 km (119 km → 34 km). Both statements are true at the same time.</p>
+        </div>
+        <div class="card ns-explain" style="margin-top:14px">
+          <h3>Two different measures, not a contradiction</h3>
+          <ul>
+            <li><b>Pollution stain (headline):</b> the length of river classified as <i>poor</i> or <i>very poor</i>. In 2025 it is 120 + 54 = 174 km.</li>
+            <li><b>Good-quality water (North Star):</b> the length of river classified as <i>good</i>. In 2025 it is 34 km.</li>
+            <li><b>What moved in between:</b> 368 km are now <i>regular</i>. Regular is neither the stain nor good water, so the stain can shrink while good water also shrinks.</li>
+            <li><b>Why the North Star:</b> it is the environmental outcome the programme actually wants to grow. A stain can shrink without a single extra kilometre becoming good.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= KPI CARDS ================= -->
+    <div id="kpis" style="scroll-margin-top:80px">
+      <div class="kpis">
+        <article class="card kpi" id="kpi1">
+          <div class="name"><span class="dot" style="background:var(--s-stain)"></span>Pollution stain</div>
+          <div class="val">174<small>km</small></div>
+          <div class="year">Reference year 2025 · Observando o Tietê</div>
+          <div class="cmp"><span class="delta good">▼ −33 km · −15.9%</span><span>vs 207 km in 2024</span></div>
+          <div class="interp"><b>Headline improved.</b> The stretch classified poor or very poor is shorter than in 2024, but still above every year from 2018 to 2023.</div>
+        </article>
+
+        <article class="card kpi" id="kpi2">
+          <div class="name"><span class="dot" style="background:var(--q-vpoor)"></span>Poor or very poor monitoring points</div>
+          <div class="val">36.4<small>%</small></div>
+          <div class="year">Reference year 2025 · basin sampling network</div>
+          <div class="cmp"><span class="delta bad">▲ +10.4 pp</span><span>vs 26% in 2024</span></div>
+          <div class="interp"><b>Network deteriorated.</b> A larger share of sampling points across the basin is in the two worst classes.</div>
+          <div class="flag">Share of sampling points in the Tietê basin monitoring network. Not a share of the 576-km main-river stretch; the two bases are not interchangeable.</div>
+        </article>
+
+        <article class="card kpi" id="kpi3">
+          <div class="name"><span class="dot" style="background:var(--q-regular)"></span>Regular-quality water</div>
+          <div class="val">368<small>km</small></div>
+          <div class="year">Reference year 2025 · monitored 576 km</div>
+          <div class="cmp"><span class="delta neutral">▲ +118 km</span><span>vs 250 km in 2024</span></div>
+          <div class="interp"><b>Classification shift, not recovery.</b> Most of the river moved into the middle class. "Regular" does not mean "good".</div>
+          <div class="flag">Regular water is excluded from the stain and from good water, which is why both headline numbers can fall together.</div>
+        </article>
+
+        <article class="card kpi" id="kpi4">
+          <div class="name"><span class="dot" style="background:var(--turq-2)"></span>Guarulhos sewage treatment indicator</div>
+          <div class="val">40<small>%</small></div>
+          <div class="year">Reference year 2025 · reported sanitation indicator</div>
+          <div class="cmp"><span class="delta good">▲ +22 pp</span><span>vs 18% in 2023</span></div>
+          <div class="interp"><b>Leading signal, not proof.</b> A reported sanitation indicator for the municipality, not a measurement of river water quality or of any pollution source.</div>
+          <div class="flag">Source: Sabesp published information on Guarulhos. Different definition and reporting base from the river classification; not comparable with São Paulo city's sanitation index.</div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WAFFLE ================= -->
+<section id="waffle">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Visualization 1 · Waffle chart</div>
+        <h2>576 monitored kilometres, one dot per kilometre</h2>
+        <p>Each dot is one kilometre of the monitored stretch, grouped by aggregated water-quality class. Change the year to watch the classes shift.</p>
+      </div>
+      <div class="year-btns" role="group" aria-label="Select year">
+        <button data-year="2023" aria-pressed="false">2023</button>
+        <button data-year="2024" aria-pressed="false">2024</button>
+        <button data-year="2025" aria-pressed="true">2025</button>
+      </div>
+    </div>
+
+    <div class="card waffle-grid" id="waffleCard">
+      <div>
+        <div class="waffle" id="waffleGrid" role="img" aria-label="Waffle chart of 576 kilometres by water-quality class for the selected year"></div>
+        <p class="small" style="text-align:center;margin-top:10px">24 × 24 grid = 576 dots = 576 km. Dots are filled in class order, not by location.</p>
+      </div>
+      <div>
+        <h3 style="font-size:18px">Kilometres by class · <span id="waffleYear">2025</span></h3>
+        <div class="legend" id="waffleLegend"></div>
+        <div class="total-line"><span>Total monitored stretch</span><b id="waffleTotal">576 km</b></div>
+        <div class="note warn"><strong>Methodology:</strong> this is a waffle chart of aggregated category totals, <strong>not a geographical pollution map</strong>. Dot positions do not indicate where a class occurs along the river. "Poor" and "very poor" together form the pollution stain; "good" alone is the North Star.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LINE CHART ================= -->
+<section id="trend">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Visualization 2 · Line chart</div>
+        <h2>Pollution Stain vs Good-Quality Water</h2>
+        <p>Kilometres of the monitored stretch, 2018–2025. The good-water series is only available from 2021; missing years are left blank, never filled with zero.</p>
+      </div>
+    </div>
+    <div class="card" id="trendCard">
+      <div class="chart-legend" aria-hidden="true">
+        <span class="it"><span class="sw" style="background:var(--s-stain)"><span class="m"></span></span>Pollution stain (poor + very poor)</span>
+        <span class="it"><span class="sw" style="background:var(--s-good)"><span class="m square"></span></span>Good-quality water</span>
+        <span class="it"><span class="sw" style="background:var(--line-strong);height:10px;opacity:.6;border-radius:2px"></span>Pandemic-period monitoring disruption</span>
+      </div>
+      <div class="chart-wrap" id="lineChart"></div>
+      <div class="note"><strong>Historical-series caveat:</strong> annual values depend on the monitoring campaign of each year. Series have monitoring and reporting limitations, including disruption during the COVID-19 pandemic (2020–2021), and are not strictly comparable across every year.</div>
+      <details class="table">
+        <summary>Show data table</summary>
+        <table id="lineTable"></table>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GROUPED BAR CHART ================= -->
+<section id="classes">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Visualization 3 · Grouped bar chart</div>
+        <h2>Water Quality Classification — 2024 vs 2025</h2>
+        <p>The same four classes on the same 576-km monitored stretch. Bars start at zero.</p>
+      </div>
+    </div>
+    <div class="card" id="barCard">
+      <div class="chart-legend" aria-hidden="true">
+        <span class="it"><span class="sw sq" style="background:var(--y2024)"></span>2024</span>
+        <span class="it"><span class="sw sq" style="background:var(--y2025)"></span>2025</span>
+      </div>
+      <div class="chart-wrap" id="barChart"></div>
+      <div class="note"><strong>Reading the chart:</strong> good water lost 85 km while regular water gained 118 km. Poor (−11 km) and very poor (−22 km) both shrank, which is why the headline stain fell. <strong>Not shown on purpose:</strong> São Paulo city's 94.1% sanitation index is not compared with Guarulhos's 40% indicator, because the two figures use different definitions and reporting bases.</div>
+      <details class="table">
+        <summary>Show data table</summary>
+        <table id="barTable"></table>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INSIGHTS ================= -->
+<section id="insights">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">So what? — From data to decision</div>
+        <h2>Three insights</h2>
+        <p>Each insight is labelled by the kind of analytics it represents, so the reader knows how much weight it can carry.</p>
+      </div>
+    </div>
+    <div class="insights">
+      <article class="card insight descr" id="ins1">
+        <div class="tag">Insight 1 · Descriptive</div>
+        <div class="num">01</div>
+        <p class="txt">The pollution stain decreased from 207 km to 174 km, but good-quality water fell from 119 km to only 34 km. The headline improved while the North Star deteriorated.</p>
+        <p class="so"><b>What happened.</b> This is a direct reading of the 2024 and 2025 classifications. It is the one fact the coordinator should carry into every 2027 conversation.</p>
+      </article>
+      <article class="card insight diag" id="ins2">
+        <div class="tag">Insight 2 · Diagnostic question</div>
+        <div class="num">02</div>
+        <p class="txt">Regular-quality water increased by 118 km. We need more detailed monitoring, weather and flow information to understand the reasons for this classification shift.</p>
+        <p class="so"><b>Why it happened is still open.</b> Rainfall, flow, sampling timing and real changes in loads can all move a stretch between classes. The data describe the shift; they do not yet explain it.</p>
+      </article>
+      <article class="card insight lead" id="ins3">
+        <div class="tag">Insight 3 · Leading signal</div>
+        <div class="num">03</div>
+        <p class="txt">Guarulhos's reported sewage-treatment indicator improved from 18% in 2023 to 40% in 2025, suggesting sanitation progress, but this does not establish a causal impact on the monitored river.</p>
+        <p class="so"><b>A signal worth testing, not a conclusion.</b> Upstream and downstream measurements around Guarulhos tributaries and outfalls are required before any link to river quality can be claimed.</p>
+      </article>
+    </div>
+
+    <div class="card" style="margin-top:16px" id="ladderCard">
+      <h3 style="font-size:16px">Where this dashboard sits on the analytics ladder</h3>
+      <div class="ladder">
+        <div class="step"><b>Descriptive</b>What happened: 2024 → 2025 kilometres by class, stain vs good water.<span class="st done">Covered by this dashboard</span></div>
+        <div class="step"><b>Diagnostic</b>Why it happened: requires flow, rainfall, sampling-date and source data that this study does not include.<span class="st partial">Open question</span></div>
+        <div class="step"><b>Predictive</b>What will happen: no validated predictive model exists here. No forecast is made.<span class="st none">Not claimed</span></div>
+        <div class="step"><b>Prescriptive</b>What to do: an evidence-informed proposal for investigation, with explicit limits.<span class="st done">One recommended action</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ACTION ================= -->
+<section id="action">
+  <div class="wrap">
+    <div class="card action" id="actionCard">
+      <span class="pill">Recommended action · 2027</span>
+      <h3>Prioritize a targeted pollution-monitoring and source-tracing pilot at Guarulhos tributaries and outfalls in 2027.</h3>
+      <p>Collect upstream and downstream measurements, investigate potential pollution sources, and evaluate sanitation improvements before committing major restoration funds.</p>
+      <p>Use kilometres of good-quality water as a public environmental outcome metric alongside the traditional pollution-stain indicator.</p>
+      <div class="steps">
+        <div><b>1 · Measure</b>Paired upstream / downstream sampling at Guarulhos tributaries and outfalls, with flow and rainfall logged.</div>
+        <div><b>2 · Investigate</b>Trace candidate sources from the measurements. No source is named in advance.</div>
+        <div><b>3 · Decide</b>Evaluate sanitation progress against river results before releasing major 2027 restoration funds.</div>
+      </div>
+      <p class="small" style="margin-top:14px"><b>Status of this recommendation:</b> an evidence-informed proposal for investigation, not proof of responsibility. The monitoring data do not identify any polluter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIMITATION ================= -->
+<section id="limits">
+  <div class="wrap">
+    <div class="card limit" id="limitCard">
+      <span class="pill">Data limitation</span>
+      <p>The annual <i>Observando o Tietê</i> monitoring study covers 576 kilometres of a river approximately 1,100 kilometres long. River conditions vary with rainfall, season, and flow. Basin-wide sampling-point percentages and river-kilometre totals use different measurement bases.</p>
+      <p style="margin-top:10px">The data cannot identify a specific polluter or independently prove the causal impact of sanitation investments.</p>
+      <div class="grid">
+        <div><b>Coverage:</b> 576 of ~1,100 km. Conditions outside the monitored stretch are unknown.</div>
+        <div><b>Two bases:</b> km of river (576-km stretch) vs % of sampling points (basin network). Never mix them in one ratio.</div>
+        <div><b>No live data:</b> every number is an annual historical measurement. Nothing on this page is real-time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section id="sources">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Sources &amp; methodology</div>
+        <h2>Where every number comes from</h2>
+        <p>Reference years are stated on every figure. Claims that still need primary-source confirmation are flagged rather than hidden.</p>
+      </div>
+    </div>
+    <div class="sources">
+      <div class="card" id="sourcesCard">
+        <ul class="src-list">
+          <li><b>SOS Mata Atlântica — Observando o Tietê 2025<span class="badge primary">Primary</span></b>
+            Report year 2025. Source of: 576-km class totals for 2025 (good 34, regular 368, poor 120, very poor 54), pollution stain 174 km, 36.4% of monitoring points poor or very poor.
+            <div class="meta">Publisher site: <a href="https://www.sosma.org.br/" target="_blank" rel="noopener">sosma.org.br</a> · annual monitoring study by Fundação SOS Mata Atlântica</div></li>
+          <li><b>SOS Mata Atlântica — Observando o Tietê 2024<span class="badge primary">Primary</span></b>
+            Report year 2024. Source of: class totals for 2024 (good 119, regular 250, poor 131, very poor 76), pollution stain 207 km, 26% of monitoring points poor or very poor.
+            <div class="meta"><a href="https://www.sosma.org.br/" target="_blank" rel="noopener">sosma.org.br</a></div></li>
+          <li><b>SOS Mata Atlântica — Observando o Tietê 2023<span class="badge primary">Primary</span></b>
+            Report year 2023. Source of: class totals for 2023 (good 119, regular 293, poor 127, very poor 33, no data 4), pollution stain 160 km.
+            <div class="meta"><a href="https://www.sosma.org.br/" target="_blank" rel="noopener">sosma.org.br</a></div></li>
+          <li><b>Observando o Tietê historical series 2018–2022<span class="badge verify">Verify against primary reports</span></b>
+            Pollution stain 2018–2022 (122, 163, 150, 85, 122 km) and good-quality water 2021–2022 (124, 60 km) are compiled from earlier editions of the same study. Values should be re-checked against each year's original report before external publication.</li>
+          <li><b>Sabesp — published information on Guarulhos sanitation<span class="badge verify">Verify exact publication and date</span></b>
+            Source of the Guarulhos sewage-treatment indicator: 18% (reference 2023) and 40% (reference 2025). Sanitation context only; different definition and reporting base from the river classification. The exact Sabesp publication, indicator definition and release date must be cited before external use.</li>
+          <li><b>Tietê-wide untreated-sewage estimate (c. 2022–2023)<span class="badge removed">Removed from dashboard</span></b>
+            The previous version showed an animated counter attributing about 63 billion litres of untreated sewage per month to Guarulhos in 2019. That attribution was incorrect: the historical estimate refers to the Tietê River overall around 2022–2023, not to Guarulhos alone. The counter has been removed and no live or synthetic sewage volume is generated anywhere on this page. The Tietê-wide figure itself still requires primary-source verification before it is quoted.</li>
+        </ul>
+      </div>
+
+      <div class="card method">
+        <h3 style="font-size:16px;margin-bottom:10px">Data register (km unless stated)</h3>
+        <table>
+          <thead><tr><th>Measure</th><th>Ref. year</th><th style="text-align:right">Value</th><th>Base</th></tr></thead>
+          <tbody>
+            <tr><td>Good-quality water (North Star)</td><td>2025</td><td class="n">34</td><td>576-km stretch</td></tr>
+            <tr><td>Good-quality water</td><td>2024</td><td class="n">119</td><td>576-km stretch</td></tr>
+            <tr><td>Pollution stain (poor + very poor)</td><td>2025</td><td class="n">174</td><td>576-km stretch</td></tr>
+            <tr><td>Pollution stain</td><td>2024</td><td class="n">207</td><td>576-km stretch</td></tr>
+            <tr><td>Regular-quality water</td><td>2025</td><td class="n">368</td><td>576-km stretch</td></tr>
+            <tr><td>Regular-quality water</td><td>2024</td><td class="n">250</td><td>576-km stretch</td></tr>
+            <tr><td>Poor or very poor sampling points</td><td>2025</td><td class="n">36.4%</td><td>basin network points</td></tr>
+            <tr><td>Poor or very poor sampling points</td><td>2024</td><td class="n">26%</td><td>basin network points</td></tr>
+            <tr><td>Guarulhos sewage-treatment indicator</td><td>2025</td><td class="n">40%</td><td>reported sanitation indicator</td></tr>
+            <tr><td>Guarulhos sewage-treatment indicator</td><td>2023</td><td class="n">18%</td><td>reported sanitation indicator</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:12px"><b>Derived checks:</b> 2025 stain = 120 + 54 = 174 km ✓ · 2024 stain = 131 + 76 = 207 km ✓ · stain change = −33 km = −15.9% ✓ · good-water change = 34 − 119 = −85 km ✓ · regular change = +118 km ✓ · every year's classes sum to 576 km (<span id="sumCheck">checking…</span>).</p>
+        <p class="small" style="margin-top:10px"><b>Project context:</b> this dashboard uses actual historical data as a baseline for Group 09's speculative <i>AquaTietê 2040</i> innovation project. The baseline is real; the 2040 scenario is not part of this page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>Group 09 — International Week 2026</b><br>Data, Analytics &amp; Dashboards · Professor Alice Sidhu · Saint Paul Business School</div>
+    <div class="small">Tietê Vivo · corrected final version · all values are annual historical measurements, none are live.</div>
+  </div>
+</footer>
+
+<!-- tooltip -->
+<div class="tip" id="tip" role="tooltip"></div>
+
+<!-- guided briefing -->
+<div class="brief" id="brief" aria-live="polite" aria-label="Guided briefing">
+  <div class="top"><span class="live" aria-hidden="true"></span><span>Guided briefing · on-screen captions</span><span class="sp" style="flex:1"></span><span class="step" id="briefStep">1 / 11</span></div>
+  <div class="cap" id="briefCap"></div>
+  <div class="ctr">
+    <button class="btn" id="bPrev">◀ Back</button>
+    <button class="btn" id="bPause">Pause</button>
+    <button class="btn" id="bNext">Next ▶</button>
+    <span class="sp"></span>
+    <button class="btn" id="bStop">End briefing</button>
+  </div>
+  <div class="prog"><i id="briefProg"></i></div>
+</div>
+
+<script>
+/* ============================================================
+   DATA — all values are annual historical measurements.
+   Reference years are explicit. Nothing here is live.
+   ============================================================ */
+const CLASSES = [
+  {key:'good',    label:'Good',      css:'--q-good'},
+  {key:'regular', label:'Regular',   css:'--q-regular'},
+  {key:'poor',    label:'Poor',      css:'--q-poor'},
+  {key:'vpoor',   label:'Very poor', css:'--q-vpoor'},
+  {key:'nodata',  label:'No data',   css:'--q-nodata'}
+];
+const WAFFLE = {
+  2023:{good:119, regular:293, poor:127, vpoor:33, nodata:4},
+  2024:{good:119, regular:250, poor:131, vpoor:76, nodata:0},
+  2025:{good:34,  regular:368, poor:120, vpoor:54, nodata:0}
+};
+const TOTAL_KM = 576;
+const STAIN = {2018:122, 2019:163, 2020:150, 2021:85, 2022:122, 2023:160, 2024:207, 2025:174};
+const GOOD  = {2021:124, 2022:60, 2023:119, 2024:119, 2025:34};   // no values before 2021 — left blank, never zero
+const BAR_CATS = ['Good','Regular','Poor','Very poor'];
+const BAR = {2024:[119,250,131,76], 2025:[34,368,120,54]};
+
+/* ---------- integrity checks (shown in Sources) ---------- */
+(function checkTotals(){
+  const bad = Object.entries(WAFFLE).filter(([y,v]) => Object.values(v).reduce((a,b)=>a+b,0) !== TOTAL_KM);
+  const el = document.getElementById('sumCheck');
+  el.textContent = bad.length ? 'FAILED for ' + bad.map(b=>b[0]).join(', ') : '2023, 2024 and 2025 verified ✓';
+  if (bad.length) console.error('Waffle totals do not sum to 576:', bad);
+})();
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const svgEl = (tag, attrs={}, parent) => {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const tip = $('#tip');
+function showTip(html, x, y){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let left = x + 14, top = y - h - 12;
+  if (left + w > innerWidth - 8) left = x - w - 14;
+  if (top < 8) top = y + 14;
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+function hideTip(){ tip.style.opacity = 0; }
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+const root = document.documentElement;
+function applyTheme(t){
+  root.setAttribute('data-theme', t);
+  $('#iconSun').style.display  = t === 'dark' ? '' : 'none';
+  $('#iconMoon').style.display = t === 'dark' ? 'none' : '';
+  try { localStorage.setItem('tiete-theme', t); } catch(e){}
+  // charts read CSS variables at draw time; redraw so marks pick the mode-specific steps
+  drawLine(); drawBars(false);
+}
+$('#themeBtn').addEventListener('click', () => applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+
+/* ============================================================
+   NORTH STAR / HEADLINE SWITCH
+   ============================================================ */
+const VIEWS = {
+  headline:{
+    label:'Pollution stain · 2025', value:174, sub:'174 km — Pollution stain',
+    delta:'▼ Down 15.9% from 2024 (−33 km)', deltaClass:'good',
+    why:'Length of river classified poor or very poor. The traditional headline indicator: shorter is better, but a shorter stain does not add good water.',
+    prev:'207', now:'174', unit:'km'
+  },
+  north:{
+    label:'Good-quality water · 2025', value:34, sub:'34 km — Good-quality water',
+    delta:'▼ Down 85 km from 2024 (−71%)', deltaClass:'bad',
+    why:'Length of river classified good. The North Star: it is the outcome the programme wants to grow, and it fell to its lowest value in the available series.',
+    prev:'119', now:'34', unit:'km'
+  }
+};
+function tween(el, from, to, dur=700){
+  const start = performance.now();
+  const step = t => {
+    const p = Math.min(1, (t - start) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * e);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+let currentView = 'north';
+function setView(v){
+  currentView = v;
+  const d = VIEWS[v];
+  $('#swHeadline').setAttribute('aria-pressed', v === 'headline');
+  $('#swNorth').setAttribute('aria-pressed', v === 'north');
+  const hn = $('#heroNumber'); hn.classList.remove('fade'); void hn.offsetWidth; hn.classList.add('fade');
+  $('#hnLabel').textContent = d.label;
+  tween($('#hnValue'), parseInt($('#hnValue').textContent) || 0, d.value);
+  $('#hnSub').textContent = d.sub;
+  const del = $('#hnDelta'); del.textContent = d.delta; del.className = 'delta ' + d.deltaClass;
+  $('#hnWhy').textContent = d.why;
+  $('#cmpPrev').innerHTML = d.prev + ' <small>' + d.unit + '</small>';
+  $('#cmpNow').innerHTML  = d.now  + ' <small>' + d.unit + '</small>';
+}
+$('#swHeadline').addEventListener('click', () => setView('headline'));
+$('#swNorth').addEventListener('click', () => setView('north'));
+
+/* ============================================================
+   WAFFLE — 576 dots, one per km, class order (not geography)
+   ============================================================ */
+const grid = $('#waffleGrid');
+const dots = [];
+for (let i = 0; i < TOTAL_KM; i++){
+  const d = document.createElement('span');
+  d.className = 'd'; d.dataset.c = 'nodata';
+  grid.appendChild(d); dots.push(d);
+}
+let currentYear = 2025;
+function renderLegend(year){
+  const data = WAFFLE[year];
+  const leg = $('#waffleLegend'); leg.innerHTML = '';
+  CLASSES.forEach(c => {
+    const km = data[c.key];
+    if (c.key === 'nodata' && km === 0) return;
+    const row = document.createElement('div'); row.className = 'row';
+    const pct = (km / TOTAL_KM * 100).toFixed(1);
+    row.innerHTML = `<span class="sw" style="background:var(${c.css})"></span>
+      <span class="lbl">${c.label}${c.key==='good' ? ' <span class="small">· North Star</span>' : ''}${(c.key==='poor'||c.key==='vpoor') ? ' <span class="small">· stain</span>' : ''}</span>
+      <span class="pct">${pct}%</span>
+      <span class="km" data-km="${km}">${km} <small>km</small></span>
+      <span class="bar"><i style="background:var(${c.css});width:0"></i></span>`;
+    leg.appendChild(row);
+    requestAnimationFrame(() => requestAnimationFrame(() => { row.querySelector('.bar i').style.width = pct + '%'; }));
+  });
+  $('#waffleYear').textContent = year;
+  const sum = Object.values(data).reduce((a,b)=>a+b,0);
+  $('#waffleTotal').textContent = sum + ' km';
+}
+function renderWaffle(year, animate=true){
+  const data = WAFFLE[year];
+  const seq = [];
+  CLASSES.forEach(c => { for (let i = 0; i < data[c.key]; i++) seq.push(c.key); });
+  if (seq.length !== TOTAL_KM) console.error('Waffle sequence length', seq.length);
+  dots.forEach((d, i) => {
+    if (d.dataset.c === seq[i]) return;
+    const delay = animate ? Math.min(900, i * 1.4) : 0;
+    setTimeout(() => {
+      d.dataset.c = seq[i];
+      d.classList.add('pop');
+      setTimeout(() => d.classList.remove('pop'), 380);
+    }, delay);
+  });
+  renderLegend(year);
+  document.querySelectorAll('.year-btns button').forEach(b => b.setAttribute('aria-pressed', b.dataset.year == year));
+  grid.setAttribute('aria-label', `Waffle chart ${year}: good ${data.good} km, regular ${data.regular} km, poor ${data.poor} km, very poor ${data.vpoor} km, no data ${data.nodata} km, total 576 km`);
+  currentYear = year;
+}
+document.querySelectorAll('.year-btns button').forEach(b => b.addEventListener('click', () => renderWaffle(+b.dataset.year)));
+grid.addEventListener('mousemove', e => {
+  const t = e.target; if (!t.classList.contains('d')) return;
+  const c = CLASSES.find(x => x.key === t.dataset.c);
+  showTip(`<b>1 km · ${c.label}</b><div class="r"><i style="background:var(${c.css})"></i>${WAFFLE[currentYear][c.key]} km in this class (${currentYear})</div>`, e.clientX, e.clientY);
+});
+grid.addEventListener('mouseleave', hideTip);
+
+/* ============================================================
+   LINE CHART — pollution stain vs good-quality water
+   ============================================================ */
+function drawLine(){
+  const host = $('#lineChart'); host.innerHTML = '';
+  // 1 SVG unit = 1 CSS px, so text stays readable at every viewport width
+  const narrow = host.clientWidth < 600;
+  const W = Math.max(320, host.clientWidth || 820), H = narrow ? 300 : 360, m = {l:narrow ? 40 : 56, r:narrow ? 62 : 70, t:26, b:46};
+  const years = Object.keys(STAIN).map(Number);
+  const x0 = years[0], x1 = years[years.length-1];
+  const yMax = 250;
+  const x = y => m.l + (y - x0) / (x1 - x0) * (W - m.l - m.r);
+  const y = v => m.t + (1 - v / yMax) * (H - m.t - m.b);
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Line chart of pollution stain and good-quality water in kilometres, 2018 to 2025'}, host);
+
+  // pandemic band
+  svgEl('rect', {x:x(2019.6), y:m.t, width:x(2021.4)-x(2019.6), height:H-m.t-m.b, fill:css('--line-strong'), opacity:.18, rx:4}, svg);
+  svgEl('text', {x:x(2020.5), y:m.t+14, 'text-anchor':'middle', 'font-size':11, fill:css('--text-3')}, svg).textContent = 'pandemic period';
+
+  // grid + y axis
+  for (let v = 0; v <= yMax; v += 50){
+    svgEl('line', {x1:m.l, x2:W-m.r, y1:y(v), y2:y(v), class:'grid'}, svg);
+    svgEl('text', {x:m.l-8, y:y(v)+4, 'text-anchor':'end'}, svg).textContent = v;
+  }
+  svgEl('line', {x1:m.l, x2:W-m.r, y1:y(0), y2:y(0), class:'axis'}, svg);
+  years.forEach(yr => svgEl('text', {x:x(yr), y:H-m.b+20, 'text-anchor':'middle', 'font-size': narrow ? 10 : 12}, svg).textContent = narrow ? "'" + String(yr).slice(2) : yr);
+  svgEl('text', {x:m.l, y:12, class:'axis-title'}, svg).textContent = 'Kilometres of monitored stretch';
+  svgEl('text', {x:W-m.r, y:H-4, 'text-anchor':'end', class:'axis-title'}, svg).textContent = 'Year';
+
+  const series = [
+    {name:'Pollution stain', data:STAIN, color:css('--s-stain'), marker:'circle'},
+    {name:'Good-quality water', data:GOOD,  color:css('--s-good'),  marker:'square'}
+  ];
+  series.forEach(s => {
+    const pts = Object.entries(s.data).map(([k,v]) => [x(+k), y(v), +k, v]);
+    svgEl('path', {d: pts.map((p,i)=>(i?'L':'M')+p[0]+','+p[1]).join(' '), fill:'none', stroke:s.color, 'stroke-width':2.5, 'stroke-linejoin':'round', 'stroke-linecap':'round'}, svg);
+    pts.forEach(p => {
+      if (s.marker === 'circle') svgEl('circle', {cx:p[0], cy:p[1], r:5, fill:s.color, stroke:css('--surface'), 'stroke-width':2}, svg);
+      else svgEl('rect', {x:p[0]-5, y:p[1]-5, width:10, height:10, rx:2, fill:s.color, stroke:css('--surface'), 'stroke-width':2}, svg);
+    });
+    // selective direct labels: first and last point of each series
+    const first = pts[0], last = pts[pts.length-1];
+    svgEl('text', {x:last[0]+10, y:last[1]+4, class:'dlabel'}, svg).textContent = last[3] + ' km';
+    svgEl('text', {x:first[0], y:first[1] - 10, 'text-anchor':'middle', 'font-size':11, fill:css('--text-2')}, svg).textContent = first[3];
+  });
+  // end-of-series names
+  svgEl('text', {x:x(2025)+10, y:y(STAIN[2025])-12, 'font-size':11, fill:css('--s-stain'), 'font-weight':700}, svg).textContent = 'Stain';
+  svgEl('text', {x:x(2025)+10, y:y(GOOD[2025])+18, 'font-size':11, fill:css('--s-good'), 'font-weight':700}, svg).textContent = 'Good';
+
+  // hover layer: crosshair + tooltip on nearest year
+  const cross = svgEl('line', {y1:m.t, y2:H-m.b, stroke:css('--line-strong'), 'stroke-width':1, 'stroke-dasharray':'none', opacity:0}, svg);
+  const hit = svgEl('rect', {x:m.l, y:m.t, width:W-m.l-m.r, height:H-m.t-m.b, fill:'transparent'}, svg);
+  hit.addEventListener('mousemove', e => {
+    const r = svg.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width * W;
+    const yr = Math.round(x0 + (px - m.l) / (W - m.l - m.r) * (x1 - x0));
+    const yc = Math.max(x0, Math.min(x1, yr));
+    cross.setAttribute('x1', x(yc)); cross.setAttribute('x2', x(yc)); cross.setAttribute('opacity', 1);
+    const g = GOOD[yc];
+    showTip(`<b>${yc}</b>
+      <div class="r"><i style="background:${css('--s-stain')}"></i>Pollution stain: ${STAIN[yc]} km</div>
+      <div class="r"><i style="background:${css('--s-good')}"></i>Good-quality water: ${g === undefined ? 'not available' : g + ' km'}</div>`, e.clientX, e.clientY);
+  });
+  hit.addEventListener('mouseleave', () => { cross.setAttribute('opacity', 0); hideTip(); });
+
+  // table view
+  const t = $('#lineTable');
+  t.innerHTML = '<thead><tr><th>Year</th><th>Pollution stain (km)</th><th>Good-quality water (km)</th></tr></thead><tbody>' +
+    years.map(yr => `<tr><td>${yr}</td><td>${STAIN[yr]}</td><td>${GOOD[yr] === undefined ? '—' : GOOD[yr]}</td></tr>`).join('') + '</tbody>';
+}
+
+/* ============================================================
+   GROUPED BAR CHART — 2024 vs 2025, zero baseline
+   ============================================================ */
+function drawBars(animate=true){
+  const host = $('#barChart'); host.innerHTML = '';
+  const narrow = host.clientWidth < 600;
+  const W = Math.max(320, host.clientWidth || 820), H = narrow ? 300 : 360, m = {l:narrow ? 40 : 56, r:narrow ? 8 : 20, t:36, b:46};
+  const yMax = 400;
+  const y = v => m.t + (1 - v / yMax) * (H - m.t - m.b);
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Grouped bar chart comparing 2024 and 2025 kilometres by water-quality class'}, host);
+  for (let v = 0; v <= yMax; v += 100){
+    svgEl('line', {x1:m.l, x2:W-m.r, y1:y(v), y2:y(v), class:'grid'}, svg);
+    svgEl('text', {x:m.l-8, y:y(v)+4, 'text-anchor':'end'}, svg).textContent = v;
+  }
+  svgEl('text', {x:m.l, y:14, class:'axis-title'}, svg).textContent = narrow ? 'Kilometres (576 km total each year)' : 'Kilometres of monitored stretch (576 km total each year)';
+  const groupW = (W - m.l - m.r) / BAR_CATS.length, barW = Math.min(54, groupW * 0.28), gap = 4;
+  const colors = {2024:css('--y2024'), 2025:css('--y2025')};
+  const classColor = [css('--q-good'), css('--q-regular'), css('--q-poor'), css('--q-vpoor')];
+  BAR_CATS.forEach((cat, i) => {
+    const cx = m.l + groupW * (i + 0.5);
+    [2024, 2025].forEach((yr, j) => {
+      const v = BAR[yr][i];
+      const bx = cx + (j - 1) * (barW + gap) + gap/2;
+      const by = y(v), bh = y(0) - by;
+      const r = svgEl('rect', {x:bx, y:animate ? y(0) : by, width:barW, height:animate ? 0 : bh, rx:4, fill:colors[yr]}, svg);
+      if (animate) requestAnimationFrame(() => { r.style.transition = 'y .7s cubic-bezier(.2,.8,.2,1), height .7s cubic-bezier(.2,.8,.2,1)'; r.setAttribute('y', by); r.setAttribute('height', bh); });
+      svgEl('text', {x:bx+barW/2, y:by-6, 'text-anchor':'middle', class:'dlabel'}, svg).textContent = v;
+      r.addEventListener('mousemove', e => showTip(`<b>${cat} · ${yr}</b><div class="r"><i style="background:${colors[yr]}"></i>${v} km of 576 km (${(v/576*100).toFixed(1)}%)</div><div class="r">Change 2024→2025: ${BAR[2025][i]-BAR[2024][i] > 0 ? '+' : ''}${BAR[2025][i]-BAR[2024][i]} km</div>`, e.clientX, e.clientY));
+      r.addEventListener('mouseleave', hideTip);
+    });
+    // category label with class colour dot (secondary encoding for the class)
+    const lw = cat.length * (narrow ? 6.2 : 7.4) + 16;
+    svgEl('circle', {cx:cx - lw/2 + 5, cy:H-m.b+16, r:5, fill:classColor[i]}, svg);
+    svgEl('text', {x:cx - lw/2 + 15, y:H-m.b+20, 'font-weight':700, fill:css('--text'), 'font-size': narrow ? 11 : 12}, svg).textContent = cat;
+    // delta annotation
+    const d = BAR[2025][i] - BAR[2024][i];
+    const bad = (i === 0 && d < 0) || (i >= 2 && d > 0);
+    const good = (i === 0 && d > 0) || (i >= 2 && d < 0);
+    const col = bad ? css('--down-bad') : good ? css('--up-good') : css('--neutral');
+    const topY = y(Math.max(BAR[2024][i], BAR[2025][i])) - 22;
+    const lbl = (d > 0 ? '+' : '') + d + ' km';
+    const tw = lbl.length * 7.2 + 14;
+    svgEl('rect', {x:cx-tw/2, y:topY-13, width:tw, height:18, rx:9, fill:col, opacity:.16}, svg);
+    svgEl('text', {x:cx, y:topY, 'text-anchor':'middle', 'font-weight':800, fill:col, 'font-size':12}, svg).textContent = lbl;
+  });
+  svgEl('line', {x1:m.l, x2:W-m.r, y1:y(0), y2:y(0), class:'axis'}, svg);
+  const t = $('#barTable');
+  t.innerHTML = '<thead><tr><th>Class</th><th>2024 (km)</th><th>2025 (km)</th><th>Change (km)</th></tr></thead><tbody>' +
+    BAR_CATS.map((c,i) => `<tr><td>${c}</td><td>${BAR[2024][i]}</td><td>${BAR[2025][i]}</td><td>${(BAR[2025][i]-BAR[2024][i] > 0 ? '+' : '') + (BAR[2025][i]-BAR[2024][i])}</td></tr>`).join('') +
+    `<tr><td><b>Total</b></td><td><b>${BAR[2024].reduce((a,b)=>a+b)}</b></td><td><b>${BAR[2025].reduce((a,b)=>a+b)}</b></td><td>0</td></tr></tbody>`;
+}
+
+/* ============================================================
+   GUIDED BRIEFING — on-screen English captions, no audio
+   ============================================================ */
+const STEPS = [
+  {el:'#decisionCard', cap:'Welcome to Tietê Vivo. One person, one decision: should SEMIL\'s IntegraTietê coordinator prioritise targeted monitoring and source investigation in Guarulhos before the major 2027 investment decisions?', act:null},
+  {el:'#nsCard', cap:'The headline first. The pollution stain shrank from 207 km in 2024 to 174 km in 2025, down 15.9%. On its own, that sounds like good news.', act:() => setView('headline')},
+  {el:'#nsCard', cap:'Now the North Star. Good-quality water fell from 119 km to only 34 km, a loss of 85 km. The outcome the programme wants to grow went backwards.', act:() => setView('north')},
+  {el:'#mainInsight', cap:'The key message: a smaller pollution stain does not necessarily mean the river is recovering. The stain and good water are different measures, and both can shrink at the same time.', act:null},
+  {el:'#kpis', cap:'Four supporting KPIs. Note the different bases: the 36.4% is a share of basin sampling points, not of the 576 km, and the Guarulhos 40% is a reported sanitation indicator, not a river measurement.', act:null},
+  {el:'#waffleCard', cap:'576 dots, one per monitored kilometre. Watch 2024 turn into 2025: green good water shrinks, yellow regular water swells. This is a chart of totals, not a map.', act:() => { renderWaffle(2024, false); setTimeout(() => renderWaffle(2025), 1600); }},
+  {el:'#trendCard', cap:'Over time, the stain is still higher than every year from 2018 to 2023, and good water is at its lowest value in the available series. Pandemic-period data have known limitations.', act:null},
+  {el:'#barCard', cap:'Same classes, same stretch, two years. Good water lost 85 km, regular gained 118 km, poor and very poor each shrank. That is the whole story in one chart.', act:null},
+  {el:'#ins1', cap:'Three insights: a descriptive fact, a diagnostic question about the 118 km shift, and a leading signal from Guarulhos\'s 18% to 40% sanitation indicator, which does not prove a causal impact on the river.', act:null},
+  {el:'#actionCard', cap:'The recommendation: a targeted monitoring and source-tracing pilot at Guarulhos tributaries and outfalls in 2027, before major restoration funds are committed. An investigation, not a verdict.', act:null},
+  {el:'#limitCard', cap:'Finally, the limits: 576 of roughly 1,100 km are monitored, conditions vary with rainfall and flow, and the data cannot identify a polluter or prove the effect of sanitation investments. Thank you.', act:null}
+];
+const STEP_MS = 11000;
+let bi = 0, bTimer = null, bStart = 0, bPaused = false, bOn = false, bRemaining = STEP_MS, rafId = null;
+const brief = $('#brief');
+function clearSpot(){ document.querySelectorAll('.spotlight').forEach(e => e.classList.remove('spotlight')); }
+function showStep(i){
+  bi = (i + STEPS.length) % STEPS.length;
+  const s = STEPS[bi];
+  clearSpot();
+  const el = $(s.el); el.classList.add('spotlight');
+  const top = el.getBoundingClientRect().top + scrollY - 90;
+  scrollTo({top, behavior:'smooth'});
+  $('#briefCap').textContent = s.cap;
+  $('#briefStep').textContent = (bi + 1) + ' / ' + STEPS.length;
+  if (s.act) s.act();
+  bRemaining = STEP_MS; bStart = performance.now(); bPaused = false; $('#bPause').textContent = 'Pause';
+  clearTimeout(bTimer); bTimer = setTimeout(() => { if (bi < STEPS.length - 1) showStep(bi + 1); else stopBrief(); }, STEP_MS);
+  tickProg();
+}
+function tickProg(){
+  cancelAnimationFrame(rafId);
+  const loop = () => {
+    const elapsed = bPaused ? STEP_MS - bRemaining : performance.now() - bStart;
+    $('#briefProg').style.width = Math.min(100, elapsed / STEP_MS * 100) + '%';
+    if (bOn) rafId = requestAnimationFrame(loop);
+  };
+  loop();
+}
+function startBrief(){ bOn = true; brief.classList.add('on'); $('#briefBtn').textContent = 'Briefing running…'; showStep(0); }
+function stopBrief(){
+  bOn = false; clearTimeout(bTimer); cancelAnimationFrame(rafId); clearSpot(); brief.classList.remove('on');
+  $('#briefBtn').innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> Guided briefing';
+  $('#briefProg').style.width = '0';
+}
+$('#briefBtn').addEventListener('click', () => bOn ? stopBrief() : startBrief());
+$('#bStop').addEventListener('click', stopBrief);
+$('#bNext').addEventListener('click', () => showStep(bi + 1));
+$('#bPrev').addEventListener('click', () => showStep(bi - 1));
+$('#bPause').addEventListener('click', () => {
+  if (!bPaused){
+    bPaused = true; clearTimeout(bTimer); bRemaining = STEP_MS - (performance.now() - bStart); $('#bPause').textContent = 'Resume';
+  } else {
+    bPaused = false; bStart = performance.now() - (STEP_MS - bRemaining); $('#bPause').textContent = 'Pause';
+    bTimer = setTimeout(() => { if (bi < STEPS.length - 1) showStep(bi + 1); else stopBrief(); }, bRemaining);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (!bOn) return;
+  if (e.key === 'ArrowRight') showStep(bi + 1);
+  if (e.key === 'ArrowLeft') showStep(bi - 1);
+  if (e.key === 'Escape') stopBrief();
+  if (e.key === ' ') { e.preventDefault(); $('#bPause').click(); }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init(){
+  let t = 'dark';
+  try { t = localStorage.getItem('tiete-theme') || 'dark'; } catch(e){}
+  root.setAttribute('data-theme', t);
+  $('#iconSun').style.display  = t === 'dark' ? '' : 'none';
+  $('#iconMoon').style.display = t === 'dark' ? 'none' : '';
+  setView('north');
+  renderWaffle(2025, true);
+  drawLine(); drawBars();
+  // redraw charts when the viewport changes a lot (keeps label geometry sane on rotate)
+  let rt;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { drawLine(); drawBars(false); }, 150); });
+})();
+</script>
+</body>
+</html>
